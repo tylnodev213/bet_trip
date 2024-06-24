@@ -1,0 +1,229 @@
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.18);
+    z-index: 2;
+    cursor: pointer;
+}
+
+.header {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.header nav {
+    position: relative;
+}
+
+.navigator-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-bottom: solid 3px #e5e5e5;
+    transition: all 0.25s;
+    z-index: -1;
+}
+
+#navbarNav {
+    .nav-link {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #94999f;
+    }
+
+    .nav-link:hover,
+    .active {
+        color: #1e354c;
+    }
+}
+
+@media only screen and (max-width: 991.99px) {
+    #overlay.show {
+        display: block;
+    }
+    .nav-margin-right {
+        margin-right: 350px;
+        margin-left: -350px;
+    }
+    #navbarNav {
+        transition: right .25s ease-in-out;
+        background-color: #1f1f1f;
+        padding-top: 30px;
+        height: 100%;
+        width: 350px;
+        position: fixed;
+        z-index: 3;
+        right: -350px;
+        top: 0;
+
+        .nav-item {
+            padding: 0 30px;
+        }
+
+        .nav-link {
+            padding: 20px 0;
+            color: #979797;
+            border-bottom: solid 1px #979797;
+        }
+
+        .nav-link:hover,
+        .active {
+            color: #ffffff;
+        }
+    }
+    #navbarNav.show {
+        right: 0;
+    }
+}
+
+@media only screen and (max-width: 575.99px) {
+    .nav-margin-right {
+        margin-right: 250px;
+        margin-left: -250px;
+    }
+    .nav-link {
+        padding: 10px 0;
+    }
+    #navbarNav {
+        width: 250px;
+        right: -250px;
+    }
+    #navbarNav.show {
+        right: 0;
+    }
+}
+
+//Banner
+.box-banner-header {
+    margin-top: 80px;
+    width: 100%;
+}
+
+.banner-header {
+    height: 550px;
+    padding-top: 80px;
+    width: 100%;
+    background-size: cover;
+    background-image: url('/images/bg-travel.jpg');
+    color: white;
+    text-align: center;
+
+    .title-header {
+        font-weight: bold;
+        font-size: 30px;
+        margin-bottom: 0;
+    }
+
+    .desc-header {
+        font-size: 16px;
+    }
+
+    .box-find-tour {
+        width: 65%;
+        margin: 0 auto;
+        margin-top: 50px;
+        font-size: 15px;
+
+        .col-find-tour {
+            padding: 2px;
+        }
+
+        .col-find-tour.search input {
+            padding-right: 30px;
+        }
+
+        .col-find-tour.search::after {
+            content: "\f002";
+            font-family: fontAwesome;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            color: black;
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .form-find-tour {
+            height: 65px;
+            position: relative;
+        }
+
+        .btn-find-tour {
+            height: 65px;
+            width: 100%;
+            background-color: $primary-color;
+            color: white;
+        }
+    }
+}
+
+//Statistical
+.box-statistical {
+    padding-top: 30px;
+    width: 100%;
+    background-color: $primary-color;
+    background: linear-gradient(rgba(249, 114, 81, 1), rgba(255, 152, 108, 1))
+}
+
+.statistical {
+    width: 65%;
+    margin: 0 auto;
+}
+
+.statistical-item {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+
+    img {
+        width: 60px;
+        height: 60px;
+        margin-right: 20px;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+}
+
+.statistical-content {
+    width: 80%;
+    font-size: 15px;
+    color: white;
+
+    .title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+}
+
+.box-title {
+    width: 100%;
+    margin: 80px 0;
+    text-align: center;
+
+    .title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    a {
+        color: $primary-color;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+}
