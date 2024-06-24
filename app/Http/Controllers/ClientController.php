@@ -6,6 +6,7 @@ use App\Jobs\SendMailBookingJob;
 use App\Libraries\MomoPayment;
 use App\Libraries\Notification;
 use App\Libraries\Utilities;
+use App\Libraries\VNPayPayment;
 use App\Models\Booking;
 use App\Models\Contact;
 use App\Models\Destination;
@@ -223,6 +224,12 @@ class ClientController extends Controller
         DB::beginTransaction();
         try {
             $booking = $this->clientService->storeBooking($request, $tour);
+            if ($request->payment_method == PAYMENT_CASH) {
+                DB::commit();
+                dispatch(new SendMailBookingJob($booking));
+                return response()->json($this->notification->getMessage());
+            }
+
             if ($request->payment_method == PAYMENT_MOMO) {
                 $orderIDMomo = 'MM' . time();
                 $booking->invoice_no = $orderIDMomo;
@@ -233,7 +240,7 @@ class ClientController extends Controller
                     'redirectUrl' => route('booking.momo.redirect'),
                     'orderId' => $orderIDMomo,
                     'amount' => strval($booking->total),
-                    'orderInfo' => 'Thanh toán hóa đơn đặt tour du lịch công ty VN Travel',
+                    'orderInfo' => 'Thanh toán hóa đơn đặt tour du lịch GoodTrip Group',
                     'requestId' => $orderIDMomo,
                     'extraData' => '',
                 ]);
@@ -248,9 +255,26 @@ class ClientController extends Controller
                     DB::rollBack();
                     $this->notification->setMessage('Serve Momo không phản hồi, vui lòng thử lại sau hoặc chọn phương thức thanh toán khác');
                 }
-            } else {
+            }
+
+            if ($request->payment_method == PAYMENT_VNPAY) {
+                $orderIDVnPay = 'VNPay' . time();
+                $booking->invoice_no = $orderIDVnPay;
+                $booking->save();
+
+                $response = VNPayPayment::purchase([
+                    'ipnUrl' => route('booking.vnpay.confirm'),
+                    'redirectUrl' => route('booking.vnpay.redirect'),
+                    'orderId' => $orderIDVnPay,
+                    'amount' => strval($booking->total),
+                    'orderInfo' => 'Thanh toán hóa đơn đặt tour du lịch GoodTrip Group',
+                    'requestId' => $orderIDVnPay,
+                ]);
+
                 DB::commit();
-                dispatch(new SendMailBookingJob($booking));
+                return response()->json([
+                    'url' => $response,
+                ]);
             }
         } catch (Exception $e) {
             DB::rollBack();
@@ -260,19 +284,17 @@ class ClientController extends Controller
         return response()->json($this->notification->getMessage());
     }
 
-    /* MOMO */
-    public function redirectMomo(Request $request)
+    protected function notificationPayment($checkPayment, $orderId, $transId)
     {
-        $checkPayment = MomoPayment::completePurchase($request);
         $notification = array(
             'message' => $checkPayment['message'],
             'alert-type' => 'error',
         );
-        $booking = Booking::where('invoice_no', $request->orderId)->first();
+        $booking = Booking::where('invoice_no', $orderId)->first();
         if ($booking != null) {
             if ($checkPayment['success']) {
                 $booking->is_payment = PAYMENT_PAID;
-                $booking->transaction_id = $request->transId;
+                $booking->transaction_id = $transId;
                 $booking->deposit = $booking->total;
                 $booking->save();
                 $notification = array(
@@ -303,10 +325,35 @@ class ClientController extends Controller
             $notification['message'] = 'Mã hóa đơn không đúng';
         }
 
+        return $notification;
+    }
+
+    /* MOMO */
+    public function redirectMomo(Request $request)
+    {
+        $checkPayment = MomoPayment::completePurchase($request);
+        $notification = $this->notificationPayment($checkPayment, $request->orderId, $request->transId);
         return redirect()->route('booking.thank')->with($notification);
     }
 
     public function confirmMomo(Request $request)
+    {
+        $booking = Booking::where('invoice_no', $request->orderId)->first();
+        if ($booking != null) {
+            $booking->is_payment = PAYMENT_PAID;
+            $booking->transaction_id = $request->transId;
+            $booking->save();
+        }
+    }
+
+    public function redirectVnPay(Request $request)
+    {
+        $checkPayment = VNPayPayment::completePurchase($request);
+        $notification = $this->notificationPayment($checkPayment, $request->orderId, $request->transId);
+        return redirect()->route('booking.thank')->with($notification);
+    }
+
+    public function confirmVnPay(Request $request)
     {
         $booking = Booking::where('invoice_no', $request->orderId)->first();
         if ($booking != null) {

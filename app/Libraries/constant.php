@@ -10,6 +10,7 @@ define('BOOKING_CANCEL', 4);
 
 define('PAYMENT_CASH', 1);
 define('PAYMENT_MOMO', 2);
+define('PAYMENT_VNPAY', 3);
 
 define('PAYMENT_UN_PAID', 0);
 define('PAYMENT_PAID', 1);

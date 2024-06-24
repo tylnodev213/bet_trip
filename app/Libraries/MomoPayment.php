@@ -29,7 +29,7 @@ class MomoPayment
         return Http::post($endPoint, [
             'accessKey' => $accessKey,
             'partnerCode' => $partnerCode,
-            'partnerName' => 'Công ty du lịch VN Travel',
+            'partnerName' => 'Công ty du lịch GoodTrip Group',
             'requestType' => $requestType,
             'notifyUrl' => $ipnUrl,
             'returnUrl' => $redirectUrl,
