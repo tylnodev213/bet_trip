@@ -258,17 +258,15 @@ class ClientController extends Controller
             }
 
             if ($request->payment_method == PAYMENT_VNPAY) {
-                $orderIDVnPay = 'VNPay' . time();
+                $orderIDVnPay = 'VNPay' . date('YmdHis');
                 $booking->invoice_no = $orderIDVnPay;
                 $booking->save();
 
                 $response = VNPayPayment::purchase([
-                    'ipnUrl' => route('booking.vnpay.confirm'),
                     'redirectUrl' => route('booking.vnpay.redirect'),
                     'orderId' => $orderIDVnPay,
                     'amount' => strval($booking->total),
                     'orderInfo' => 'Thanh toán hóa đơn đặt tour du lịch GoodTrip Group',
-                    'requestId' => $orderIDVnPay,
                 ]);
 
                 DB::commit();
@@ -349,7 +347,9 @@ class ClientController extends Controller
     public function redirectVnPay(Request $request)
     {
         $checkPayment = VNPayPayment::completePurchase($request);
-        $notification = $this->notificationPayment($checkPayment, $request->orderId, $request->transId);
+        $orderId = 'VNPay' . $request->vnp_PayDate;
+        $transId = $request->vnp_TransactionNo;
+        $notification = $this->notificationPayment($checkPayment, $orderId, $transId);
         return redirect()->route('booking.thank')->with($notification);
     }
 
