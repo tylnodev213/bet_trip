@@ -21,21 +21,26 @@
             </div>
             <div class="body-slide">
                 <div class="row">
-                    @foreach($destinations as $destination)
-                        <div class="col-6 col-lg-4 col-xl-3">
-                            <div class="card card-destination">
-                                <img src="{{ asset('storage/images/destinations/'.$destination->image) }}"
-                                     class="card-img-top"
-                                     alt="{{ $destination->name }}">
-                                <div class="card-body">
-                                    <h5 class="card-title"><a
-                                            href="{{ route('client.tours.list', $destination->slug) }}"> {{ $destination->name }} </a>
-                                    </h5>
-                                    <p class="card-text">{{ $destination->tours()->count() }} điểm trải nghiệm</p>
+                    @if(!empty($destinations) && $destinations->isNotEmpty())
+                        @foreach($destinations as $destination)
+                            <div class="col-6 col-lg-4 col-xl-3">
+                                <div class="card card-destination">
+                                    <img src="{{ asset('storage/images/destinations/'.$destination->image) }}"
+                                         class="card-img-top"
+                                         alt="{{ $destination->name }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a
+                                                href="{{ route('client.tours.list', $destination->slug) }}"> {{ $destination->name }} </a>
+                                        </h5>
+                                        <p class="card-text">{{ $destination->tours()->count() }} điểm trải nghiệm</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @else
+                        <p class="text-center w-100">{{ config('config.no_data') }}</p>
+                    @endif
+
                 </div>
             </div>
 

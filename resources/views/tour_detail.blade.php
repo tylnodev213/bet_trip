@@ -115,29 +115,39 @@
                                 <!-- panel descriptions -->
                                 <div class="tab-pane panel-desc fade show active" id="pills-desc" role="tabpanel"
                                      aria-labelledby="pills-desc-tab">
-                                    <div class="box-text">
-                                        <p class="panel-title">
-                                            {{ __('client.detail.overview') }}
-                                        </p>
-                                        <p class="panel-text">
-                                            {!! $tour->overview !!}
-                                        </p>
-                                    </div>
-                                    <hr>
-                                    <div class="box-text">
-                                        <p class="panel-title">
-                                            {{ __('client.detail.included') }}
-                                        </p>
-                                        {!! $tour->included !!}
-                                    </div>
-                                    <hr>
-                                    <div class="box-text">
-                                        <p class="panel-title">
-                                            {{ __('client.detail.departure_return') }}
-                                        </p>
-                                        {!! $tour->departure !!}
-                                    </div>
-                                    <hr>
+                                    @if(!empty($tour->overview))
+                                        <div class="box-text">
+                                            <p class="panel-title">
+                                                {{ __('client.detail.overview') }}
+                                            </p>
+                                            <p class="panel-text">
+                                                {!! $tour->overview !!}
+                                            </p>
+                                        </div>
+                                        <hr>
+                                    @endif
+
+                                    @if(!empty($tour->included))
+                                        <div class="box-text">
+                                            <p class="panel-title">
+                                                {{ __('client.detail.included') }}
+                                            </p>
+                                            {!! $tour->included !!}
+                                        </div>
+                                        <hr>
+                                    @endif
+
+                                    @if(!empty($tour->departure))
+                                        <div class="box-text">
+                                            <p class="panel-title">
+                                                {{ __('client.detail.departure_return') }}
+                                            </p>
+                                            {!! $tour->departure !!}
+                                        </div>
+                                        <hr>
+                                    @endif
+
+                                    @if (!empty($tour->itineraries) && $tour->itineraries->isNotEmpty())
                                     <div class="box-text">
                                         <p class="panel-title">
                                             {{ __('client.itinerary') }}
@@ -179,34 +189,39 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    <div class="box-text">
-                                        <p class="panel-title">
-                                            Maps
-                                        </p>
-                                        <div class="box-maps">
-                                            {!! $tour->map !!}
+                                    @endif
+                                    @if (!empty($tour->map))
+                                        <div class="box-text">
+                                            <p class="panel-title">
+                                                Maps
+                                            </p>
+                                            <div class="box-maps">
+                                                {!! $tour->map !!}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="box-text">
-                                        <p class="panel-title">
-                                            360° Panoramic Images and Videos
-                                        </p>
-                                        @isset($tour->panoramic_image)
-                                            <iframe class="w-100 m-t-10" height="400" src="{{$tour->panoramic_image}}"
-                                                    frameborder="0">
-                                            </iframe>
-                                        @endisset
-                                        <div class="box-video">
-                                            @isset($tour->video)
+                                    @endif
+                                    @if (!empty($tour->panoramic_image) || !empty($tour->video))
+                                        <div class="box-text">
+                                            <p class="panel-title">
+                                                Giới thiệu chi tiết
+                                            </p>
+                                            @isset($tour->panoramic_image)
                                                 <iframe class="w-100 m-t-10" height="400"
-                                                        src="https://www.youtube.com/embed/{{ $tour->video }}"
-                                                        title="YouTube video player" frameborder="0"
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowfullscreen></iframe>
+                                                        src="{{$tour->panoramic_image}}"
+                                                        frameborder="0">
+                                                </iframe>
                                             @endisset
+                                            <div class="box-video">
+                                                @isset($tour->video)
+                                                    <iframe class="w-100 m-t-10" height="400"
+                                                            src="https://www.youtube.com/embed/{{ $tour->video }}"
+                                                            title="YouTube video player" frameborder="0"
+                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                            allowfullscreen></iframe>
+                                                @endisset
+                                            </div>
                                         </div>
-
-                                    </div>
+                                    @endif
                                 </div>
 
                                 <!-- panel additional info -->
@@ -217,49 +232,51 @@
                                     </div>
 
                                     <div class="box-text">
-                                        <p class="panel-title">FAQs</p>
-                                        <!-- Accordion FAQs -->
-                                        <div class="accordion" id="accordionFAQs">
-                                            @foreach($tour->faqs as $faq)
-                                                <div class="accordion-item">
-                                                    <h2 class="accordion-header"
-                                                        id="panelsFAQsHeading{{ $loop->index }}">
-                                                        <button
-                                                            class="accordion-button d-flex align-items-start {{ $loop->first ?: 'collapsed'  }}"
-                                                            type="button" data-bs-toggle="collapse"
-                                                            data-bs-target="#panelsFAQsCollapse{{ $loop->index }}"
-                                                            aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
-                                                            aria-controls="panelsFAQsCollapse{{ $loop->index }}">
-                                                            <img src="{{ asset('images/icon/help-circle.svg') }}"
-                                                                 alt="help">
-                                                            <p class="m-0">{{ $faq->question }}</p>
-                                                        </button>
-                                                    </h2>
-                                                    <div id="panelsFAQsCollapse{{ $loop->index }}"
-                                                         class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
-                                                         aria-labelledby="panelsFAQsHeading{{ $loop->index }}">
-                                                        <div class="accordion-body">
-                                                            <p class="text-item">
-                                                                {{ $faq->answer }}
-                                                            </p>
+                                        @if(!empty($tour->faqs) && $tour->faqs->isNotEmpty())
+                                            <p class="panel-title">FAQs</p>
+                                            <!-- Accordion FAQs -->
+                                            <div class="accordion" id="accordionFAQs">
+                                                @foreach($tour->faqs as $faq)
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header"
+                                                            id="panelsFAQsHeading{{ $loop->index }}">
+                                                            <button
+                                                                class="accordion-button d-flex align-items-start {{ $loop->first ?: 'collapsed'  }}"
+                                                                type="button" data-bs-toggle="collapse"
+                                                                data-bs-target="#panelsFAQsCollapse{{ $loop->index }}"
+                                                                aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                                                                aria-controls="panelsFAQsCollapse{{ $loop->index }}">
+                                                                <img src="{{ asset('images/icon/help-circle.svg') }}"
+                                                                     alt="help">
+                                                                <p class="m-0">{{ $faq->question }}</p>
+                                                            </button>
+                                                        </h2>
+                                                        <div id="panelsFAQsCollapse{{ $loop->index }}"
+                                                             class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
+                                                             aria-labelledby="panelsFAQsHeading{{ $loop->index }}">
+                                                            <div class="accordion-body">
+                                                                <p class="text-item">
+                                                                    {{ $faq->answer }}
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
 
                                 <!-- panel reviews -->
-                                <div class="tab-pane panel-review fade" id="pills-review" role="tabpanel"
-                                     aria-labelledby="pills-review-tab">
+                                <div class="tab-pane panel-review fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
                                     <div class="box-rate-review">
                                         <div class="row">
                                             <div class="col-12 col-md-5">
                                                 <div class="box-rate d-flex flex-column align-items-center">
                                                     <p class="rate-title">{{ $rateReview['total'] }}/5</p>
                                                     <div class="list-rate-star">
-                                                        @include('components.rate_review', ['rate'=>$rateReview['total']])
+                                                        @include('components.rate_review', ['rate' => $rateReview['total']])
                                                     </div>
                                                     <p class="rate-text"> {{__('client.detail.based_on')}}
                                                         <span>{{ $rateReview['countReviews'][0] }} {{ __('client.detail.reviews') }}</span>
@@ -354,54 +371,65 @@
                                     </div>
                                     <hr>
 
-                                    <div class="box-review d-flex align-items-start">
-                                        <img src="{{ asset('images/icon/user.svg') }}" alt="user" width="56">
-                                        <form action="{{ route('client.review.store', $tour->slug) }}"
-                                              class="form-review w-100" method="post">
-                                            @csrf
-                                            <input type="hidden" id="discountCoupon" value="0">
+                                    <input type="hidden" id="discountCoupon" value="0">
+                                    @php
+                                        $enableComment = $enableComment ?? false;
+                                    @endphp
+                                    @if ($enableComment)
+                                        <div class="box-review d-flex align-items-start">
+                                            @php $linkImage = 'images/users/user' . rand(1, 9) .  '.jpg'; @endphp
+                                            <img src="{{ asset($linkImage) }}" alt="user" width="56">
+                                            <form action="{{ route('client.review.store', $tour->slug) }}"
+                                                  class="form-review w-100" method="post">
+                                                @csrf
 
-                                            <textarea class="form-control" rows="5"
-                                                      placeholder="{{ __('client.detail.type_anything') }}"
-                                                      name="comment">{{ old('comment') }}</textarea>
-                                            @error('comment')
-                                            <p class="text-danger">{{ $message }}</p>
-                                            @enderror
-                                            <input type="hidden" id="inputRateReview" name="rate" value="4">
-                                            <div class="d-flex flex-column flex-sm-row justify-content-between mt-4">
-                                                <div class="rate-review" id="rateReview">
-                                                    <i class="rate-star bi bi-star-fill fill-yellow" data-rate="1"></i>
-                                                    <i class="rate-star bi bi-star-fill fill-yellow" data-rate="2"></i>
-                                                    <i class="rate-star bi bi-star-fill fill-yellow" data-rate="3"></i>
-                                                    <i class="rate-star bi bi-star-fill fill-yellow" data-rate="4"></i>
-                                                    <i class="rate-star bi bi-star fill-yellow" data-rate="5"></i>
+                                                <textarea class="form-control" rows="5"
+                                                          placeholder="{{ __('client.detail.type_anything') }}"
+                                                          name="comment">{{ old('comment') }}</textarea>
+                                                <input type="hidden" name="image" value="{{ $linkImage }}">
+                                                <input type="hidden" name="name" value="{{ $nameCustomer ?? '' }}">
+                                                <input type="hidden" name="email" value="{{ $emailCustomer ?? '' }}">
+                                                @error('comment')
+                                                <p class="text-danger">{{ $message }}</p>
+                                                @enderror
+                                                <input type="hidden" id="inputRateReview" name="rate" value="4">
+                                                <div class="d-flex flex-column flex-sm-row justify-content-between mt-4">
+                                                    <div class="rate-review" id="rateReview">
+                                                        <i class="rate-star bi bi-star-fill fill-yellow" data-rate="1"></i>
+                                                        <i class="rate-star bi bi-star-fill fill-yellow" data-rate="2"></i>
+                                                        <i class="rate-star bi bi-star-fill fill-yellow" data-rate="3"></i>
+                                                        <i class="rate-star bi bi-star-fill fill-yellow" data-rate="4"></i>
+                                                        <i class="rate-star bi bi-star fill-yellow" data-rate="5"></i>
+                                                    </div>
+                                                    <button class="btn" type="submit">{{ __('client.detail.upload_review') }}</button>
                                                 </div>
-                                                <button class="btn"
-                                                        type="submit">{{ __('client.detail.upload_review') }}</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <hr>
+                                            </form>
+                                        </div>
+                                        <hr>
+                                    @endif
+
 
                                     <div class="box-list-review" id="boxListReview">
 
                                         @foreach($reviews as $review)
                                             <div class="review-item">
                                                 <div class="title-review d-flex justify-content-start w-100">
-                                                    <img src="{{ asset('images/user-avatar.png') }}" alt="review">
+                                                    <img src="{{ $review->image ? asset($review->image) : asset('images/users/user' . rand(1, 9) .  '.jpg') }}" alt="review">
                                                     <div class="info-review">
                                                         <div class="rate-review" id="rateReview{{ $loop->index }}">
-                                                            @include('components.rate_review', ['rate'=>$review->rate])
+                                                            @include('components.rate_review', ['rate' => $review->rate])
                                                         </div>
-                                                        <p class="text-title">The best experience ever! </p>
-                                                        <span>Nevermind</span>
-                                                        <i class="bi bi-dot"></i>
-                                                        <span>{{ (new DateTime($review->created_at))->format("M Y") }}</span>
+                                                        <p class="text-title">{{ $review->name ?: 'Ẩn danh' }}</p>
+                                                        @if(!empty($review->email))
+                                                            <span>{{ $review->email }}</span>
+                                                            <i class="bi bi-dot"></i>
+                                                        @endif
+                                                        <span>{{ (new DateTime($review->created_at))->format("H:i:s d/m/Y") }}</span>
                                                     </div>
 
                                                 </div>
                                                 <p class="review-text">
-                                                    {{ $review->comment }}
+                                                    {!! nl2br($review->comment) !!}
                                                 </p>
                                             </div>
                                             <hr>
@@ -464,25 +492,29 @@
 
 
                             <!--- PHÒNG -->
-                            <h5>Loại phòng</h5>
-                            <div class="input-inner-icon">
-                                @foreach($tour->rooms as $room)
-                                    <h6>{{ $room->name . ' - ' . number_format($room->price) . 'đ' }}</h6>
-                                    <h7 style="color: grey">Còn
-                                        <span id="roomAvailable{{ $room->id }}"></span> phòng
-                                    </h7>
-                                    <input type="hidden" min="0" class="selectRoom"
-                                           name="room[{{ $loop->index }}][id]" value="{{ $room->id }}">
-                                    <div class="input-inner-icon">
-                                        <img src="{{ asset('images/icon/number.svg') }}" alt="people">
-                                        <input type="number" class="form-control numberRoom"
-                                               name="room[{{ $loop->index }}][number]" data-price="{{ $room->price }}"
-                                               id="numberRoom{{ $room->id }}" placeholder="Số lượng phòng" min="0"
-                                               value="0">
-                                    </div>
+                            @if (!empty($tour->rooms) && $tour->rooms->isNotEmpty())
+                                <h5>Loại phòng</h5>
+                                <div class="input-inner-icon">
+                                    @foreach($tour->rooms as $room)
+                                        <h6>{{ $room->name . ' - ' . number_format($room->price) . 'đ' }}</h6>
+                                        <h7 style="color: grey">Còn
+                                            <span id="roomAvailable{{ $room->id }}"></span> phòng
+                                        </h7>
+                                        <input type="hidden" min="0" class="selectRoom"
+                                               name="room[{{ $loop->index }}][id]" value="{{ $room->id }}">
+                                        <div class="input-inner-icon">
+                                            <img src="{{ asset('images/icon/number.svg') }}" alt="people">
+                                            <input type="number" class="form-control numberRoom"
+                                                   name="room[{{ $loop->index }}][number]"
+                                                   data-price="{{ $room->price }}"
+                                                   id="numberRoom{{ $room->id }}" placeholder="Số lượng phòng" min="0"
+                                                   value="0">
+                                        </div>
 
-                                @endforeach
-                            </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
 
 
                             <!--- KẾT THÚC THÊM MỚI -->
@@ -505,57 +537,57 @@
         </div>
     </div>
     <!-------------------- End Body Tour Deatil -------------------->
-
-    <!-------------------- Related Tours -------------------->
-    <div class="box-slide slide-tour list-tours mt-5">
-        <div class="container">
-            <div class="header-slide d-flex align-items-end">
-                <p class="title-related">{{ __('client.related_tour') }}</p>
-            </div>
-            <div class="body-slide">
-                <div class="row">
-                    @foreach($relateTours as $tourItem)
-                        <div class="col-6 col-lg-4">
-                            <div class="card card-tour">
-                                <div class="card-image">
-                                    <img class="ribbon" src="{{ asset('/images/icon/ribbon.svg') }}"
-                                         alt="bookmark">
-                                    <div class="rate">
-                                        <img src="{{ asset('images/icon/star.svg') }}" alt="star">
-                                        <span
-                                            class="text-rate">{{ \App\Libraries\Utilities::calculatorRateReView($tourItem->reviews)['total'] }}
+    @if(!empty($relateTours) && $relateTours->isNotEmpty())
+        <!-------------------- Related Tours -------------------->
+        <div class="box-slide slide-tour list-tours mt-5">
+            <div class="container">
+                <div class="header-slide d-flex align-items-end">
+                    <p class="title-related">{{ __('client.related_tour') }}</p>
+                </div>
+                <div class="body-slide">
+                    <div class="row">
+                        @foreach($relateTours as $tourItem)
+                            <div class="col-6 col-lg-4">
+                                <div class="card card-tour">
+                                    <div class="card-image">
+                                        <img class="ribbon" src="{{ asset('/images/icon/ribbon.svg') }}"
+                                             alt="bookmark">
+                                        <div class="rate">
+                                            <img src="{{ asset('images/icon/star.svg') }}" alt="star">
+                                            <span
+                                                class="text-rate">{{ \App\Libraries\Utilities::calculatorRateReView($tourItem->reviews)['total'] }}
                                         </span>
+                                        </div>
+                                        <img src="{{ asset('storage/images/tours/'.$tourItem->image) }}"
+                                             class="card-img-top"
+                                             alt="{{ $tourItem->name }}">
                                     </div>
-                                    <img src="{{ asset('storage/images/tours/'.$tourItem->image) }}"
-                                         class="card-img-top"
-                                         alt="{{ $tourItem->name }}">
-                                </div>
 
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        <img src="{{ asset('images/icon/location.svg') }}" alt="location">
-                                        <span>{{ $tourItem->destination->name }}</span>
-                                    </p>
-                                    <h5 class="card-title"><a
-                                            href="{{ route('client.tours.detail', $tourItem->slug) }}">{{ $tourItem->name }}</a>
-                                    </h5>
-                                    <div class="d-inline-flex justify-content-between align-items-center w-100">
+                                    <div class="card-body">
                                         <p class="card-text">
-                                            <img src="{{ asset('images/icon/schedule.svg') }}" alt="location">
-                                            <span>{{ \App\Libraries\Utilities::durationToString($tourItem->duration) }}</span>
+                                            <img src="{{ asset('images/icon/location.svg') }}" alt="location">
+                                            <span>{{ $tourItem->destination->name }}</span>
                                         </p>
-                                        <p class="card-text">{{ __('client.from') }} <span
-                                                class="card-title">{{ number_format($tourItem->price) }}đ</span>
-                                        </p>
+                                        <h5 class="card-title"><a
+                                                href="{{ route('client.tours.detail', $tourItem->slug) }}">{{ $tourItem->name }}</a>
+                                        </h5>
+                                        <div class="d-inline-flex justify-content-between align-items-center w-100">
+                                            <p class="card-text">
+                                                <img src="{{ asset('images/icon/schedule.svg') }}" alt="location">
+                                                <span>{{ \App\Libraries\Utilities::durationToString($tourItem->duration) }}</span>
+                                            </p>
+                                            <p class="card-text">{{ __('client.from') }} <span class="card-title">{{ number_format($tourItem->price) }}đ</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
     <!-------------------- End Related Tours -------------------->
 
     <!-------------------- Other Data -------------------->

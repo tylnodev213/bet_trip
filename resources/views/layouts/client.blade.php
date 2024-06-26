@@ -8,7 +8,7 @@
     <title>@yield('title', 'GoodTrip')</title>
     <meta name="description" content="@yield('description', 'Tour and Travel')">
     <meta name="author" content="tuyenpham">
-    <meta property="og:title" content="@yield('title', 'VN Travel')">
+    <meta property="og:title" content="@yield('title', 'GoodTrip')">
     <meta property="og:description" content="@yield('description', 'Tour and Travel')">
     <meta property="og:url" content="@yield('url', route('index'))">
     <meta property="og:type" content="website">
@@ -49,11 +49,20 @@
 
 <body>
 
-    <!-------------------- Header -------------------->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+
+<!-------------------- Header -------------------->
     @include('components.header')
 
     <!-------------------- Content -------------------->
-    @yield('content')
+    <div id="contentComponent">
+        @yield('content')
+    </div>
 
     <!-------------------- Footer -------------------->
     @include('components.footer')
@@ -75,9 +84,6 @@
 <!-- custom js -->
 <script src="{{ asset('js/script.js') . '?' . time() }}" type="text/javascript"></script>
 <script src="{{ asset('js/slider.js') }}" type="text/javascript"></script>
-
-<script src="{{ asset('js/loadingoverlay.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/loadingoverlay_progress.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/common.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">

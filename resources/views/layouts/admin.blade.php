@@ -137,10 +137,7 @@
 <script src="{{ asset('admins/assets/libs/select2/dist/js/select2.min.js') }}"></script>
 <!--CK editor-->
 <script src="{{ asset('/admins/assets/libs/ckeditor/ckeditor.js') }}"></script>
-<script src="{{ asset('/admins/assets/libs/ckeditor/ckeditor.js') }}"></script>
 
-<script src="{{ asset('js/loadingoverlay.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/loadingoverlay_progress.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/common.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">

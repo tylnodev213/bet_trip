@@ -109,8 +109,6 @@
 <script src="{{ asset('admins/assets/libs/popper.js/dist/umd/popper.min.js') }}"></script>
 <script src="{{ asset('admins/assets/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
-<script src="{{ asset('js/loadingoverlay.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/loadingoverlay_progress.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/common.js') }}" type="text/javascript"></script>
 <!-- ============================================================== -->
 <!-- This page plugin js -->

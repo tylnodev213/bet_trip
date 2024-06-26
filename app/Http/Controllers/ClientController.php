@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -276,6 +277,7 @@ class ClientController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
+            Log::error($e->getMessage());
             $this->notification->setMessage('Đặt tour không thành công', Notification::ERROR);
         }
 

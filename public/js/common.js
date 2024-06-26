@@ -1,10 +1,12 @@
 function showLoading() {
-    $.LoadingOverlay("show", {zIndex: 999999999});
+    $('.preloader').show();
 }
 
 function hideLoading() {
-    $.LoadingOverlay("hide");
+    $('.preloader').hide();
 }
+
+hideLoading();
 
 $('button[type=submit]').on('click' ,function () {
     showLoading();

@@ -146,39 +146,44 @@
     <!-------------------- List Tours -------------------->
     <div class="tours container mt-5">
         <div class="row">
-            @foreach ($tours as $tour)
-                <div class="col-12 col-lg-4 mb-5">
-                    <div class="card">
-                        <a href="{{ route('client.tours.detail', $tour->slug) }}" class="tour-image">
-                            <img class="card-img-top" src="{{ asset('storage/images/tours/' . $tour->image) }}"
-                                 alt="{{ $tour->name }}">
-                            <div class="best-seller {{ $tour->trending === 1 ? '' : 'd-none'  }}">
-                                <span>Nổi bật</span>
-                            </div>
-                        </a>
-                        <div class="card-body">
-                            <a href="{{ route('client.tours.detail', $tour->slug) }}" class="tour-title">
-                                <h5 class="card-title">{{ $tour->name }}</h5>
+            @if(!empty($tours) && $tours->isNotEmpty())
+                @foreach ($tours as $tour)
+                    <div class="col-12 col-lg-4 mb-5">
+                        <div class="card">
+                            <a href="{{ route('client.tours.detail', $tour->slug) }}" class="tour-image">
+                                <img class="card-img-top" src="{{ asset('storage/images/tours/' . $tour->image) }}"
+                                     alt="{{ $tour->name }}">
+                                <div class="best-seller {{ $tour->trending === 1 ? '' : 'd-none'  }}">
+                                    <span>Nổi bật</span>
+                                </div>
                             </a>
-                            <div class="d-flex justify-content-between pt-3">
+                            <div class="card-body">
+                                <a href="{{ route('client.tours.detail', $tour->slug) }}" class="tour-title">
+                                    <h5 class="card-title">{{ $tour->name }}</h5>
+                                </a>
+                                <div class="d-flex justify-content-between pt-3">
                                     <span><i
                                             class="fa-regular fa-clock tour-duration"></i> <span>{{ \App\Libraries\Utilities::durationToString($tour->duration) }}</span></span>
-                                <span class="price-discount">{{ number_format($tour->price * 1.2) }}đ</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p>
-                                    <i class="fa-solid fa-star star"></i>
-                                    <i class="fa-solid fa-star star"></i>
-                                    <i class="fa-solid fa-star star"></i>
-                                    <i class="fa-solid fa-star star"></i>
-                                    <i class="fa-solid fa-star star"></i>
-                                </p>
-                                <p class="price">{{ number_format($tour->price) }}đ</p>
+                                    <span class="price-discount">{{ number_format($tour->price * 1.2) }}đ</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>
+                                        <i class="fa-solid fa-star star"></i>
+                                        <i class="fa-solid fa-star star"></i>
+                                        <i class="fa-solid fa-star star"></i>
+                                        <i class="fa-solid fa-star star"></i>
+                                        <i class="fa-solid fa-star star"></i>
+                                    </p>
+                                    <p class="price">{{ number_format($tour->price) }}đ</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            @else
+                <p class="text-center w-100">{{ config('config.no_data_search') }}</p>
+            @endif
+
         </div>
     </div>
     <!-------------------- End List Tours-------------------->

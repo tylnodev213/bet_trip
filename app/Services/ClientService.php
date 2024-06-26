@@ -27,7 +27,7 @@ class ClientService
         return [
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
-            'email' => 'nullable|regex:/^[a-z][a-z0-9_\.]{3,}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/',
+            'email' => 'required|email|max:50',
             'phone' => 'required|regex:/^(0)[0-9]{9,10}$/',
             'people' => 'required|integer|min:0|max:20',
             'departure_time' => 'required|date',

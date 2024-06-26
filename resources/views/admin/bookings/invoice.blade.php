@@ -54,13 +54,14 @@
 <table width="100%" style="background: #F7F7F7; padding:0 20px 0 20px;">
     <tr>
         <td valign="top">
-            <h2 style="color: green; font-size: 26px;"><strong>Công ty VN travel</strong></h2>
+            <h2 style="color: green; font-size: 26px;"><strong>GoodTrip YourFriend</strong></h2>
+            <img src="{{ public_path('images/logo.png') }}" width="120px">
         </td>
         <td align="right">
             <pre class="font">
-               Phone: 0388888091 <br>
-               Địa chỉ: Thành phố Hà Nội <br>
-               Email:support@vntravel.com <br>
+               Phone: {{ config('config.tel') }} <br>
+               Địa chỉ: {{ config('config.address') }} <br>
+               Email:{{ config('config.email') }} <br>
             </pre>
         </td>
     </tr>
@@ -78,9 +79,11 @@
                 <strong>Email:</strong> {{ $booking->customer->email }} <br>
                 <strong>Số điện thoại:</strong> {{ $booking->customer->phone }} <br>
                 @php
-                    $address = sprintf("%s, %s, %s, %s", $booking->customer->address, $booking->customer->province, $booking->customer->city, $booking->customer->country)
+                    $address = !empty($booking->customer->address) && !empty($booking->customer->province) && !empty($booking->customer->city) && !empty($booking->customer->country)
+                        ? sprintf("%s, %s, %s, %s", $booking->customer->address, $booking->customer->province, $booking->customer->city, $booking->customer->country)
+                        : '';
                 @endphp
-                <strong>Địa chỉ:</strong> {{ $address }} <br>
+                @if(!empty($address))<strong>Địa chỉ:</strong> {{ $address }} <br>@endif
             </p>
         </td>
         <td>
@@ -91,6 +94,8 @@
                     Tiền mặt
                 @elseif($booking->payment_method == PAYMENT_MOMO)
                     Momo
+                @elseif($booking->payment_method == PAYMENT_VNPAY)
+                    VnPay
                 @endif
             </p>
         </td>
@@ -161,7 +166,7 @@
 </div>
 <div class="authority">
     <p>-----------------------------------</p>
-    <h5>Hóa đơn được tạo bởi: công ty du lịch VN</h5>
+    <h5>Hóa đơn được tạo bởi: GoodTrip Group</h5>
 </div>
 </body>
 </html>
