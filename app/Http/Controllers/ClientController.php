@@ -9,6 +9,7 @@ use App\Libraries\Utilities;
 use App\Libraries\VNPayPayment;
 use App\Models\Booking;
 use App\Models\Contact;
+use App\Models\Customer;
 use App\Models\Destination;
 use App\Models\Review;
 use App\Models\Tour;
@@ -76,7 +77,24 @@ class ClientController extends Controller
         $reviews = $tour->reviews(true)->paginate(8);
         $rateReview = Utilities::calculatorRateReView($tour->reviews);
 
-        return view('tour_detail', compact(['tour', 'relateTours', 'reviews', 'rateReview']));
+        $token = $request->token;
+        $enableComment = false;
+        $customer = collect();
+        try {
+            $tokenDecrypt = decrypt($token);
+            $paramsToken = explode('&', $tokenDecrypt);
+            $bookingId = str_replace('booking_id=', '', $paramsToken[0]);
+            $customerId = str_replace('customer_id=', '', $paramsToken[1]);
+            $bookingExist = Booking::where('id', $bookingId)->where('customer_id', $customerId)->where('tour_id', $tour->id)->first();
+            if (!empty($bookingExist)) {
+                $enableComment = true;
+            }
+            $customer = $bookingExist->customer;
+        } catch (\Exception $exception) {
+            $enableComment = false;
+        }
+
+        return view('tour_detail', compact(['tour', 'relateTours', 'reviews', 'rateReview', 'enableComment', 'customer']));
     }
 
     /**

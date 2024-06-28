@@ -88,7 +88,7 @@
                             <!-- tab -->
                             <ul class="nav nav-pills d-flex justify-content-between mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="pills-desc-tab" data-bs-toggle="pill"
+                                    <button class="nav-link {{ !$enableComment ? 'active' : '' }}" id="pills-desc-tab" data-bs-toggle="pill"
                                             data-bs-target="#pills-desc" type="button" role="tab"
                                             aria-controls="pills-desc"
                                             aria-selected="true">{{ __('client.detail.description') }}
@@ -102,7 +102,7 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" href="#" id="pills-review-tab" data-bs-toggle="pill"
+                                    <button class="nav-link {{ $enableComment ? 'active' : '' }}" href="#" id="pills-review-tab" data-bs-toggle="pill"
                                             data-bs-target="#pills-review" type="button" role="tab"
                                             aria-controls="pills-review" aria-selected="false">
                                         {{ __('client.detail.reviews') }}({{ $rateReview['countReviews'][0]  }})
@@ -113,7 +113,7 @@
                             <!-- panel -->
                             <div class="tab-content" id="pills-tabContent">
                                 <!-- panel descriptions -->
-                                <div class="tab-pane panel-desc fade show active" id="pills-desc" role="tabpanel"
+                                <div class="tab-pane panel-desc fade {{ !$enableComment ? 'active show' : '' }}" id="pills-desc" role="tabpanel"
                                      aria-labelledby="pills-desc-tab">
                                     @if(!empty($tour->overview))
                                         <div class="box-text">
@@ -269,7 +269,7 @@
                                 </div>
 
                                 <!-- panel reviews -->
-                                <div class="tab-pane panel-review fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
+                                <div class="tab-pane panel-review fade {{ $enableComment ? 'active show' : '' }}" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
                                     <div class="box-rate-review">
                                         <div class="row">
                                             <div class="col-12 col-md-5">
@@ -387,8 +387,8 @@
                                                           placeholder="{{ __('client.detail.type_anything') }}"
                                                           name="comment">{{ old('comment') }}</textarea>
                                                 <input type="hidden" name="image" value="{{ $linkImage }}">
-                                                <input type="hidden" name="name" value="{{ $nameCustomer ?? '' }}">
-                                                <input type="hidden" name="email" value="{{ $emailCustomer ?? '' }}">
+                                                <input type="hidden" name="name" value="{{ $customer->name ?? '' }}">
+                                                <input type="hidden" name="email" value="{{ $customer->email ?? '' }}">
                                                 @error('comment')
                                                 <p class="text-danger">{{ $message }}</p>
                                                 @enderror

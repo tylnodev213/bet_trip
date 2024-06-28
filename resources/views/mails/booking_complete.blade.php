@@ -146,8 +146,8 @@
                                                             Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. <br>
                                                             Kính chúc Quý khách hàng sức khỏe, hạnh phúc và thành đạt.
                                                         </p>
-                                                        <p>Cho chúng tôi biết suy nghĩ của bạn nhé !</p>
-                                                        <img src="data:image/png;base64,{{ $qrCodePath }}">
+                                                        <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">Cho chúng tôi biết suy nghĩ của bạn nhé !</p>
+                                                        <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;" ><a href="{{ $link ?? '' }}">Đánh giá tại đây</a> Hoặc quét qr đính kèm !</p>
                                                     </div>
                                                 </div>
                                             </td>

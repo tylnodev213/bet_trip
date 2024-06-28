@@ -15,7 +15,7 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status', 'rate', 'comment', 'tour_id'];
+    protected $fillable = ['status', 'rate', 'comment', 'tour_id', 'name', 'email', 'image'];
 
     /**
      * Validate rules for review
@@ -42,7 +42,7 @@ class Review extends Model
      */
     public function saveData(Request $request, Tour $tour)
     {
-        $input = Utilities::clearAllXSS($request->only('rate', 'comment'));
+        $input = Utilities::clearAllXSS($request->only('name', 'email', 'image', 'rate', 'comment'));
         $input['tour_id'] = $tour->id;
         $input['status'] = 1;
 

@@ -20,7 +20,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
-        "simplesoftwareio/simple-qrcode": "^4.2",
+        "simplesoftwareio/simple-qrcode": "^1.0.3",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
