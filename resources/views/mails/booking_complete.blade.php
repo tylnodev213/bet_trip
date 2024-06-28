@@ -146,6 +146,8 @@
                                                             Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. <br>
                                                             Kính chúc Quý khách hàng sức khỏe, hạnh phúc và thành đạt.
                                                         </p>
+                                                        <p>Cho chúng tôi biết suy nghĩ của bạn nhé !</p>
+                                                        <img src="data:image/png;base64,{{ $qrCodePath }}">
                                                     </div>
                                                 </div>
                                             </td>
@@ -177,8 +179,7 @@
                                            role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;"
                                            width="100%">
                                         <tr>
-                                            <p style="text-align: center; color: white; font-size: 22px">Công ty Thắng
-                                                Lợi</p>
+                                            <p style="text-align: center; color: white; font-size: 22px">GoodTrip Group</p>
                                         </tr>
                                     </table>
                                     <table border="0" cellpadding="10" cellspacing="0" class="social_block"

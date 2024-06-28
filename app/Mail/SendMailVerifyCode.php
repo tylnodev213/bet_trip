@@ -32,9 +32,9 @@ class SendMailVerifyCode extends Mailable
      */
     public function build()
     {
-        $title = "Verify Email - NgaoDu";
+        $title = "Verify Email - GoodTrip";
         if ($this->user->type_otp == 2) {
-            $title = "Reset Password Notification - NgaoDu";
+            $title = "Reset Password Notification - GoodTrip";
         }
 
         return $this->subject($title)

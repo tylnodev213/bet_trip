@@ -61,9 +61,6 @@ class ClientService
             'zipcode',
         ]));
         $input['status'] = 1;
-        if (empty($input['email'])) {
-            $input['email'] = 'Không có email';
-        }
         $customer = Customer::create($input);
         $rooms = Room::where('tour_id', $tour->id)->get();
         $coupon = Coupon::where('code', $request->codeCoupon)->first();

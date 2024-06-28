@@ -31,7 +31,7 @@ class SendMailContact extends Mailable
      */
     public function build()
     {
-        return $this->subject("Thông tin liên hệ mới " . $this->contact->id . " - Ngao Du")
+        return $this->subject("Thông tin liên hệ mới - GoodTrip")
             ->view('mails.contact')->with('contact', $this->contact);
     }
 }

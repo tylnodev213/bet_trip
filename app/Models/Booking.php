@@ -61,7 +61,7 @@ class Booking extends Model
      *
      * @param Request $request
      * @param $id
-     * @return false
+     * @return bool
      */
     public function updateStatus(Request $request, $id)
     {
@@ -73,10 +73,10 @@ class Booking extends Model
             return false;
         }
 
+        $booking->save();
         dispatch(new SendMailBookingJob($booking));
 
-
-        return $booking->save();
+        return true;
     }
 
     /**

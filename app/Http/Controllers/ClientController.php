@@ -207,7 +207,23 @@ class ClientController extends Controller
     public function storeBooking(Request $request, $slug, Tour $tourModel)
     {
         $tour = $tourModel->getTourBySlug($slug);
-        $request->validate($this->clientService->ruleBooking(), [], [
+        data_set($request, 'date', $request->departure_time);
+        $checkRoom = json_decode($this->checkRoom($request, $slug)->content(), true);
+        $roomRule = [];
+
+        if (!empty($request->room)) {
+            foreach ($request->room as $index => $room) {
+                $targetMax = $checkRoom['room_available'][$room['id']];
+                $roomRule["room.{$index}.number"] = 'nullable|integer|min:0|max:' . $targetMax;
+            }
+        }
+
+        $validateRule = array_merge($this->clientService->ruleBooking(), $roomRule);
+
+        $request->validate($validateRule, [
+            'room.*.number.max' => 'Số phòng đã vượt quá giới hạn cho phép',
+            'room.*.number.min' => 'Vui lòng chọn số phòng phù hợp',
+        ], [
             'first_name' => 'tên',
             'last_name' => 'họ',
             'phone' => 'điện thoại',
@@ -220,6 +236,7 @@ class ClientController extends Controller
             'country' => 'quốc gia',
             'zipcode' => 'mã zipcode',
         ]);
+
         $this->notification->setMessage('Đặt tour thành công', Notification::SUCCESS);
 
         DB::beginTransaction();

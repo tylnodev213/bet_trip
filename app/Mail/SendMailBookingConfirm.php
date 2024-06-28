@@ -31,7 +31,7 @@ class SendMailBookingConfirm extends Mailable
      */
     public function build()
     {
-        return $this->subject("Tour được xác nhận " . $this->booking->id . " - Ngao Du")
+        return $this->subject("Tour " . $this->booking->tour->name . " được xác nhận - GoodTrip")
             ->view('mails.booking_confirm')->with('booking', $this->booking);
     }
 }

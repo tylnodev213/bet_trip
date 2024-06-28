@@ -31,7 +31,7 @@ class SendMailBooking extends Mailable
      */
     public function build()
     {
-        return $this->subject("Đặt tour mới " . $this->booking->id . " - Ngao Du")
+        return $this->subject("Đặt tour mới " . $this->booking->tour->name . " - GoodTrip")
             ->view('mails.booking')->with('booking', $this->booking);
     }
 }

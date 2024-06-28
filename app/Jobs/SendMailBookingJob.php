@@ -40,7 +40,7 @@ class SendMailBookingJob implements ShouldQueue
     {
         if ($this->booking->status == 1) {
             $email = new SendMailBooking($this->booking);
-            Mail::to('duongspam357@gmail.com')->send($email);
+            Mail::to(config('config.email'))->send($email);
         }
 
         if ($this->booking->status == 2) {

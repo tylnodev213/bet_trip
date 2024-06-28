@@ -281,9 +281,7 @@
                                             <input type="hidden" id="discountCoupon" value="0">
                                         </div>
                                         <div class="col-5">
-                                            <button type="button" id="btnCouponSubmit" class="btn-apply-coupon">Xác
-                                                nhận
-                                            </button>
+                                            <button type="button" id="btnCouponSubmit" class="btn-apply-coupon">Xác nhận</button>
                                         </div>
                                     </div>
                                 </div>
@@ -317,6 +315,10 @@
                                                    id="numberRoom{{ $room->id }}"
                                                    placeholder="Số lượng phòng">
                                         </div>
+                                        <p class="text-danger" id="room-{{ $loop->index }}-number"></p>
+                                        @error('room.' . $loop->index . '.number')
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     @endforeach
                                 </div>
 
@@ -451,6 +453,13 @@
                     if (response?.errors?.requirement !== undefined) {
                         $('#errorRequirement').text(response.errors.requirement[0]);
                     }
+
+                    $('.numberRoom').each(function (index, item) {
+                        if (response?.errors['room.' + index + '.number'] !== undefined) {
+                            $(`#room-${index}-number`).text(response.errors['room.' + index + '.number'][0]);
+                        }
+                    });
+
 
                     document.getElementById("formCheckout").scrollIntoView();
                 }

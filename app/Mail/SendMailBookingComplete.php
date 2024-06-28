@@ -7,6 +7,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SendMailBookingComplete extends Mailable
 {
@@ -31,7 +33,10 @@ class SendMailBookingComplete extends Mailable
      */
     public function build()
     {
-        return $this->subject("Thư cảm ơn - Ngao Du")
-            ->view('mails.booking_complete')->with('booking', $this->booking);
+        $token = sprintf('booking_id=%s&customer_id=%s', $this->booking->id, $this->booking->customer->id);
+        $link = route('client.tours.detail', $this->booking->tour->slug) . '?token=' . bcrypt($token);
+        $qrCode = QrCode::format('png')->size(300)->generate((string)$link);
+        return $this->subject("Thư cảm ơn - GoodTrip")
+            ->view('mails.booking_complete', ['qrCodePath' => base64_encode($qrCode)])->with('booking', $this->booking);
     }
 }

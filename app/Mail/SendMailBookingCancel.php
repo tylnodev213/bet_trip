@@ -31,7 +31,7 @@ class SendMailBookingCancel extends Mailable
      */
     public function build()
     {
-        return $this->subject("Hủy đặt tour " . $this->booking->id . " - Ngao Du")
+        return $this->subject("Hủy đặt tour " . $this->booking->tour->name . " - GoodTrip")
             ->view('mails.booking_cancel')->with('booking', $this->booking);
     }
 }
