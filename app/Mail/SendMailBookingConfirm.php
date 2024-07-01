@@ -31,7 +31,9 @@ class SendMailBookingConfirm extends Mailable
      */
     public function build()
     {
+        $token = $this->booking->id;
+        $link = route('order', ['token' => encrypt($token)]);
         return $this->subject("Tour " . $this->booking->tour->name . " được xác nhận - GoodTrip")
-            ->view('mails.booking_confirm')->with('booking', $this->booking);
+            ->view('mails.booking_confirm', ['link' => $link])->with('booking', $this->booking);
     }
 }

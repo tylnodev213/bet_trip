@@ -51,6 +51,7 @@ Route::get('/search', [ClientController::class, 'search'])->name('client.search.
 Route::get('/contact', [ClientController::class, 'contact'])->name('client.contact.index');
 Route::post('/contact', [ClientController::class, 'storeContact'])->name('client.contact.store');
 Route::get('coupons/check', [CouponController::class, 'check'])->name('coupons.check');
+Route::get('order', [ClientController::class, 'order'])->name('order');
 
 /*
 |--------------------------------------------------------------------------

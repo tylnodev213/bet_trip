@@ -63,6 +63,9 @@
                                             @case(2)
                                                 Momo
                                                 @break
+                                            @case(3)
+                                                VnPay
+                                                @break
                                         @endswitch
                                     </td>
                                 </tr>

@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClientController extends Controller
 {
@@ -77,20 +78,15 @@ class ClientController extends Controller
         $reviews = $tour->reviews(true)->paginate(8);
         $rateReview = Utilities::calculatorRateReView($tour->reviews);
 
-        $token = $request->token;
-        $enableComment = false;
-        $customer = collect();
+        $enableComment = true;
+        $customer = null;
         try {
-            $tokenDecrypt = decrypt($token);
-            $paramsToken = explode('&', $tokenDecrypt);
-            $bookingId = str_replace('booking_id=', '', $paramsToken[0]);
-            $customerId = str_replace('customer_id=', '', $paramsToken[1]);
-            $bookingExist = Booking::where('id', $bookingId)->where('customer_id', $customerId)->where('tour_id', $tour->id)->first();
-            if (!empty($bookingExist)) {
-                $enableComment = true;
-            }
-            $customer = $bookingExist->customer;
+            $token = $request->token;
+            $bookingId = decrypt($token);
+            $booking = Booking::where('id', $bookingId)->first();
+            $customer = $booking->customer;
         } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
             $enableComment = false;
         }
 
@@ -145,7 +141,7 @@ class ClientController extends Controller
             return redirect()->route('index')->with($this->notification->getMessage());
         } catch (Exception $e) {
             $this->notification->setMessage('Gửi phản hồi thất bại', Notification::ERROR);
-
+            Log::error($e->getMessage());
             return back()
                 ->with('exception', $e->getMessage())
                 ->with($this->notification->getMessage())
@@ -201,7 +197,7 @@ class ClientController extends Controller
             return back()->with($this->notification->getMessage());
         } catch (Exception $e) {
             $this->notification->setMessage('Đánh giá gửi không thành công', Notification::ERROR);
-
+            Log::error($e->getMessage());
             return back()
                 ->with('exception', $e->getMessage())
                 ->with($this->notification->getMessage())
@@ -435,5 +431,22 @@ class ClientController extends Controller
             'date' => $request->date,
             'room_available' => $roomAvailable,
         ]);
+    }
+
+    public function order(Request $request)
+    {
+        try {
+            $token = $request->token;
+            $bookingId = decrypt($token);
+            $booking = Booking::where('id', $bookingId)->first();
+            $linkTour = route('client.tours.detail', $booking->tour->slug);
+            $linkComment = route('client.tours.detail', $booking->tour->slug) . '?token=' . encrypt($bookingId);
+            $linkQrCode = $booking->status == BOOKING_COMPLETE ? $linkComment : $linkTour;
+            $qrCode = QrCode::format('png')->size(300)->generate($linkQrCode);
+            return view('order', compact(['booking', 'qrCode', 'linkQrCode']));
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+            abort(404);
+        }
     }
 }

@@ -147,7 +147,7 @@
                                                             Kính chúc Quý khách hàng sức khỏe, hạnh phúc và thành đạt.
                                                         </p>
                                                         <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">Cho chúng tôi biết suy nghĩ của bạn nhé !</p>
-                                                        <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;" ><a href="{{ $link ?? '' }}">Đánh giá tại đây</a> Hoặc quét qr đính kèm !</p>
+                                                        <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;" ><a href="{{ $link ?? '' }}"><button>Đánh giá tại đây</button></a></p>
                                                     </div>
                                                 </div>
                                             </td>
