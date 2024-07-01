@@ -376,7 +376,7 @@
                                         $enableComment = $enableComment ?? false;
                                     @endphp
                                     @if ($enableComment)
-                                        <div class="box-review d-flex align-items-start">
+                                        <div class="box-review d-flex align-items-start" id="commentBox">
                                             @php $linkImage = 'images/users/user' . rand(1, 9) .  '.jpg'; @endphp
                                             <img src="{{ asset($linkImage) }}" alt="user" width="56">
                                             <form action="{{ route('client.review.store', $tour->slug) }}"
@@ -595,6 +595,11 @@
 @endsection
 @section('js')
     <script>
+        @if($enableComment)
+        $('html, body').animate({
+            scrollTop: $("#commentBox").offset().top - 150
+        }, 2000);
+        @endif
         disableSubmitButton('#formBookNow');
         $('#formBookNow').submit(function (e) {
             e.preventDefault();

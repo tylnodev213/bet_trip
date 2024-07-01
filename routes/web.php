@@ -38,11 +38,7 @@ Route::prefix('/tours/{slug}')->group(function () {
     Route::get('/check-room', [ClientController::class, 'checkRoom'])->name('client.booking.check-room');
 });
 Route::get('thank-you', [ClientController::class, 'thank'])->name('booking.thank');
-Route::get('booking/momo/redirect', [ClientController::class, 'redirectMomo'])->name('booking.momo.redirect');
-Route::post('booking/momo/confirm', [ClientController::class, 'confirmMomo'])->name('booking.momo.confirm');
-
 Route::get('booking/vnpay/redirect', [ClientController::class, 'redirectVnPay'])->name('booking.vnpay.redirect');
-Route::post('booking/vnpay/confirm', [ClientController::class, 'confirmVnPay'])->name('booking.vnpay.confirm');
 
 
 Route::get('/list-tours/{slug}', [ClientController::class, 'listTour'])->name('client.tours.list');
@@ -52,6 +48,7 @@ Route::get('/contact', [ClientController::class, 'contact'])->name('client.conta
 Route::post('/contact', [ClientController::class, 'storeContact'])->name('client.contact.store');
 Route::get('coupons/check', [CouponController::class, 'check'])->name('coupons.check');
 Route::get('order', [ClientController::class, 'order'])->name('order');
+Route::post('cancel-order/{id}', [ClientController::class, 'cancelBooking'])->name('order.cancel');
 
 /*
 |--------------------------------------------------------------------------

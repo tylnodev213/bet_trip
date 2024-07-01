@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\BookingRoom;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingController extends Controller
 {
@@ -112,9 +113,7 @@ class BookingController extends Controller
     public function downloadInvoice($id)
     {
         $booking = Booking::findOrFail($id);
-
-//        return view('admin.bookings.invoice', compact('booking'));
-        $pdf = PDF::loadView('admin.bookings.invoice', compact('booking'));
-        return $pdf->stream('admin.bookings.invoice')->header('Content-Type', 'application/pdf');
+        $qrCode = QrCode::format('png')->size(150)->generate(route('bookings.invoice', ['id' => $booking->id]));
+        return view('admin.bookings.invoice', compact('booking', 'qrCode'));
     }
 }

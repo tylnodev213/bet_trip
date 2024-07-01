@@ -36,7 +36,7 @@
                         <div class="card-body">
                             <h4 class="card-title d-flex justify-content-between align-items-center">
                                 <span>Thông tin đặt tour</span>
-                                @if($booking->is_payment == PAYMENT_UN_PAID && $booking->status != BOOKING_COMPLETE)
+                                @if($booking->status != BOOKING_COMPLETE && $booking->total != $booking->deposit)
                                     <button type="button" class="btn btn-info text-white edit" title="Thanh toán / cọc"
                                             data-toggle="modal" data-target="#editModal">
                                         Thánh toán / cọc
@@ -61,9 +61,6 @@
                                                 Tiền mặt
                                                 @break
                                             @case(2)
-                                                Momo
-                                                @break
-                                            @case(3)
                                                 VnPay
                                                 @break
                                         @endswitch

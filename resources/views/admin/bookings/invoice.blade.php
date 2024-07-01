@@ -9,164 +9,185 @@
         * {
             font-family: "DejaVu Sans", sans-serif;
         }
-
-        table {
-            font-size: x-small;
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        tfoot tr td {
-            font-weight: bold;
-            font-size: x-small;
-        }
-
-        .gray {
-            background-color: lightgray
-        }
-
-        .font {
-            font-size: 15px;
-        }
-
-        .authority {
-            width: 100%;
-            text-align: center;
-            float: right
-        }
-
-        .authority h5 {
-            margin-top: -10px;
-            color: green;
-            text-align: center;
-        }
-
-        .thanks p {
-            color: green;;
-            font-size: 16px;
-            font-weight: normal;
-            margin-top: 20px;
-            text-align: center;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
         }
     </style>
 
 </head>
 <body>
 
-<table width="100%" style="background: #F7F7F7; padding:0 20px 0 20px;">
-    <tr>
-        <td valign="top">
-            <h2 style="color: green; font-size: 26px;"><strong>GoodTrip YourFriend</strong></h2>
-            <img src="{{ public_path('images/logo.png') }}" width="120px">
-        </td>
-        <td align="right">
-            <pre class="font">
-               Phone: {{ config('config.tel') }} <br>
-               Địa chỉ: {{ config('config.address') }} <br>
-               Email:{{ config('config.email') }} <br>
-            </pre>
-        </td>
-    </tr>
-
-</table>
-
-
-<table width="100%" style="background:white; padding:2px;"></table>
-
-<table width="100%" style="background: #F7F7F7; padding:0 5px;" class="font">
-    <tr>
-        <td>
-            <p class="font" style="margin-left: 20px;">
-                <strong>Tên:</strong> {{ $booking->customer->first_name . ' ' .  $booking->customer->last_name}} <br>
-                <strong>Email:</strong> {{ $booking->customer->email }} <br>
-                <strong>Số điện thoại:</strong> {{ $booking->customer->phone }} <br>
-                @php
-                    $address = !empty($booking->customer->address) && !empty($booking->customer->province) && !empty($booking->customer->city) && !empty($booking->customer->country)
-                        ? sprintf("%s, %s, %s, %s", $booking->customer->address, $booking->customer->province, $booking->customer->city, $booking->customer->country)
-                        : '';
-                @endphp
-                @if(!empty($address))<strong>Địa chỉ:</strong> {{ $address }} <br>@endif
-            </p>
-        </td>
-        <td>
-            <p class="font">
-                Ngày đặt: {{ date("Y-m-d",strtotime($booking->created_at)) }} <br>
-                Loại thanh toán :
-                @if($booking->payment_method == PAYMENT_CASH)
-                    Tiền mặt
-                @elseif($booking->payment_method == PAYMENT_MOMO)
-                    Momo
-                @elseif($booking->payment_method == PAYMENT_VNPAY)
-                    VnPay
-                @endif
-            </p>
-        </td>
-    </tr>
-</table>
-<br/>
-<h3>Phòng</h3>
-
-
-<table width="100%">
-    <thead style="background-color: green; color:#FFFFFF;">
-    <tr class="font">
-        <th scope="col">#</th>
-        <th scope="col">Dịch vụ</th>
-        <th scope="col">Số lượng</th>
-        <th scope="col">Giá</th>
-        <th scope="col">Tổng tiền</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="font">
-        <td>{{ 1  }}</td>
-        <td>{{ $booking->tour->name }}</td>
-        <td>{{ $booking->people }}</td>
-        <td>{{ number_format($booking->price) }}đ</td>
-        <td>{{ number_format($booking->people * $booking->price) }}đ</td>
-    </tr>
-    @foreach($booking->rooms as $room)
-        <tr class="font">
-            <td>{{ $loop->index + 2  }}</td>
-            <td>{{ $room->name }}</td>
-            <td>{{ $room->pivot->number }}</td>
-            <td>{{ number_format($room->pivot->price) }}đ</td>
-            <td>{{ number_format($room->pivot->number * $room->pivot->price) }}đ</td>
+<div style="max-width: 800px;margin: auto;padding: 16px;border: 1px solid #eee;font-size: 16px;line-height: 24px;font-family: 'Inter', sans-serif;color: #555;background-color: #F9FAFC;">
+    <table style="font-size: 12px; line-height: 20px;">
+        <thead>
+        <tr>
+            <td style="padding: 0 16px 18px 16px;">
+                <h1 style="color: #1A1C21;font-size: 18px;font-style: normal;font-weight: 600;line-height: normal;">GoodTrip YourFriend</h1>
+                <p>{{ config('config.email') }}</p>
+                <p>{{ config('config.tel') }}</p>
+            </td>
         </tr>
-    @endforeach
-    </tbody>
-</table>
-<br>
-<table width="100%" style=" padding:0 10px 0 10px;">
-    <tr align="right">
-        <td align="right">
-            <h2><span style="color: green;">Giá:</span></h2>
-        </td>
-        <td align="left" width="200px">
-            <h2>{{ number_format($booking->total / (100 - $booking->discount) * 100) }}₫</h2>
-        </td>
-    </tr>
-    <tr align="right">
-        <td align="right">
-            <h2><span style="color: green;">Giám giá:</span></h2>
-        </td>
-        <td align="left">
-            <h2>{{ $booking->discount }}%</h2>
-        </td>
-    </tr>
-    <tr align="right">
-        <td align="right">
-            <h2><span style="color: green;">Tổng giá:</span></h2>
-        </td>
-        <td align="left">
-            <h2>{{ number_format($booking->total) }} ₫</h2>
-        </td>
-    </tr>
-</table>
-<div class="thanks mt-3">
-    <p>Cảm ơn đã đặt tour của chúng tôi..!!</p>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <table style="background-color: #FFF; padding: 20px 16px; border: 1px solid #D7DAE0;width: 100%; border-radius: 12px;font-size: 12px; line-height: 20px; table-layout: fixed;">
+                    <tbody>
+                    <tr>
+                        <td style="vertical-align: top; width: 30%; padding-right: 20px;padding-bottom: 35px;">
+                            <p style="font-weight: 700; color: #1A1C21;">{{ $booking->customer->first_name . ' ' .  $booking->customer->last_name}}</p>
+                            @php
+                                $address = !empty($booking->customer->address) && !empty($booking->customer->province) && !empty($booking->customer->city) && !empty($booking->customer->country)
+                                    ? sprintf("%s, %s, %s, %s", $booking->customer->address, $booking->customer->province, $booking->customer->city, $booking->customer->country)
+                                    : '';
+                            @endphp
+                            @if(!empty($address))<p style="color: #5E6470;">{{ $address }}</p>@endif
+                            <p style="color: #5E6470;">{{ $booking->customer->email }}</p>
+                        </td>
+                        <td style="vertical-align: top;padding-bottom: 35px;">
+
+                        </td>
+                        <td style="vertical-align: top;padding-bottom: 35px;">
+                            <table style="table-layout: fixed;width:-webkit-fill-available;">
+                                <tr>
+                                    <th style="text-align: left; color: #1A1C21;">Ngày đặt:</th>
+                                    <td style="text-align: right;">{{ date("Y-m-d",strtotime($booking->created_at)) }}</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left; color: #1A1C21;">Loại thanh toán :</th>
+                                    <td style="text-align: right;">
+                                        @if($booking->payment_method == PAYMENT_CASH)
+                                            Tiền mặt
+                                        @elseif($booking->payment_method == PAYMENT_VNPAY)
+                                            VnPay
+                                        @endif</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 13px;">
+                            <p style="color: #5E6470;">Dịch vụ </p>
+                            <p style="font-weight: 700; color: #1A1C21;">Booking tour</p>
+                        </td>
+                        <td style="text-align: center; padding-bottom: 13px;">
+                            <p style="color: #5E6470;">Mã hóa đơn</p>
+                            <p style="font-weight: 700; color: #1A1C21;">#{{ $booking->invoice_no }}</p>
+                        </td>
+                        <td style="text-align: end; padding-bottom: 13px;">
+                            <p style="color: #5E6470;">Ngày xuất</p>
+                            <p style="font-weight: 700; color: #1A1C21;">{{ date("Y-m-d H:i:s") }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table style="width: 100%;border-spacing: 0;">
+                                <thead>
+                                <tr style="text-transform: uppercase;">
+                                    <td style="padding: 8px 0; border-block:1px solid #D7DAE0;">Dịch vụ</td>
+                                    <td style="padding: 8px 0; border-block:1px solid #D7DAE0; text-align: end;">Số lượng</td>
+                                    <td style="padding: 8px 0; border-block:1px solid #D7DAE0; text-align: end; width: 100px;">
+                                        Giá</td>
+                                    <td style="padding: 8px 0; border-block:1px solid #D7DAE0; text-align: end; width: 120px;">
+                                        Tổng tiền</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td style="padding-block: 12px;">
+                                        <p style="font-weight: 700; color: #1A1C21;">{{ $booking->tour->name }}</p>
+                                        <p style="color: #5E6470;">{{ $booking->tour->type->name }}</p>
+                                    </td>
+                                    <td style="padding-block: 12px; text-align: end;">
+                                        <p style="font-weight: 700; color: #1A1C21;">{{ $booking->people }}</p>
+                                    </td>
+                                    <td style="padding-block: 12px; text-align: end;">
+                                        <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->price) }}đ</p>
+                                    </td>
+                                    <td style="padding-block: 12px; text-align: end;">
+                                        <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->people * $booking->price) }}đ</p>
+                                    </td>
+                                </tr>
+                                @foreach($booking->rooms as $room)
+                                    <tr>
+                                        <td style="padding-block: 12px;">
+                                            <p style="font-weight: 700; color: #1A1C21;">{{ $room->name }}</p>
+                                        </td>
+                                        <td style="padding-block: 12px; text-align: end;">
+                                            <p style="font-weight: 700; color: #1A1C21;">{{ $room->pivot->number }}</p>
+                                        </td>
+                                        <td style="padding-block: 12px; text-align: end;">
+                                            <p style="font-weight: 700; color: #1A1C21;">{{ number_format($room->pivot->price) }}đ</p>
+                                        </td>
+                                        <td style="padding-block: 12px; text-align: end;">
+                                            <p style="font-weight: 700; color: #1A1C21;">{{ number_format($room->pivot->number * $room->pivot->price) }}đ</p>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td style="padding: 12px 0; border-top:1px solid #D7DAE0;">
+                                        <img src="data:image/png;base64,{{ base64_encode($qrCode) }}">
+                                    </td>
+                                    <td style="border-top:1px solid #D7DAE0;" colspan="3">
+                                        <table style="width: 100%;border-spacing: 0;">
+                                            <tbody>
+                                            <tr>
+                                                <th style="padding-top: 12px;text-align: start; color: #1A1C21;">
+                                                    Giá:</th>
+                                                <td style="padding-top: 12px;text-align: end; color: #1A1C21;">
+                                                    {{ number_format($booking->total / (100 - $booking->discount) * 100) }}₫</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="padding: 12px 0;text-align: start; color: #1A1C21;">
+                                                    Giám giá:</th>
+                                                <td style="padding: 12px 0;text-align: end; color: #1A1C21;">
+                                                    {{ $booking->discount }}%</td>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th style="padding: 12px 0 30px 0;text-align: start; color: #1A1C21;border-top:1px solid #D7DAE0;">
+                                                    Tổng giá:</th>
+                                                <th style="padding: 12px 0 30px 0;text-align: end; color: #1A1C21;border-top:1px solid #D7DAE0;">
+                                                    {{ number_format($booking->total) }} ₫</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td style="padding-top: 30px;">
+                <p style="display: flex; gap: 0 13px;">Cảm ơn đã đặt tour của chúng tôi !</p>
+                <p>----------------------------------------------------</p>
+                <p style="color: #1A1C21;">Hóa đơn được tạo bởi: GoodTrip Group</p>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
 </div>
-<div class="authority">
-    <p>-----------------------------------</p>
-    <h5>Hóa đơn được tạo bởi: GoodTrip Group</h5>
-</div>
+<script>
+    window.print();
+</script>
 </body>
 </html>

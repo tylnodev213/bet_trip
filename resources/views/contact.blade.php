@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-12 col-lg-6">
                     <div class="office">
-                        <img class="office-background" src="{{ asset('images/introduce1.png') }}" alt="introduce">
+                        <img class="office-background" src="{{ asset('images/introduce2.png') }}" alt="introduce">
                         <div class="info-office">
                             <p class="office-title">Địa chỉ</p>
                             <div class="info-office-item">
@@ -99,7 +99,7 @@
     </div>
 
     <!-- Map -->
-    <div class="box-map-contact">
+    <div class="container box-map-contact mb-4">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.723293793563!2d105.84512377495051!3d21.003726188638474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac743ef66ba3%3A0x540473e9509f5bcb!2zMTdBIFTDsmEgTmjDoCBHZW5ldGljLCAxNyBQLiBU4bqhIFF1YW5nIELhu611LCBCw6FjaCBLaG9hLCBIYWkgQsOgIFRyxrBuZywgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2sus!4v1719048138914!5m2!1svi!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <!-------------------- End Contact -------------------->

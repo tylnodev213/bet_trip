@@ -157,18 +157,8 @@
 
                                 <div class="sub-checkout-item">
                                     <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="paypal-momo"
-                                               value="2">
-                                        <label class="form-check-label" for="paypal-momo">
-                                            <span class="payment-title">Ví Momo</span>
-                                            <img class="payment-image"
-                                                 src="{{ asset('images/icon/logo-momo.png') }}"
-                                                 alt="momo">
-                                        </label>
-                                    </div>
-                                    <div class="form-check d-flex align-items-center">
                                         <input class="form-check-input" type="radio" name="payment_method" id="paypal-vnpay"
-                                               value="3">
+                                               value="2">
                                         <label class="form-check-label" for="paypal-vnpay">
                                             <span class="payment-title">Ví VN PAY</span>
                                             <img class="payment-image"
@@ -183,7 +173,7 @@
                                             <span class="payment-title">Bằng tiền mặt</span>
                                             <img class="payment-image"
                                                  src="{{ asset('images/icon/cash.png') }}"
-                                                 alt="momo">
+                                                 alt="cash">
                                         </label>
                                     </div>
                                 </div>
@@ -202,8 +192,8 @@
                                             được bắt đầu. Nếu còn ít hơn 3 ngày bạn sẽ bị mất 20% tiền cọc.
                                         </li>
                                         <li>
-                                            Khi bạn thành toán với Momo/VNPay, bạn xác nhận rằng bạn đã đọc về các ràng buộc
-                                            thanh toán của Momo/VNPay
+                                            Khi bạn thành toán với VNPay, bạn xác nhận rằng bạn đã đọc về các ràng buộc
+                                            thanh toán của VNPay
                                         </li>
                                         <li> Điều khoản Sử dụng, Chính sách Bảo mật của Khách hàng, cùng với các quy tắc
                                             của nhà điều hành tour & quy định<a href="#">(xem danh sách để biết thêm chi tiết)</a> .
@@ -364,8 +354,8 @@
 @endsection
 @section('js')
     <script>
-        @isset($errorMomo)
-        toastr.error('{{ $errorMomo }}');
+        @isset($errorPayment)
+        toastr.error('{{ $errorPayment }}');
         @endisset
     </script>
     <script>

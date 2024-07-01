@@ -15,8 +15,6 @@ class VNPayPayment
         $vnp_Returnurl = $options['redirectUrl'];
         $startTime = date("YmdHis");
         $expire = date('YmdHis', strtotime('+15 minutes', strtotime($startTime)));
-
-        $vnp_TxnRef = rand(1, 10000); //Mã giao dịch thanh toán tham chiếu của merchant
         $vnp_Amount = $options['amount']; // Số tiền thanh toán
         $vnp_Locale = 'vn'; //Ngôn ngữ chuyển hướng thanh toán
         $vnp_BankCode = ''; //Mã phương thức thanh toán
@@ -34,7 +32,7 @@ class VNPayPayment
             "vnp_OrderInfo" => $options['orderInfo'],
             "vnp_OrderType" => "other",
             "vnp_ReturnUrl" => $vnp_Returnurl,
-            "vnp_TxnRef" => $vnp_TxnRef,
+            "vnp_TxnRef" => $options['orderId'],
             "vnp_ExpireDate" => $expire
         );
 
@@ -70,7 +68,7 @@ class VNPayPayment
         $vnp_HashSecret = env('VNPAY_KEY');
         $vnp_SecureHash = $request->vnp_SecureHash;
         $inputData = array();
-        foreach ($request as $key => $value) {
+        foreach ($request->all() as $key => $value) {
             if (substr($key, 0, 4) == "vnp_") {
                 $inputData[$key] = $value;
             }
@@ -104,6 +102,37 @@ class VNPayPayment
         }
 
         return array('success' => $success, 'message' => $resultMessage);
+    }
+
+    public static function refund(array $options = [])
+    {
+        $vnp_TmnCode = env('VNPAY_CODE'); //Mã định danh merchant kết nối (Terminal Id)
+        $vnp_HashSecret = env('VNPAY_KEY'); //Secret key
+        $refundUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+        $data = [
+            'vnp_RequestId' => '',
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Command" => "refund",
+            "vnp_TransactionType" => '02',
+            "vnp_TxnRef" => $options['orderId'],
+            "vnp_Amount" => $options['amountRefund'],
+            "vnp_OrderInfo" => 'Hoan tien huy booking GoodTrip',
+            "vnp_TransactionNo" => $options['tranNo'],
+            "vnp_TransactionDate" => $options['tranDate'],
+            "vnp_CreateBy" => $options['userName'],
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_IpAddr" => $_SERVER['REMOTE_ADDR'],
+        ];
+
+        ksort($data);
+        $hashdata = http_build_query($data, null, '|', PHP_QUERY_RFC3986);
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);//
+            $data['vnp_SecureHash'] = $vnpSecureHash;
+        }
+
+        return Http::post($refundUrl, $data);
     }
 }
 
