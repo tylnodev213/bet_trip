@@ -178,7 +178,10 @@
                     </li>
                 </ul>
                 @else
-                    <p>Thật tiếc khi không được phục vụ cho bạn lần này. Hy vọng trong tương lai bạn vẫn sẽ tin tưởng vào dịch vụ của chúng tôi. Nếu có vấn đề gì cho chúng tôi biết ý kiến của bạn <a href="{{ route('client.contact.index') }}">tại đây</a><div>
+                    <ul class="list-policy">
+                        <li>Tiền cọc sẽ được hoàn trong 1 đến 5 ngày làm việc tới, nhân viên của chúng tôi sẽ liên hệ cho bạn. Nếu bạn thanh toán qua VnPay, có thể sẽ phải mất 1 đến 7 ngày làm việc của ngân hàng.</li>
+                        <li>Thật tiếc khi không được phục vụ cho bạn lần này. Hy vọng trong tương lai bạn vẫn sẽ tin tưởng vào dịch vụ của chúng tôi. Nếu có vấn đề gì cho chúng tôi biết ý kiến của bạn <a href="{{ route('client.contact.index') }}">tại đây</a></li>
+                    </ul>
                 @endif
             </div>
             @if ($booking->status != BOOKING_CANCEL)
