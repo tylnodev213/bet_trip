@@ -131,7 +131,7 @@
                                                         <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 24px;"><span
                                                                 style="font-size:16px;">
                                                                 Tour của bạn đã bị hủy <br>
-                                                                Số tiền sẽ cọc và đã thanh toán sẽ được hoàn theo như chính sách của chúng tôi trong 1 ngày làm việc<br>
+                                                                Số tiền sẽ cọc và đã thanh toán sẽ được hoàn theo như chính sách của chúng tôi trong 1 đến 5 ngày làm việc<br>
                                                                 Chúng tôi thành thật xin lỗi khi không thể hợp tác với quý khách trong lần này và mong rằng vẫn được cùng quý khách trong những chuyến tham quan trong tương lai</span>
                                                         </p>
                                                         <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 24px;"><span
@@ -143,7 +143,8 @@
                                                              </p>
                                                         <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">
                                                             <span style="color:#000000;font-size:14px;">Thông tin chi tiết tour ở bên dưới</span>
-                                                            <a href="{{ $link ?? '' }}"><button>Chi tiết tại đây</button></a>
+                                                            <br>
+                                                            <a href="{{ $link ?? '' }}"><button style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #5d77a9; color: #000000; padding: 10px 20px">Chi tiết tại đây</button></a>
                                                         </p>
                                                     </div>
                                                 </div>

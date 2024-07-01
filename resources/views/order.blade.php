@@ -198,6 +198,7 @@
     <!-------------------- End List Tours-------------------->
 @endsection
 @section('js')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         @if($errors->any())
         document.getElementById("formContact").scrollIntoView();
@@ -208,7 +209,7 @@
                 cancelButton: 'btn btn-danger m-2'
             },
             buttonsStyling: false
-        })
+        });
 
         function cancelBooking() {
             swalWithBootstrapButtons.fire({
@@ -222,9 +223,9 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '{{ route('order.cancel', $booking->id) }}',
-                        method: 'PUT',
+                        method: 'POST',
                         dataType: 'json',
-                        data: {'status': {{ BOOKING_CANCEL }},
+                        data: {'status': {{ BOOKING_CANCEL }} },
                         success: function (response) {
                             if (response) {
                                 location.reload(true);

@@ -159,7 +159,9 @@
                                                         <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">
                                                             <span style="color:#000000;font-size:14px;">Vui lòng xem lại thông tin chi tiết tour ở bên dưới</span>
                                                         </p>
-                                                        <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;" ><a href="{{ $link ?? '' }}"><button>Theo dõi tại đây</button></a></p>
+                                                        <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">
+                                                            <a href="{{ $link ?? '' }}"><button style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #5d77a9; color: #000000; padding: 10px 20px">Theo dõi tại đây</button></a>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </td>
