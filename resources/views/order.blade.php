@@ -188,6 +188,10 @@
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-danger" onclick="cancelBooking()">Hủy Booking</button>
                 </div>
+            @elseif($booking->status == BOOKING_CANCEL_PROCESSING)
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary">Đang chờ xác nhận ...</button>
+                </div>
             @endif
         </div>
     </div>
@@ -225,12 +229,12 @@
                         url: '{{ route('order.cancel', $booking->id) }}',
                         method: 'POST',
                         dataType: 'json',
-                        data: {'status': {{ BOOKING_CANCEL }} },
+                        data: {'status': {{ BOOKING_CANCEL_PROCESSING }} },
                         success: function (response) {
                             if (response) {
                                 location.reload(true);
                             } else {
-                                toastrMessage('error', 'Hủy không thành công');
+                                toastrMessage('error', 'Hủy không thành công, Vui lòng liên hệ lại vs chúng tôi');
                             }
                         }
                     });

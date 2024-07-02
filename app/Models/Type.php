@@ -8,12 +8,15 @@ use App\Traits\GetListData;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class Type extends Model
 {
     use HasFactory, GetListData;
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $table = 'tour_types';
     protected $guarded = [];

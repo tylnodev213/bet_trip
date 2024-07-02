@@ -5,12 +5,15 @@ namespace App\Models;
 use App\Libraries\Utilities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class Room extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $guarded = [];
     protected $notification;

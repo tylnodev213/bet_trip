@@ -5,5 +5,7 @@
 @elseif($status == 3)
     <span class="badge badge-pill badge-primary">Hoàn thành</span>
 @elseif($status == 4)
-    <span class="badge badge-pill badge-danger">Hủy</span>
+    <span class="badge badge-pill badge-danger">Đã Hủy</span>
+@elseif($status == 5)
+    <span class="badge badge-pill badge-warning">Chờ xác nhận hủy</span>
 @endif

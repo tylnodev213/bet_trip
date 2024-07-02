@@ -37,9 +37,16 @@
                             <h4 class="card-title d-flex justify-content-between align-items-center">
                                 <span>Thông tin đặt tour</span>
                                 @if($booking->status != BOOKING_COMPLETE && $booking->total != $booking->deposit)
-                                    <button type="button" class="btn btn-info text-white edit" title="Thanh toán / cọc"
+                                    <button type="button" class="btn btn-info text-white edit " title="Thanh toán / cọc"
                                             data-toggle="modal" data-target="#editModal">
                                         Thánh toán / cọc
+                                    </button>
+                                @endif
+
+                                @if($booking->status >= BOOKING_CANCEL)
+                                    <button type="button" class="btn btn-warning text-white edit " title="Hoàn tiền"
+                                            data-toggle="modal" data-target="#createModal">
+                                        Hoàn tiền
                                     </button>
                                 @endif
                             </h4>
@@ -70,6 +77,9 @@
                                     <td class="tb-title">Trạng thái:</td>
                                     <td>
                                         @include('components.status_booking', ['status' => $booking->status])
+                                        @if (!empty($booking->refund))
+                                            <span class="badge badge-pill badge-warning">Đã hoàn tiền</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
@@ -101,20 +111,20 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        @if($booking->status == 1)
+                                        @if($booking->status == BOOKING_NEW)
                                             <button onclick="changeStatusBooking(2)" type="button"
 
                                                     class="btn btn-success btn-status m-r-5 m-t-30">
                                                 Xác nhận
                                             </button>
-                                        @elseif($booking->status == 2)
+                                        @elseif($booking->status == BOOKING_CONFIRM)
                                             <button onclick="changeStatusBooking(3)" type="button"
                                                     class="btn btn-primary btn-status m-r-5 m-t-30">
                                                 Hoàn thành
                                             </button>
                                         @endif
 
-                                        @if($booking->status < 3 )
+                                        @if($booking->status < BOOKING_COMPLETE || $booking->status == BOOKING_CANCEL_PROCESSING)
                                             <button onclick="changeStatusBooking(4)" type="button"
                                                     class="btn btn-danger btn-status m-t-30">
                                                 Hủy đơn hàng
@@ -213,18 +223,20 @@
                                 </tbody>
                             </table>
 
-                            @if($booking->status != BOOKING_COMPLETE)
+                            @if($booking->status < BOOKING_COMPLETE)
                                 <button type="submit" class="btn btn-info text-white edit" title="Cập nhật">
                                     Cập nhật
                                 </button>
                             @endif
-                            <a href="{{ route('bookings.invoice', $booking->id) }}"
-                               target="_blank"
-                               class="btn btn-success text-white edit"
-                               title="Hóa đơn">
-                                <i class="fa fa-download"></i>
-                                Hóa đơn
-                            </a>
+                            @if($booking->status != BOOKING_CANCEL)
+                                <a href="{{ route('bookings.invoice', $booking->id) }}"
+                                   target="_blank"
+                                   class="btn btn-success text-white edit"
+                                   title="Hóa đơn">
+                                    <i class="fa fa-download"></i>
+                                    Hóa đơn
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -237,7 +249,6 @@
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form id="formEditDeposit">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editModalLabel">Thanh toán / cọc</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -250,7 +261,7 @@
                                 Số tiền<span class="text-danger">*</span>
                             </label>
                             <div class="input-group">
-                                <input type="number" min="0" class="form-control" name="deposit" id="deposit"
+                                <input type="number" min="0" max="{{ $booking->total }}" class="form-control" name="deposit" id="deposit"
                                        value="{{ $booking->deposit }}" placeholder="Số tiền">
                             </div>
                             <p class="text-danger" id="errorDeposit"></p>
@@ -259,9 +270,38 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-info" id="btnSubmitDeposit">Lưu</button>
+                        <button type="button" class="btn btn-info" id="btnSubmitDeposit">Lưu</button>
                     </div>
-                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createModalLabel">Hoàn tiền</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name" class="text-left control-label col-form-label">
+                                Số tiền hoàn<span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number" min="0" max="{{ $booking->deposit }}" class="form-control" name="refund" id="refund"
+                                       value="{{ $booking->refund }}" placeholder="Số tiền">
+                            </div>
+                            <p class="text-danger" id="errorRefund"></p>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-info" id="btnSubmitRefund">Lưu</button>
+                    </div>
             </div>
         </div>
     </div>
@@ -322,9 +362,8 @@
             })
         }
 
-        $('#formEditDeposit').submit(function (e) {
+        $('#btnSubmitDeposit').click(function (e) {
             e.preventDefault();
-            disableSubmitButton('#formEditDeposit');
             $('#errorDeposit').text('');
 
             let deposit = $('#deposit').val();
@@ -353,7 +392,44 @@
                     toastrMessage('error', 'Cập nhật tiền thanh toán không thành công');
                 },
                 complete: function () {
-                    enableSubmitButton('#formEditDeposit', 300);
+
+                    toastrMessage('success', 'Cập nhật tiền thanh toán thành công');
+                }
+            });
+
+        });
+
+        $('#btnSubmitRefund').click(function (e) {
+            e.preventDefault();
+            $('#errorRefund').text('');
+
+            let refund = $('#refund').val();
+            if (refund > {{ $booking->deposit }}) {
+                $('#errorRefund').text('Số tiền không được lớn hơn tổng tiền thanh toán');
+                return;
+            }
+            let formData = new FormData();
+            formData.append("_method", 'PUT');
+            formData.append("refund", refund);
+
+            $.ajax({
+                url: '{{ route('bookings.refund', $booking->id) }}',
+                method: "POST",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    if (response) {
+                        location.reload(true);
+                    } else {
+                        toastrMessage('error', 'Cập nhật hoàn tiền không thành công');
+                    }
+                },
+                error: function (jqXHR) {
+                    toastrMessage('error', 'Cập nhật hoàn tiền không thành công');
+                },
+                complete: function () {
+                    toastrMessage('success', 'Cập nhật hoàn tiền thành công');
                 }
             });
 

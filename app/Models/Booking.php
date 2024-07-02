@@ -8,6 +8,7 @@ use App\Libraries\VNPayPayment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,9 +17,10 @@ use Yajra\DataTables\DataTables;
 class Booking extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $guarded = [];
-
+    protected $dates = ['deleted_at'];
     /**
      * Get the tour that owns the booking.
      *
@@ -71,30 +73,12 @@ class Booking extends Model
         $diffStatus = $request->status - $booking->status;
         $booking->status = $request->status;
 
-        if ($diffStatus != 1 && $request->status != BOOKING_CANCEL) {
+        if ($diffStatus != 1 && ($request->status != BOOKING_CANCEL || $request->status != BOOKING_CANCEL_PROCESSING)) {
             return false;
         }
 
-        $booking->save();
-        dispatch(new SendMailBookingJob($booking));
-
-        if ($request->status == BOOKING_CANCEL && $booking->payment_method == PAYMENT_VNPAY) {
-            $diffDay = Carbon::parse($booking->departure_time)->diffInDays(now());
-            $options = [
-                'orderId' => $booking->invoice_no,
-                'amountRefund' => $diffDay >= 3 ? $booking->deposit : $booking->deposit * 0.8,
-                'tranNo' => $booking->transaction_id,
-                'tranDate' => date('YmdHis', strtotime($booking->created_at)),
-                'userName' => $booking->customer->name,
-            ];
-            $response = VNPayPayment::refund($options);
-
-            if (!$response->successful()) {
-                return false;
-            }
-        }
-
-        return true;
+        dispatch(new SendMailBookingJob($booking, $request->status));
+        return $booking->save();
     }
 
     /**

@@ -110,15 +110,13 @@ class VNPayPayment
         $vnp_HashSecret = env('VNPAY_KEY'); //Secret key
         $refundUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
         $data = [
-            'vnp_RequestId' => '',
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
             "vnp_Command" => "refund",
-            "vnp_TransactionType" => '02',
+            "vnp_TransactionType" => '03',
             "vnp_TxnRef" => $options['orderId'],
             "vnp_Amount" => $options['amountRefund'],
             "vnp_OrderInfo" => 'Hoan tien huy booking GoodTrip',
-            "vnp_TransactionNo" => $options['tranNo'],
             "vnp_TransactionDate" => $options['tranDate'],
             "vnp_CreateBy" => $options['userName'],
             "vnp_CreateDate" => date('YmdHis'),

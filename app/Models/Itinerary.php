@@ -6,6 +6,7 @@ use App\Libraries\Notification;
 use App\Libraries\Utilities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -13,6 +14,8 @@ use Yajra\DataTables\DataTables;
 class Itinerary extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $fillable = ['tour_id', 'name'];
     protected $notification;

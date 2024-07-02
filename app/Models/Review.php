@@ -6,6 +6,7 @@ use App\Libraries\Notification;
 use App\Libraries\Utilities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -14,6 +15,8 @@ use Yajra\DataTables\DataTables;
 class Review extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $fillable = ['status', 'rate', 'comment', 'tour_id', 'name', 'email', 'image'];
 

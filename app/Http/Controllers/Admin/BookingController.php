@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\BookingRoom;
+use App\Models\Refund;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -61,6 +62,18 @@ class BookingController extends Controller
 
         return json_encode($booking->update([
             'deposit' => $request->deposit,
+        ]));
+    }
+
+    public function updateRefund(Request $request, $id)
+    {
+        $request->validate([
+            'refund' => 'required|integer'
+        ]);
+        $booking = Booking::findOrFail($id);
+
+        return json_encode($booking->update([
+            'refund' => $request->refund,
         ]));
     }
 

@@ -6,12 +6,15 @@ use App\Libraries\Utilities;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class Coupon extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $table = "coupons";
     protected $guarded = [];

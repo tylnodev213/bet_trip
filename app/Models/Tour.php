@@ -6,6 +6,7 @@ use App\Libraries\Utilities;
 use App\Traits\GetListData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +16,8 @@ use Yajra\DataTables\DataTables;
 class Tour extends Model
 {
     use HasFactory, GetListData;
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $guarded = [];
     protected $path = 'public/images/tours/';
