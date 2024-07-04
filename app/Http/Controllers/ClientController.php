@@ -82,8 +82,11 @@ class ClientController extends Controller
         try {
             $token = $request->token;
             $bookingId = decrypt($token);
-            $booking = Booking::where('id', $bookingId)->first();
-            $customer = $booking->customer;
+            $booking = Booking::where('id', $bookingId)->where('tour_id', $tour->id)->first();
+            if (empty($booking)) {
+                $enableComment = false;
+            }
+            $customer = !empty($booking) ? $booking->customer : null;
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
             $enableComment = false;
