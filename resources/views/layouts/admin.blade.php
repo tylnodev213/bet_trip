@@ -140,27 +140,32 @@
 
 <script src="{{ asset('js/common.js') }}" type="text/javascript"></script>
 
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
+<script type="text/javascript">
+    var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+        encrypted: true,
+        cluster: "ap1"
+    });
+    var channel = pusher.subscribe('NotificationEvent');
+    channel.bind('send-message', function(data) {
+        var newNotificationHtml = `
+        <p class="dropdown-item new" href="#">
+            <span>Xác nhận booking mới!</span><br>
+            <small>${data.content} </small>
+            <a href="${data.url}">Chi tiết</a>
+        </p>
+        `;
+        $('.notificationNewTour').prepend('<a class="notification">New</a>')
+        $('.notificationNewTourDropdown').append(newNotificationHtml);
+    });
+</script>
+
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    });
-
-    $(document).ajaxStart(function () {
-        showLoading();
-    });
-
-    $(document).ajaxSuccess(function () {
-        hideLoading();
-    });
-
-    $(document).ajaxError(function () {
-        hideLoading();
-    });
-
-    $(document).ajaxComplete(function () {
-        hideLoading();
     });
     // toastr.options.progressBar = true;
     // toastr.options.preventDuplicates = true;

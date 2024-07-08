@@ -345,12 +345,14 @@
                 cancelButtonText: 'Hủy',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    showLoading();
                     $.ajax({
                         url: '{{ route('bookings.status', $booking->id) }}',
                         method: 'PUT',
                         dataType: 'json',
                         data: {'status': status},
                         success: function (response) {
+                            hideLoading();
                             if (response) {
                                 location.reload(true);
                             } else {
@@ -374,6 +376,7 @@
             let formData = new FormData();
             formData.append("_method", 'PUT');
             formData.append("deposit", deposit);
+            showLoading();
 
             $.ajax({
                 url: '{{ route('bookings.deposit', $booking->id) }}',
@@ -382,6 +385,7 @@
                 contentType: false,
                 data: formData,
                 success: function (response) {
+                    hideLoading();
                     if (response) {
                         location.reload(true);
                     } else {
@@ -389,10 +393,11 @@
                     }
                 },
                 error: function (jqXHR) {
+                    hideLoading();
                     toastrMessage('error', 'Cập nhật tiền thanh toán không thành công');
                 },
                 complete: function () {
-
+                    hideLoading();
                     toastrMessage('success', 'Cập nhật tiền thanh toán thành công');
                 }
             });
@@ -411,7 +416,7 @@
             let formData = new FormData();
             formData.append("_method", 'PUT');
             formData.append("refund", refund);
-
+            showLoading();
             $.ajax({
                 url: '{{ route('bookings.refund', $booking->id) }}',
                 method: "POST",
@@ -419,6 +424,7 @@
                 contentType: false,
                 data: formData,
                 success: function (response) {
+                    hideLoading();
                     if (response) {
                         location.reload(true);
                     } else {
@@ -426,9 +432,11 @@
                     }
                 },
                 error: function (jqXHR) {
+                    hideLoading();
                     toastrMessage('error', 'Cập nhật hoàn tiền không thành công');
                 },
                 complete: function () {
+                    hideLoading();
                     toastrMessage('success', 'Cập nhật hoàn tiền thành công');
                 }
             });

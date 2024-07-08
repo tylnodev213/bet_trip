@@ -48,3 +48,24 @@
 .switch .slider.round-switch:before {
   border-radius: 50%;
 }
+.notificationNewTour .notification {
+    position: absolute;
+    background-color: #fb404b;
+    text-align: center;
+    border-radius: 10px;
+    min-width: 18px;
+    padding: 0 5px;
+    height: 18px;
+    font-size: 12px;
+    color: #fff!important;
+    font-weight: 700;
+    line-height: 18px;
+    top: 10px;
+    right: 0;
+    z-index: 9999;
+}
+
+.notificationNewTourDropdown .new {
+    background-color: #36bea6;;
+}
+

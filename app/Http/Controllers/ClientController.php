@@ -6,6 +6,7 @@ use App\Jobs\SendMailBookingJob;
 use App\Libraries\Notification;
 use App\Libraries\Utilities;
 use App\Libraries\VNPayPayment;
+use App\Models\Admin;
 use App\Models\Booking;
 use App\Models\Contact;
 use App\Models\Customer;
@@ -13,10 +14,12 @@ use App\Models\Destination;
 use App\Models\Review;
 use App\Models\Tour;
 use App\Models\Type;
+use App\Notifications\NewTourNotification;
 use App\Services\ClientService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -76,6 +79,10 @@ class ClientController extends Controller
         $relateTours = $tourModel->getRelated($tour);
         $reviews = $tour->reviews(true)->paginate(8);
         $rateReview = Utilities::calculatorRateReView($tour->reviews);
+        $request->merge([
+            'departure_time' => date('Y-m-d'),
+        ]);
+        $roomAvailable = $this->checkRoom($request, $slug)->getContent();
 
         $enableComment = true;
         $customer = null;
@@ -92,7 +99,7 @@ class ClientController extends Controller
             $enableComment = false;
         }
 
-        return view('tour_detail', compact(['tour', 'relateTours', 'reviews', 'rateReview', 'enableComment', 'customer']));
+        return view('tour_detail', compact(['tour', 'relateTours', 'reviews', 'rateReview', 'enableComment', 'customer', 'roomAvailable']));
     }
 
     /**

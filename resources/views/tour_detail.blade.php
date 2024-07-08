@@ -610,5 +610,10 @@
             })
             this.submit();
         })
+
+        for (const [key, value] of Object.entries(JSON.parse('{!! $roomAvailable !!}').room_available)) {
+            $('#roomAvailable' + key).text(value);
+            $('#numberRoom' + key).prop('max', value);
+        }
     </script>
 @endsection

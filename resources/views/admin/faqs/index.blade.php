@@ -80,12 +80,12 @@
                     buttonsStyling: false
                 })
                 swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Bạn có chắc chắn?',
+                    text: "Bạn sẽ không thể hoàn tác lại điều này!",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel!',
+                    confirmButtonText: 'Vâng, xóa nó!',
+                    cancelButtonText: 'Không, hủy!',
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -94,11 +94,11 @@
                                 url: link,
                                 type: 'delete',
                                 success: function (response) {
-                                    toastr.success('FAQ deleted successfully');
+                                    toastr.success('Xóa thành công');
                                     datatable.ajax.reload(null, false);
                                 },
                                 error: function (response) {
-                                    toastr.error('Delete failed')
+                                    toastr.error('Xóa thất bại')
                                 }
                             });
                     } else if (
@@ -138,7 +138,7 @@
                             } else {
                                 $(buttonSwitch).prop('checked', true);
                             }
-                            toastr.error('Change status failed')
+                            toastr.error('Thay đổi trạng thái thất bại')
                         }, 500);
                     }
                 });
