@@ -18,7 +18,7 @@
 
                             <hr>
                             <!-- checkout detail -->
-                            <div class="box-checkout-item">
+                            <div class="box-checkout-item infoCustomer">
                                 <p class="header-checkout">Thông tin khách hàng</p>
                                 <p class="header-desc">Chúng tôi cần một số thông tin để xác nhận chuyến tham của
                                     bạn</p>
@@ -155,7 +155,7 @@
                                 <hr>
                                 <p class="header-checkout">Phương thức thanh toán</p>
 
-                                <div class="sub-checkout-item">
+                                <div class="sub-checkout-item paymentMethod">
                                     <div class="form-check d-flex align-items-center">
                                         <input class="form-check-input" type="radio" name="payment_method" id="paypal-vnpay"
                                                value="2">
@@ -201,7 +201,7 @@
                                     </ul>
                                 </div>
 
-                                <div class="sub-checkout-item">
+                                <div class="sub-checkout-item bookingBtn">
                                     <button type="submit" class="btn-submit-checkout" id="btnSubmitCheckout">
                                         Đặt tour
                                     </button>
@@ -212,7 +212,7 @@
 
 
                     <!-------------------- Form Coupon -------------------->
-                    <div class="col-12 col-lg-5 col-xl-4">
+                    <div class="col-12 col-lg-5 col-xl-4 infoTour">
                         <div class="box-book-now box-coupon">
                             <div class="wrap-content-coupon">
                                 <span
@@ -260,7 +260,7 @@
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="input-inner-icon">
+                                <div class="input-inner-icon couponBlock">
                                     <div class="row">
                                         <input type="hidden" id="linkCheckCoupon" value="{{ route('coupons.check') }}">
                                         <input type="hidden" name="codeCoupon" id="codeCoupon"
@@ -353,12 +353,33 @@
     <input type="hidden" value="{{ route('client.booking.check-room', $tour->slug) }}" id="linkCheckRoom">
 @endsection
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script>
+        const driver = window.driver.js.driver;
+        const driverObj = driver({
+            showProgress: true,
+            steps: [
+                { element: '.infoCustomer', popover: { title: 'Bước 1: ', description: 'Điền thông tin cá nhân của bạn tại đây' } },
+                { element: '.infoTour', popover: { title: 'Bước 2: ', description: 'Lựa chọn thông tin chuyến đi theo nhu cầu của bạn' } },
+                { element: '.couponBlock', popover: { title: 'Mã giảm giá: ', description: 'Nhập mã giảm giá của bạn và áp dụng bằng cách nhấn nút Xác nhận' } },
+                { element: '.paymentMethod', popover: { title: 'Bước 3: ', description: 'Chọn phương thức thanh toán linh hoạt' } },
+                { element: '.bookingBtn', popover: { title: 'Hoàn thành', description: 'Click vào Đặt tour để tiến hành thanh toán và hoàn thành đặt tour' } },
+            ],
+        });
+
+        driverObj.drive();
+    </script>
     <script>
         @isset($errorPayment)
         toastr.error('{{ $errorPayment }}');
         @endisset
     </script>
     <script>
+        for (const [key, value] of Object.entries(JSON.parse('{!! $roomAvailable !!}').room_available)) {
+            $('#roomAvailable' + key).text(value);
+            $('#numberRoom' + key).prop('max', value);
+        }
         disableSubmitButton('#formCheckout');
 
         $('#formCheckout').on('submit', function (e) {

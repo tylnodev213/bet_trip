@@ -248,20 +248,18 @@ $(document).ready(function () {
         checkRoom(start.format("YYYY-MM-DD"));
     });
 
-    if ($('#departureTimePicker').length) {
-        checkRoom($('#departureTimePicker').data('daterangepicker').startDate.format("YYYY-MM-DD"));
-    }
+    // if ($('#departureTimePicker').length) {
+    //     checkRoom($('#departureTimePicker').data('daterangepicker').startDate.format("YYYY-MM-DD"));
+    // }
 
     // Check room
     function checkRoom(date) {
         let linkCheckRoom = $('#linkCheckRoom').val();
-        showLoading();
         $.ajax({
             url: linkCheckRoom,
             method: "GET",
-            data: {date: date},
+            data: {departure_time: date},
             success: function (response) {
-                hideLoading();
                 for (const [key, value] of Object.entries(response.room_available)) {
                     $('#roomAvailable' + key).text(value);
                     $('#numberRoom' + key).prop('max', value);
@@ -321,26 +319,21 @@ $(document).ready(function () {
             return;
         }
 
-        showLoading();
-
         $.ajax({
             url: $('#linkCheckCoupon').val(),
             type: 'get',
             data: {code: code},
             success: function (response) {
-                hideLoading();
                 $('#discountCoupon').val(response.discount);
                 $('#codeCoupon').val(response.code);
                 caculatePrice();
                 toastr.success("Áp dụng mã giảm giá thành công");
             },
             error: function (jqXHR) {
-                hideLoading();
                 let response = jqXHR.responseJSON;
                 toastr.error(response.message);
             },
             complete: function () {
-                hideLoading();
                 $('#btnCouponSubmit').prop('disabled', false);
             }
         });

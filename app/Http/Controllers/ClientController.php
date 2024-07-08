@@ -107,8 +107,9 @@ class ClientController extends Controller
         $departureTime = $request->departure_time;
         $listRooms = $request->room;
         $booking = null;
+        $roomAvailable = $this->checkRoom($request, $slug)->getContent();
 
-        return view('booking', compact(['tour', 'people', 'departureTime', 'listRooms', 'booking']));
+        return view('booking', compact(['tour', 'people', 'departureTime', 'listRooms', 'booking', 'roomAvailable']));
     }
 
     /**
@@ -339,13 +340,13 @@ class ClientController extends Controller
     public function checkRoom(Request $request, $slug)
     {
         $request->validate([
-            'date' => 'required|date_format:Y-m-d',
+            'departure_time' => 'required|date_format:Y-m-d',
         ]);
         $tourModel = new Tour();
         $tour = $tourModel->getTourBySlug($slug);
         $offsetDate = ($tour->duration - 1) * -1;
-        $startDate = Carbon::parse($request->date)->addDays($offsetDate);
-        $endDate = Carbon::parse($request->date);
+        $startDate = Carbon::parse($request->departure_time)->addDays($offsetDate);
+        $endDate = Carbon::parse($request->departure_time);
         $bookings = Booking::with('booking_room')
             ->where('status', '!=', BOOKING_CANCEL)
             ->whereDate('departure_time', '>=', $startDate)
@@ -368,7 +369,7 @@ class ClientController extends Controller
         }
 
         return response()->json([
-            'date' => $request->date,
+            'date' => $request->departure_time,
             'room_available' => $roomAvailable,
         ]);
     }
