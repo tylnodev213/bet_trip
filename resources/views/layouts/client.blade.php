@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'GoodTrip')</title>
     <meta name="description" content="@yield('description', 'Tour and Travel')">
-    <meta name="author" content="tuyenpham">
     <meta property="og:title" content="@yield('title', 'GoodTrip')">
     <meta property="og:description" content="@yield('description', 'Tour and Travel')">
     <meta property="og:url" content="@yield('url', route('index'))">
@@ -16,19 +15,13 @@
     <meta property="og:image" content="@yield('image_seo')">
     <meta property="og:image:secure_url" content="@yield('image_seo')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('admins/assets/images/favicon.png') }}">
 
     <!-- Font -->
     <link rel="stylesheet" href="{{ asset('font/fontawesome-free-6.1.1-web/css/all.min.css') }}">
-
-    <!-- cdn bootstrap -->
-    {{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" --}}
-    {{--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
-    {{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"> --}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap-reboot.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}">
-    {{--    <link rel="stylesheet" href="{{ asset('css/main.css') }}"> --}}
     <script src="{{ asset('js/jquery/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/select2/select2.min.js') }}"></script>

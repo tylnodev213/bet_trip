@@ -89,7 +89,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::prefix('coupons')->group(function () {
             Route::get('/', [CouponController::class, 'index'])->name('coupons.index');
             Route::post('/', [CouponController::class, 'store'])->name('coupons.store');
-            Route::put('/{id}', [CouponController::class, 'update'])->name('coupons.update');
+            Route::post('/{id}', [CouponController::class, 'update'])->name('coupons.update');
             Route::delete('/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
             Route::get('/data', [CouponController::class, 'getData'])->name('coupons.data');
         });

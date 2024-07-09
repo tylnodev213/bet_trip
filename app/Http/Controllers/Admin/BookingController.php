@@ -8,6 +8,7 @@ use App\Models\BookingRoom;
 use App\Models\Refund;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingController extends Controller
@@ -38,6 +39,11 @@ class BookingController extends Controller
     public function show($id)
     {
         $booking = Booking::findOrFail($id);
+
+        if (!empty($noticeId = request('notification_id'))) {
+            Auth::user()->unreadNotifications->where('id', $noticeId)->markAsRead();
+        }
+
         return view('admin.bookings.show', compact('booking'));
     }
 

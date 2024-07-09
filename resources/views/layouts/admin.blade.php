@@ -7,7 +7,6 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font -->
     <style>
@@ -156,8 +155,10 @@
             <a href="${data.url}">Chi tiết</a>
         </p>
         `;
-        $('.notificationNewTour').prepend('<a class="notification">New</a>')
-        $('.notificationNewTourDropdown').append(newNotificationHtml);
+        if (!$('.notificationNewTour').find('.notification').length) {
+            $('.notificationNewTour').prepend('<a class="notification">New</a>');
+        }
+        $('.notificationNewTourDropdown').prepend(newNotificationHtml);
     });
 </script>
 

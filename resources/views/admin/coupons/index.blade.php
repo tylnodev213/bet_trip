@@ -93,6 +93,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group row mb-0">
+                            <label for="banner" class="col-12 control-label col-form-label">Chọn banner
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group mb-3">
+                                <input type="file" id="banner" name="banner">
+                            </div>
+                            <div>
+                                <img id="showImg" style="max-height: 150px; margin: 10px 2px">
+                            </div>
+                            <div class="col-9">
+                                <p class="text-danger" id="errorBanner"></p>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-info mb-3">
                                 Thêm mã
@@ -133,6 +148,7 @@
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
                             <th>Trạng thái</th>
+                            <th>Banner</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -219,6 +235,19 @@
 
                                 <p class="text-danger" id="errorStatusEdit"></p>
                             </div>
+
+                            <div class="form-group">
+                                <label for="bannerEdit" class="text-left control-label col-form-label">
+                                    Banner
+                                </label>
+                                <div class="input-group">
+                                    <input type="file" id="bannerEdit" name="banner">
+                                </div>
+                                <div>
+                                    <img id="showImgEdit" style="max-height: 150px; margin: 10px 2px">
+                                </div>
+                                <p class="text-danger" id="errorBannerEdit"></p>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -233,6 +262,13 @@
 @section('js')
     <script>
         $(document).ready(function () {
+            $('#banner').change(function (e) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#showImg').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(e.target.files['0']);
+            });
             let linkEditCoupon;
             disableSubmitButton('#formAddCoupon');
             disableSubmitButton('#formEditCoupon');
@@ -270,6 +306,7 @@
                     {data: 'start_date', name: 'start_date'},
                     {data: 'end_date', name: 'end_date'},
                     {data: 'status', name: 'status'},
+                    {data: 'banner', name: 'banner'},
                     {data: 'action', name: 'action', className: 'align-middle text-center', width: 68},
                 ],
                 columnDefs: [
@@ -285,6 +322,22 @@
 
             $('#filterStatus').on('change', function () {
                 datatable.draw();
+            });
+
+            function readImage(e, id) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $(id).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(e.target.files['0']);
+            }
+
+            $('#banner').change(function (e) {
+                readImage(e, '#showImg')
+            });
+
+            $('#bannerEdit').change(function (e) {
+                readImage(e, '#showImgEdit')
             });
 
             // Event delete
@@ -345,6 +398,7 @@
                 $('#errorNumberEdit').text('');
                 $('#errorStartDateEdit').text('');
                 $('#errorEndDateEdit').text('');
+                $('#errorBannerEdit').text('');
 
                 linkEditCoupon = $(this).attr('href');
                 let couponId = $(this).data('id');
@@ -354,6 +408,7 @@
                 let startDate = $('#coupon-' + couponId).children().eq(4).text();
                 let endDate = $('#coupon-' + couponId).children().eq(5).text();
                 let status = $('#coupon-' + couponId).children().eq(6).children().eq(0).children().eq(0);
+                let srcBanner = $('#coupon-' + couponId).children().eq(7).children().eq(0).attr('src');
                 $('#statusCouponEdit').prop("checked", false);
 
                 if ($(status).is(":checked")) {
@@ -369,6 +424,7 @@
                 $('#numberEdit').val(number);
                 $('#startDateEdit').val(startDate);
                 $('#endDateEdit').val(endDate);
+                $('#showImgEdit').attr('src', srcBanner);
             });
 
             // Change status type
@@ -390,6 +446,7 @@
                         //toastr.success('Change status successfully')
                     },
                     error: function (response) {
+                        hideLoading();
                         setTimeout(function () {
                             if ($(buttonSwitch).is(":checked")) {
                                 $(buttonSwitch).prop('checked', false);
@@ -412,6 +469,7 @@
                 $('#errorStartDate').text('');
                 $('#errorEndDate').text('');
                 $('#errorStatus').text('');
+                $('#errorBanner').text('');
 
                 let link = $(this).attr('action');
                 let code = $('#code').val();
@@ -419,9 +477,8 @@
                 let number = $('#number').val();
                 let startDate = $('#startDate').val();
                 let endDate = $('#endDate').val();
+                let banner = $("#banner").prop('files')[0];
                 let status = 2;
-
-                console.log(startDate, endDate);
 
                 if ($('#statusCoupon').is(":checked")) {
                     status = 1;
@@ -434,6 +491,9 @@
                 formData.append("start_date", startDate);
                 formData.append("end_date", endDate);
                 formData.append("status", status);
+                if (banner !== undefined) {
+                    formData.append("banner", banner);
+                }
 
                 $.ajax({
                     url: link,
@@ -442,6 +502,7 @@
                     contentType: false,
                     data: formData,
                     success: function (response) {
+                        hideLoading();
                         let type = response['alert-type'];
                         let message = response['message'];
                         toastrMessage(type, message);
@@ -449,11 +510,13 @@
                         if (type === 'success') {
                             datatable.draw();
                             $('#formAddCoupon')[0].reset();
+                            $('#showImg').attr('src', '');
                         }
                     },
                     error: function (jqXHR) {
                         let response = jqXHR.responseJSON;
                         toastrMessage('error', 'Mã giảm giá tạo không thành công');
+                        hideLoading();
                         if (response?.errors?.code !== undefined) {
                             $('#errorCode').text(response.errors.code[0]);
                         }
@@ -477,6 +540,10 @@
                         if (response?.errors?.end_date !== undefined) {
                             $('#errorEndDate').text(response.errors.end_date[0]);
                         }
+
+                        if (response?.errors?.banner !== undefined) {
+                            $('#errorBanner').text(response.errors.banner[0]);
+                        }
                     },
                     complete: function () {
                         enableSubmitButton('#formAddCoupon', 300);
@@ -498,37 +565,46 @@
                 let startDate = $('#startDateEdit').val();
                 let endDate = $('#endDateEdit').val();
                 let number = $('#numberEdit').val();
+                let banner = $("#bannerEdit").prop('files')[0];
                 let status = 2;
 
                 if ($('#statusCouponEdit').is(":checked")) {
                     status = 1;
                 }
 
+                let formData = new FormData();
+                formData.append("code", code);
+                formData.append("discount", discount);
+                formData.append("number", number);
+                formData.append("start_date", startDate);
+                formData.append("end_date", endDate);
+                formData.append("status", status);
+
+                if (banner !== undefined) {
+                    formData.append("banner", banner);
+                }
+
                 $.ajax({
                     url: linkEditCoupon,
-                    method: "PUT",
-                    dataType: 'json',
-                    data: {
-                        code: code,
-                        discount: discount,
-                        start_date: startDate,
-                        end_date: endDate,
-                        number: number,
-                        status: status
-                    },
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
                     success: function (response) {
+                        hideLoading();
                         let type = response['alert-type'];
                         let message = response['message'];
                         toastrMessage(type, message);
 
                         if (type === 'success') {
-                            datatable.draw();
+                            datatable.ajax.reload(null, false);
                             $('#editModal').modal('hide');
                         }
                     },
                     error: function (jqXHR) {
                         let response = jqXHR.responseJSON;
                         toastrMessage('error', 'Cập nhật thông tin không thành công');
+                        hideLoading();
                         if (response?.errors?.code !== undefined) {
                             $('#errorCodeEdit').text(response.errors.code[0]);
                         }
@@ -543,6 +619,10 @@
 
                         if (response?.errors?.status !== undefined) {
                             $('#errorStatusEdit').text(response.errors.status[0]);
+                        }
+
+                        if (response?.errors?.banner !== undefined) {
+                            $('#errorBannerEdit').text(response.errors.banner[0]);
                         }
 
                         if (response?.errors?.start_date !== undefined) {

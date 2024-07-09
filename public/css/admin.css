@@ -64,8 +64,16 @@
     right: 0;
     z-index: 9999;
 }
+.notificationNewTourDropdown {
+    padding: 0;
+}
+
+.notificationNewTourDropdown p {
+    margin: 0;
+    border-bottom: 1px solid #adadad;
+}
 
 .notificationNewTourDropdown .new {
-    background-color: #36bea6;;
+    background-color: #adadad;
 }
 

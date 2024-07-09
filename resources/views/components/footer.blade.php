@@ -18,7 +18,6 @@
                             <nav class="nav flex-column">
                                 <a class="nav-link" href="{{ route('index') }}">{{ __('client.home') }}</a>
                                 <a class="nav-link" href="#">{{ __('client.about') }}</a>
-                                <a class="nav-link" href="#">{{ __('client.tours') }}</a>
                                 <a class="nav-link"
                                    href="{{ route('client.contact.index') }}">{{ __('client.contact') }}</a>
                             </nav>
@@ -28,7 +27,6 @@
                                 <a class="nav-link" href="#">{{ __('client.footer.partner_with_us') }}</a>
                                 <a class="nav-link" href="#">{{ __('client.footer.terms_and_conditions') }}</a>
                                 <a class="nav-link" href="#">{{ __('client.footer.privacy_policy') }}</a>
-                                <a class="nav-link" href="#">{{ __('client.footer.guest_policy') }}</a>
                             </nav>
                         </div>
                     </div>

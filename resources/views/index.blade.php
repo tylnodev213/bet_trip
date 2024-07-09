@@ -151,17 +151,35 @@
         </div>
     </div>
 
+    @if(!empty($coupons) && $coupons->isNotEmpty())
     <div class="ads container">
-        <div class="row">
-            <div class="col-6 ads-left">
-                <p>Trải nghiểm kỳ nghỉ với chúng tôi</p>
-                <span>Ưu đãi lên tới 40%</span>
+        <div class="box-title">
+            <p class="title">Ưu đãi cực kì hấp dẫn</p>
+        </div>
+        <div class="swiper mySwiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                    @foreach($coupons as $coupon)
+                        <div class="swiper-slide">
+                            <div class="d-flex">
+                                <div class="col-6 ads-left-custom">
+                                    <p>Nhập mã {{ $coupon->code }}</p>
+                                    <span>Ưu đãi lên tới {{ $coupon->discount }}%</span>
+                                </div>
+                                <div class="col-6 ads-right-custom">
+                                    <img src="{{ asset("storage/images/coupons/" . $coupon->banner) }}" alt="ads tour">
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
             </div>
-            <div class="col-6 ads-right">
-                <img src="{{ asset('images/ads.jpg') }}" alt="ads tour">
-            </div>
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev swiper-button-prev-custom"></div>
+            <div class="swiper-button-next swiper-button-next-custom"></div>
         </div>
     </div>
+    @endif
 
     <!-- Recomended tour -->
     <div class="recommended-tour container">
@@ -216,34 +234,22 @@
             </div>
         </div>
     </div>
-
-    <!-------------------- Email Deals -------------------->
-    <div class="mail-deals">
-        <div class="container">
-            <div class="row d-flex justify-content-around align-items-center">
-                <div class="col-12 col-lg-7">
-                    <div class="title-mail">
-                        <p>{{ __('client.index.leave_us_an_email') }}, </p>
-                        <p><span>{{ __('client.index.to_get_the_latest_deals') }}</span></p>
-                    </div>
-
-                </div>
-                <div class="col-12 col-lg-5">
-                    <div class="form-input-mail mt-2 mt-md-5 m-lg-0 d-flex justify-content-between align-items-center">
-                        <div class="input-mail input-inner-icon flex-grow-1 flex-shrink-1">
-                            <img src="{{ asset('images/icon/location.svg') }}" alt="support">
-                            <input class="form-control" type="text" placeholder="example@gmail.com">
-                        </div>
-                        <button class="flex-grow-0 flex-shrink-0 btn-send-mail">{{ __('client.index.send') }}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-------------------- End Email Deals-------------------->
 @endsection
 @section('js')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        var swiper = new Swiper(".mySwiper", {
+            autoplay: {
+            	delay: 5000,
+            	disableOnInteraction: false,
+            },
+            loop: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
         $(document).ready(function() {
             // Get screen size
             let windowsize = $(window).width();

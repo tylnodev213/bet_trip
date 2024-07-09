@@ -64,16 +64,19 @@
             <!-- ============================================================== -->
             <!-- End Messages -->
             <li class="nav-item dropdown notificationNewTour">
+                @if (!empty(Auth::user()->unreadNotifications->count()))
+                    <a class="notification">{{ Auth::user()->unreadNotifications->count() }}</a>
+                @endif
                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href=""
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
                         src="{{ asset('admins/assets/images/notification.png') }}" alt="user" class="rounded-circle"
                         width="31"></a>
                 <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY notificationNewTourDropdown">
-                    @foreach (Auth::user()->notifications as $notification)
+                    @foreach (Auth::user()->unreadNotifications()->limit(10)->get() as $notification)
                         <p class="dropdown-item" href="#">
                             <span>Xác nhận booking mới!</span><br>
                             <small>{{ $notification->data['content'] }}</small>
-                            <a href="{{ $notification->data['url'] }}">Chi tiết</a>
+                            <a href="{{ $notification->data['url'] . '?notification_id=' .  $notification->id }}">Chi tiết</a>
                         </p>
                     @endforeach
                 </div>

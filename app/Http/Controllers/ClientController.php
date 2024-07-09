@@ -9,6 +9,7 @@ use App\Libraries\VNPayPayment;
 use App\Models\Admin;
 use App\Models\Booking;
 use App\Models\Contact;
+use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Destination;
 use App\Models\Review;
@@ -40,14 +41,15 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index(Destination $destination, Type $type, Tour $tour)
+    public function index(Destination $destination, Type $type, Tour $tour, Coupon $coupon)
     {
         $destinations = $destination->getByStatus(1, 5);
         $types = $type->getByStatus(1, 3);
         $trendingTours = $tour->getByTrending(true, 3);
         $tours = $tour->getByStatus(1, 3);
+        $coupons = $coupon->getByStatus(1, 5);
 
-        return view('index', compact(['destinations', 'trendingTours', 'types', 'tours']));
+        return view('index', compact(['destinations', 'trendingTours', 'types', 'tours', 'coupons']));
     }
 
     /**
