@@ -57,7 +57,7 @@ class Booking extends Model
      */
     public function rule(): array
     {
-        return ['status' => 'required|integer|between:1,4'];
+        return ['status' => 'required|integer|between:1,5'];
     }
 
     /**
@@ -73,7 +73,7 @@ class Booking extends Model
         $diffStatus = $request->status - $booking->status;
         $booking->status = $request->status;
 
-        if ($diffStatus != 1 && ($request->status != BOOKING_CANCEL || $request->status != BOOKING_CANCEL_PROCESSING)) {
+        if ($diffStatus != 1 && !in_array($request->status, [BOOKING_CANCEL, BOOKING_CANCEL_PROCESSING])) {
             return false;
         }
 

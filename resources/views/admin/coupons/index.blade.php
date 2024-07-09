@@ -18,7 +18,7 @@
     </div>
 
     <div class="container-fluid row">
-        <div class="col-12 col-lg-5 col-xl-4">
+        <div class="col-12 col-lg-3 col-xl-4">
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('coupons.store') }}" id="formAddCoupon" method="post">
@@ -119,7 +119,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-lg-7 col-xl-8">
+        <div class="col-12 col-lg-9 col-xl-8">
             <div class="card">
                 <div class="card-body">
                     <table class="table table-striped table-bordered" id="couponTable">

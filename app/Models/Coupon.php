@@ -127,7 +127,6 @@ class Coupon extends Model
             })
             ->editColumn('banner', function ($data) {
                 $pathImage = asset("storage/images/coupons/" . $data->banner);
-
                 return view('components.image', compact('pathImage'));
             })
             ->addColumn('action', function ($data) {

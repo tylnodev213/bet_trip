@@ -85,6 +85,27 @@ class SendMailBookingJob implements ShouldQueue
                 Mail::to($this->booking->customer->email)->send($email);
                 break;
             case BOOKING_CANCEL_PROCESSING:
+                $dataNotification = [
+                    'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
+                    'url' => route('bookings.show', $this->booking->id),
+                ];
+                Admin::find(1)->notify(new NewTourNotification($dataNotification));
+                $options = array(
+                    'cluster' => 'ap1',
+                    'encrypted' => true
+                );
+
+                $pusher = new Pusher(
+                    env('PUSHER_APP_KEY'),
+                    env('PUSHER_APP_SECRET'),
+                    env('PUSHER_APP_ID'),
+                    $options
+                );
+
+                $pusher->trigger('NotificationEvent', 'send-message', [
+                    'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
+                    'url' => route('bookings.show', $this->booking->id),
+                ]);
                 $emailAdmin = new SendMailBookingCancelAdmin($this->booking);
                 Mail::to(config('config.email'))->send($emailAdmin);
                 break;

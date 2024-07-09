@@ -215,8 +215,7 @@
                                            role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;"
                                            width="100%">
                                         <tr>
-                                            <p style="text-align: center; color: white; font-size: 22px">Công ty Thắng
-                                                Lợi</p>
+                                            <p style="text-align: center; color: white; font-size: 22px">GoodTrip Group</p>
                                         </tr>
                                     </table>
                                     <table border="0" cellpadding="10" cellspacing="0" class="social_block"
