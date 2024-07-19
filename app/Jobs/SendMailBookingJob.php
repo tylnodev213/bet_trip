@@ -71,8 +71,7 @@ class SendMailBookingJob implements ShouldQueue
                 ]);
                 $email = new SendMailBooking($this->booking);
                 Mail::to(config('config.email'))->send($email);
-                break;
-            case BOOKING_CONFIRM:
+
                 $email = new SendMailBookingConfirm($this->booking);
                 Mail::to($this->booking->customer->email)->send($email);
                 break;
@@ -81,10 +80,6 @@ class SendMailBookingJob implements ShouldQueue
                 Mail::to($this->booking->customer->email)->send($email);
                 break;
             case BOOKING_CANCEL:
-                $email = new SendMailBookingCancel($this->booking);
-                Mail::to($this->booking->customer->email)->send($email);
-                break;
-            case BOOKING_CANCEL_PROCESSING:
                 $dataNotification = [
                     'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
                     'url' => route('bookings.show', $this->booking->id),
@@ -108,6 +103,9 @@ class SendMailBookingJob implements ShouldQueue
                 ]);
                 $emailAdmin = new SendMailBookingCancelAdmin($this->booking);
                 Mail::to(config('config.email'))->send($emailAdmin);
+
+                $email = new SendMailBookingCancel($this->booking);
+                Mail::to($this->booking->customer->email)->send($email);
                 break;
             default:
                 break;

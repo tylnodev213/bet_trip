@@ -8,7 +8,7 @@
         <br /><br />
         <ul class="list-unstyled multi-steps">
             <li>Booking</li>
-            <li class="{{ $booking->status == BOOKING_CONFIRM || $booking->status == BOOKING_CANCEL ? 'is-active' : '' }} {{ $booking->status == BOOKING_CANCEL ? 'is-cancel' : '' }}">{{ $booking->status == BOOKING_CANCEL ? 'Đã hủy' : 'Xác nhận' }}</li>
+            <li class="{{ $booking->status == BOOKING_NEW || $booking->status == BOOKING_CANCEL ? 'is-active' : '' }} {{ $booking->status == BOOKING_CANCEL ? 'is-cancel' : '' }}">{{ $booking->status == BOOKING_CANCEL ? 'Đã hủy' : 'Xác nhận' }}</li>
             <li class="{{ $booking->status == BOOKING_COMPLETE ? 'is-active' : '' }}">Hoàn thành</li>
         </ul>
     </div>
@@ -179,7 +179,7 @@
                 </ul>
                 @else
                     <ul class="list-policy">
-                        <li>Tiền cọc sẽ được hoàn trong 1 đến 5 ngày làm việc tới, nhân viên của chúng tôi sẽ liên hệ cho bạn. Nếu bạn thanh toán qua VnPay, có thể sẽ phải mất 1 đến 7 ngày làm việc của ngân hàng.</li>
+                        <li>Tiền sẽ được hoàn trong 1 đến 5 ngày làm việc tới, nhân viên của chúng tôi sẽ liên hệ cho bạn. Nếu bạn thanh toán qua VnPay, có thể sẽ phải mất 1 đến 7 ngày làm việc của ngân hàng.</li>
                         <li>Thật tiếc khi không được phục vụ cho bạn lần này. Hy vọng trong tương lai bạn vẫn sẽ tin tưởng vào dịch vụ của chúng tôi. Nếu có vấn đề gì cho chúng tôi biết ý kiến của bạn <a href="{{ route('client.contact.index') }}">tại đây</a></li>
                     </ul>
                 @endif
@@ -187,10 +187,6 @@
             @if ($booking->status != BOOKING_CANCEL)
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-danger" onclick="cancelBooking()">Hủy Booking</button>
-                </div>
-            @elseif($booking->status == BOOKING_CANCEL_PROCESSING)
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary">Đang chờ xác nhận ...</button>
                 </div>
             @endif
         </div>
@@ -229,7 +225,7 @@
                         url: '{{ route('order.cancel', $booking->id) }}',
                         method: 'POST',
                         dataType: 'json',
-                        data: {'status': {{ BOOKING_CANCEL_PROCESSING }} },
+                        data: {'status': {{ BOOKING_CANCEL }} },
                         success: function (response) {
                             if (response) {
                                 location.reload(true);

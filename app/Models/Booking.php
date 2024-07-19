@@ -73,8 +73,25 @@ class Booking extends Model
         $diffStatus = $request->status - $booking->status;
         $booking->status = $request->status;
 
-        if ($diffStatus != 1 && !in_array($request->status, [BOOKING_CANCEL, BOOKING_CANCEL_PROCESSING])) {
+        if ($diffStatus != 1 && $request->status !== BOOKING_CANCEL) {
             return false;
+        }
+
+        if ($request->status == BOOKING_CANCEL) {
+            $diffDay = Carbon::parse($booking->departure_time)->diffInDays(now());
+            $refund = $diffDay > 3 ? $booking->deposit : $booking->deposit * 0.8;
+            $booking->refund = $refund;
+            $response = VNPayPayment::refund([
+               'orderId' => $booking->invoice_no,
+               'amountRefund' => $refund,
+               'tranNo' => $booking->transaction_id,
+               'tranDate' => $booking->created_at,
+               'userName' => $booking->customer->name,
+            ]);
+
+            if (!$response->successful()) {
+                return false;
+            }
         }
 
         dispatch(new SendMailBookingJob($booking, $request->status));

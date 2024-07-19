@@ -36,17 +36,10 @@
                         <div class="card-body">
                             <h4 class="card-title d-flex justify-content-between align-items-center">
                                 <span>Thông tin đặt tour</span>
-                                @if($booking->status != BOOKING_COMPLETE && $booking->total != $booking->deposit)
+                                @if ($booking->status != BOOKING_COMPLETE && $booking->total != $booking->deposit)
                                     <button type="button" class="btn btn-info text-white edit " title="Thanh toán / cọc"
                                             data-toggle="modal" data-target="#editModal">
                                         Thánh toán / cọc
-                                    </button>
-                                @endif
-
-                                @if($booking->status >= BOOKING_CANCEL)
-                                    <button type="button" class="btn btn-warning text-white edit " title="Hoàn tiền"
-                                            data-toggle="modal" data-target="#createModal">
-                                        Hoàn tiền
                                     </button>
                                 @endif
                             </h4>
@@ -58,7 +51,7 @@
                                 </tr>
                                 <tr>
                                     <td class="tb-title">Thời gian:</td>
-                                    <td>{{ date('d/m/Y',strtotime($booking->departure_time)) }}</td>
+                                    <td>{{ date('d/m/Y',strtotime($booking->departure_time)) }} ~ {{ \Carbon\Carbon::parse($booking->departure_time)->addDays($booking->tour->duration)->format('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <td class="tb-title">Thanh toán:</td>
@@ -78,7 +71,7 @@
                                     <td>
                                         @include('components.status_booking', ['status' => $booking->status])
                                         @if (!empty($booking->refund))
-                                            <span class="badge badge-pill badge-warning">Đã hoàn tiền</span>
+                                            <span class="badge badge-pill badge-warning">Đã hoàn tiền: {{ number_format($booking->refund) }} đ</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -112,20 +105,14 @@
                                 <tr>
                                     <td colspan="2">
                                         @if($booking->status == BOOKING_NEW)
-                                            <button onclick="changeStatusBooking(2)" type="button"
-
-                                                    class="btn btn-success btn-status m-r-5 m-t-30">
-                                                Xác nhận
-                                            </button>
-                                        @elseif($booking->status == BOOKING_CONFIRM)
-                                            <button onclick="changeStatusBooking(3)" type="button"
+                                            <button onclick="changeStatusBooking({{ BOOKING_COMPLETE }})" type="button"
                                                     class="btn btn-primary btn-status m-r-5 m-t-30">
                                                 Hoàn thành
                                             </button>
                                         @endif
 
-                                        @if($booking->status < BOOKING_COMPLETE || $booking->status == BOOKING_CANCEL_PROCESSING)
-                                            <button onclick="changeStatusBooking(4)" type="button"
+                                        @if($booking->status < BOOKING_COMPLETE)
+                                            <button onclick="changeStatusBooking({{ BOOKING_CANCEL }})" type="button"
                                                     class="btn btn-danger btn-status m-t-30">
                                                 Hủy đơn hàng
                                             </button>
@@ -275,36 +262,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createModalLabel">Hoàn tiền</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name" class="text-left control-label col-form-label">
-                                Số tiền hoàn<span class="text-danger">*</span>
-                            </label>
-                            <div class="input-group">
-                                <input type="number" min="0" max="{{ $booking->deposit }}" class="form-control" name="refund" id="refund"
-                                       value="{{ $booking->refund }}" placeholder="Số tiền">
-                            </div>
-                            <p class="text-danger" id="errorRefund"></p>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-info" id="btnSubmitRefund">Lưu</button>
-                    </div>
-            </div>
-        </div>
-    </div>
 @endsection
 @section('js')
     <script type="text/javascript">
@@ -399,45 +356,6 @@
                 complete: function () {
                     hideLoading();
                     toastrMessage('success', 'Cập nhật tiền thanh toán thành công');
-                }
-            });
-
-        });
-
-        $('#btnSubmitRefund').click(function (e) {
-            e.preventDefault();
-            $('#errorRefund').text('');
-
-            let refund = $('#refund').val();
-            if (refund > {{ $booking->deposit }}) {
-                $('#errorRefund').text('Số tiền không được lớn hơn tổng tiền thanh toán');
-                return;
-            }
-            let formData = new FormData();
-            formData.append("_method", 'PUT');
-            formData.append("refund", refund);
-            showLoading();
-            $.ajax({
-                url: '{{ route('bookings.refund', $booking->id) }}',
-                method: "POST",
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function (response) {
-                    hideLoading();
-                    if (response) {
-                        location.reload(true);
-                    } else {
-                        toastrMessage('error', 'Cập nhật hoàn tiền không thành công');
-                    }
-                },
-                error: function (jqXHR) {
-                    hideLoading();
-                    toastrMessage('error', 'Cập nhật hoàn tiền không thành công');
-                },
-                complete: function () {
-                    hideLoading();
-                    toastrMessage('success', 'Cập nhật hoàn tiền thành công');
                 }
             });
 

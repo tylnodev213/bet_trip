@@ -36,6 +36,6 @@ class SendMailContactJob implements ShouldQueue
     public function handle()
     {
         $email = new SendMailContact($this->contact);
-        Mail::to('admin@ngaodu.com')->send($email);
+        Mail::to(config('config.email'))->send($email);
     }
 }

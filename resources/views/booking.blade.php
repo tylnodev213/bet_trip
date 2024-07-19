@@ -166,16 +166,18 @@
                                                  alt="vnpay">
                                         </label>
                                     </div>
-                                    <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="cash"
-                                               value="1" checked>
-                                        <label class="form-check-label" for="cash">
-                                            <span class="payment-title">Bằng tiền mặt</span>
-                                            <img class="payment-image"
-                                                 src="{{ asset('images/icon/cash.png') }}"
-                                                 alt="cash">
-                                        </label>
-                                    </div>
+                                    @if(env('ENABLE_CASH'))
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="cash"
+                                                   value="1" checked>
+                                            <label class="form-check-label" for="cash">
+                                                <span class="payment-title">Bằng tiền mặt</span>
+                                                <img class="payment-image"
+                                                     src="{{ asset('images/icon/cash.png') }}"
+                                                     alt="cash">
+                                            </label>
+                                        </div>
+                                    @endif
                                 </div>
                                 @error('payment_method')
                                 <p class="text-danger">{{ $message }}</p>
