@@ -77,7 +77,7 @@
                             <th>#</th>
                             <th>Ảnh</th>
                             <th>Tên tour</th>
-                            <th>Giá</th>
+                            <th width="100px">Giá</th>
                             <th>Trạng thái</th>
                             <th>Nổi bật</th>
                             <th>Chi tiết</th>

@@ -87,7 +87,8 @@ class BookingController extends Controller
     {
         $totalPrice = 0;
         $booking = Booking::findOrFail($id);
-        $totalPrice += $booking->price * $request->people;
+        $totalPrice += $booking->tour->price_adult * $request->number_adults;
+        $totalPrice += $booking->tour->price_child * $request->number_children;
 
         foreach ($request->room as $key => $value) {
             $bookingRoom = BookingRoom::find($key);
@@ -100,7 +101,8 @@ class BookingController extends Controller
 
         $totalPrice = $totalPrice - ($totalPrice * $booking->discount / 100);
         $booking->update([
-            'people' => $request->people,
+            'number_adults' => $request->number_adults,
+            'number_children' => $request->number_children,
             'total' => $totalPrice,
         ]);
 

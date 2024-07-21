@@ -52,7 +52,7 @@ class SendMailBookingJob implements ShouldQueue
                     'content' => 'KH ' . $this->booking->customer->name . ' vừa booking tour ' . $this->booking->tour->name,
                     'url' => route('bookings.show', $this->booking->id),
                 ];
-                Admin::find(1)->notify(new NewTourNotification($dataNotification));
+                Admin::find(1)->notify($newTourNotification = new NewTourNotification($dataNotification));
                 $options = array(
                     'cluster' => 'ap1',
                     'encrypted' => true
@@ -67,7 +67,7 @@ class SendMailBookingJob implements ShouldQueue
 
                 $pusher->trigger('NotificationEvent', 'send-message', [
                     'content' => 'KH ' . $this->booking->customer->name . ' vừa booking tour ' . $this->booking->tour->name,
-                    'url' => route('bookings.show', $this->booking->id),
+                    'url' => route('bookings.show', ['id' => $this->booking->id, 'notification_id' => $newTourNotification->id]),
                 ]);
                 $email = new SendMailBooking($this->booking);
                 Mail::to(config('config.email'))->send($email);
@@ -84,7 +84,7 @@ class SendMailBookingJob implements ShouldQueue
                     'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
                     'url' => route('bookings.show', $this->booking->id),
                 ];
-                Admin::find(1)->notify(new NewTourNotification($dataNotification));
+                Admin::find(1)->notify($newTourNotification = new NewTourNotification($dataNotification));
                 $options = array(
                     'cluster' => 'ap1',
                     'encrypted' => true
@@ -99,7 +99,7 @@ class SendMailBookingJob implements ShouldQueue
 
                 $pusher->trigger('NotificationEvent', 'send-message', [
                     'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
-                    'url' => route('bookings.show', $this->booking->id),
+                    'url' => route('bookings.show', ['id' => $this->booking->id, 'notification_id' => $newTourNotification->id]),
                 ]);
                 $emailAdmin = new SendMailBookingCancelAdmin($this->booking);
                 Mail::to(config('config.email'))->send($emailAdmin);

@@ -8,7 +8,8 @@
         <div class="container">
             <form id="formCheckout" action="{{ route('client.booking.store', $tour->slug) }}" method="post">
                 <input type="hidden" value="{{ $booking ? $booking->id : '' }}" id="bookingId" name="booking_id">
-                <input type="hidden" value="{{ $tour->price }}" id="price">
+                <input type="hidden" value="{{ $tour->price_adult }}" id="price_adult">
+                <input type="hidden" value="{{ $tour->price_child }}" id="price_child">
                 <input type="hidden" value="{{ $tour->duration }}" id="duration">
                 @csrf
                 <p class="title-checkout">Thông tin đặt tour</p>
@@ -69,9 +70,57 @@
                                             <p class="text-danger">{{ $message }}</p>
                                             @enderror
                                         </div>
-
                                     </div>
+                                </div>
 
+                                <div class="sub-checkout-item">
+                                    <p class="sub-header">Người đi </p>
+                                    <div class="row touristBlock" data-index="0">
+                                        <div class="col-6">
+                                            <label for="name" class="form-label title">Họ Tên <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="name"
+                                                   placeholder="Họ tên" name="followers[0][name]"
+                                                   value="{{ old('name', '') }}">
+                                            <p class="text-danger" id="errorFirstName"></p>
+                                            @error('name')
+                                            <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="age" class="form-label title">Tuổi </label>
+                                            <input type="text" class="form-control" id="followers[0][age]" min="1"
+                                                   placeholder="" name="age"
+                                                   value="{{ old('age', '') }}">
+                                            <p class="text-danger" id="errorEmail"></p>
+                                            @error('age')
+                                            <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="identification-follower" class="form-label title">Số CCCD (không bắt buộc)</label>
+                                            <input type="text" class="form-control" id="identification-follower"
+                                                   placeholder="Số Căn cước công dân"
+                                                   name="followers[0][identification]"
+                                                   value="{{ old('identification', '') }}">
+                                            <p class="text-danger" id="errorPhone"></p>
+                                            @error('identification')
+                                            <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="relationship" class="form-label title">Quan hệ với người đặt</label>
+                                            <input type="text" class="form-control" id="relationship"
+                                                   placeholder="Người thân, vợ chồng, bạn bè, ..."
+                                                   name="followers[0][relationship]"
+                                                   value="{{ old('relationship', '') }}">
+                                            <p class="text-danger" id="errorPhone"></p>
+                                            @error('relationship')
+                                            <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary addTourist">Thêm người đi</button>
                                 </div>
 
                                 <div class="sub-checkout-item">
@@ -110,12 +159,12 @@
                                             @enderror
                                         </div>
                                         <div class="col-6">
-                                            <label for="zipCode" class="form-label title">Mã Zipcode</label>
-                                            <input type="text" class="form-control" id="zipCode"
-                                                   placeholder="Mã Zipcode" name="zipcode"
-                                                   value="{{ old('zipcode', $booking ? $booking->customer->zipcode : '') }}">
-                                            <p class="text-danger" id="errorZipCode"></p>
-                                            @error('zipcode')
+                                            <label for="identification" class="form-label title">Mã CCCD</label>
+                                            <input type="text" class="form-control" id="identification"
+                                                   placeholder="Mã CCCD" name="identification"
+                                                   value="{{ old('identification', $booking ? $booking->customer->identification : '') }}">
+                                            <p class="text-danger" id="errorIdentification"></p>
+                                            @error('identification')
                                             <p class="text-danger">{{ $message }}</p>
                                             @enderror
                                         </div>
@@ -217,8 +266,12 @@
                     <div class="col-12 col-lg-5 col-xl-4 infoTour">
                         <div class="box-book-now box-coupon">
                             <div class="wrap-content-coupon">
-                                <span
-                                    class="card-title">{{ $tour->name . ' - ' . number_format($tour->price) . 'đ'}} </span>
+                                <span class="card-title">{{ $tour->name }} </span>
+                                <p class="card-text">Trẻ em (dưới 16 tuổi): <span
+                                        class="card-title">{{ number_format($tour->price_child) }} VNĐ</span>
+
+                                <p class="card-text">Người lớn: <span
+                                        class="card-title">{{ number_format($tour->price_adult) }} VNĐ</span>
                                 <p class="text-content mt-2">
                                     <img src="{{ asset('images/icon/location.svg') }}" alt="location">
                                     <span>{{ $tour->destination->name   }}</span>
@@ -250,15 +303,29 @@
                                 </div>
                                 <div class="input-inner-icon">
                                     <img src="{{ asset('images/icon/people.svg') }}" alt="people">
-                                    <select class="form-control" id="selectNumberPeople" name="people">
+                                    <select class="form-control" id="selectNumberAdults" name="number_adults">
                                         @for($i = 1; $i <= 20; $i++)
                                             <option
-                                                value="{{ $i }}" {{ (old('people', $people) == $i) ? 'selected' : '' }}>{{ $i }}
-                                                Người
+                                                value="{{ $i }}" {{ (old('number_adults', $numberAdults) == $i) ? 'selected' : '' }}>{{ $i }}
+                                                Người lớn
                                             </option>
                                         @endfor
                                     </select>
-                                    @error('people')
+                                    @error('number_adults')
+                                    <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="input-inner-icon">
+                                    <img src="{{ asset('images/icon/people.svg') }}" alt="people">
+                                    <select class="form-control" id="selectNumberChildren" name="number_children">
+                                        @for($i = 0; $i <= 20; $i++)
+                                            <option
+                                                value="{{ $i }}" {{ (old('number_children', $numberChildren) == $i) ? 'selected' : '' }}>{{ $i }}
+                                                Trẻ em
+                                            </option>
+                                        @endfor
+                                    </select>
+                                    @error('number_children')
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -395,7 +462,7 @@
             $('#errorAddress').text('');
             $('#errorCity').text('');
             $('#errorProvince').text('');
-            $('#errorZipCode').text('');
+            $('#errorIdentification').text('');
             $('#errorContry').text('');
             $('#errorRequirement').text('');
 
@@ -455,8 +522,8 @@
                         $('#errorProvince').text(response.errors.province[0]);
                     }
 
-                    if (response?.errors?.zipcode !== undefined) {
-                        $('#errorZipCode').text(response.errors.zipcode[0]);
+                    if (response?.errors?.identification !== undefined) {
+                        $('#errorIdentification').text(response.errors.identification[0]);
                     }
 
                     if (response?.errors?.country !== undefined) {
@@ -478,5 +545,37 @@
                 }
             });
         });
+
+        $(document).on('click', '.addTourist', function (e) {
+            e.preventDefault();
+            let lastItem = $(this).closest('.sub-checkout-item').find('.touristBlock:last');
+            let numberItem = $(this).closest('.sub-checkout-item').find('.touristBlock').length;
+            let clone = lastItem.clone(true);
+            clone.attr('data-index', numberItem);
+            clone.find('input').each(function () {
+                let currentName = $(this).attr('name');
+                let newName = currentName.replace(numberItem - 1, numberItem);
+                $(this).attr('name', newName);
+                $(this).val('');
+            });
+            clone.find('p.text-danger').remove();
+            if (!clone.find('.removeTourist').length) {
+                clone.append('<div class="mb-2 d-flex justify-content-end"><div class="col-1"><button class="btn btn-danger removeTourist">Xóa</button></div></div>');
+            }
+            lastItem.after(clone);
+        });
+
+        $(document).on('click', '.removeTourist', function (e) {
+            e.preventDefault();
+            $(this).closest('.touristBlock').remove();
+            $('.touristBlock').each(function (index) {
+                let currentIndex = $(this).attr('data-index');
+                $(this).find('input').each(function () {
+                    let currentName = $(this).attr('name');
+                    let newName = currentName.replace(currentIndex, index);
+                    $(this).attr('name', newName);
+                })
+            })
+        })
     </script>
 @endsection

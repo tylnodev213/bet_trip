@@ -46,8 +46,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tb-title">Zipcode:</td>
-                                <td>{{  $booking->customer->zipcode  }}</td>
+                                <td class="tb-title">Số CCCD:</td>
+                                <td>{{  $booking->customer->identification  }}</td>
                             </tr>
                         </table>
                     </div>
@@ -93,12 +93,15 @@
                             </tr>
                             <tr>
                                 <td class="tb-title">Giá:</td>
-                                <td>{{ number_format($booking->price) . ' đ'}}</td>
+                                <td>
+                                    Người lớn: {{ number_format($booking->tour->price_adult) . ' đ'}}<br/>
+                                    Trẻ em: {{ number_format($booking->tour->price_child) . ' đ'}}
+                                </td>
                             </tr>
                             <tr>
                                 <td class="tb-title">Số người:</td>
                                 <td>
-                                    {{ $booking->people }}
+                                    {{ $booking->number_adults }} người lớn {{ !empty($booking->number_children) ? 'và ' . $booking->number_children . ' trẻ em' : '' }}
                                 </td>
                             </tr>
                             <tr>
@@ -113,6 +116,12 @@
                                 <td class="tb-title">Đã thanh toán:</td>
                                 <td>{{ number_format($booking->deposit) . ' đ'}}</td>
                             </tr>
+                            @if($booking->status == BOOKING_CANCEL)
+                            <tr>
+                                <td class="tb-title">Số tiền hoàn:</td>
+                                <td>{{ number_format($booking->refund) . ' đ'}}</td>
+                            </tr>
+                            @endif
                         </table>
                     </div>
                 </div>
@@ -230,7 +239,7 @@
                             if (response) {
                                 location.reload(true);
                             } else {
-                                toastrMessage('error', 'Hủy không thành công, Vui lòng liên hệ lại vs chúng tôi');
+                                toastrMessage('error', 'Hủy không thành công, Vui lòng liên hệ lại với chúng tôi');
                             }
                         }
                     });

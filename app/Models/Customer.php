@@ -18,4 +18,9 @@ class Customer extends Model
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    public function followers()
+    {
+        return $this->hasMany(Followers::class, 'customer_id');
+    }
 }

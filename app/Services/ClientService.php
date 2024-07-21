@@ -9,6 +9,7 @@ use App\Models\BookingRoom;
 use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Destination;
+use App\Models\Followers;
 use App\Models\Room;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -29,14 +30,15 @@ class ClientService
             'last_name' => 'required|max:50',
             'email' => 'required|email|max:50',
             'phone' => 'required|regex:/^(0)[0-9]{9,10}$/',
-            'people' => 'required|integer|min:0|max:20',
+            'number_adults' => 'required|integer|min:0|max:20',
+            'number_children' => 'nullable|integer|min:0|max:20',
             'departure_time' => 'required|date',
             'payment_method' => 'required|integer|min:0|max:3',
             'address' => 'string|max:100|nullable',
             'city' => 'string|max:50|nullable',
             'province' => 'string|max:50|nullable',
             'country' => 'string|max:25|nullable',
-            'zipcode' => 'integer|nullable',
+            'identification' => 'required|string',
         ];
     }
 
@@ -58,10 +60,25 @@ class ClientService
             'city',
             'province',
             'country',
-            'zipcode',
+            'identification',
         ]));
         $input['status'] = 1;
         $customer = Customer::create($input);
+        $input = $request->only([
+            'followers',
+        ]);
+
+
+        $input = array_map(function ($item) use ($customer) {
+            return [
+                'customer_id' => $customer->id,
+                'name' => $item['name'] ?? '',
+                'age' => $item['age'] ?? 0,
+                'identification' => $item['identification'] ?? '',
+                'relationship' => $item['relationship'] ?? '',
+            ];
+        }, $input['followers']);
+        $followers = Followers::insert($input);
         $rooms = Room::where('tour_id', $tour->id)->get();
         $coupon = Coupon::where('code', $request->codeCoupon)->first();
 
@@ -85,18 +102,18 @@ class ClientService
         }
 
         $input = Utilities::clearAllXSS($request->only([
-            'people',
+            'number_adults',
+            'number_children',
             'payment_method',
             'departure_time',
             'requirement',
         ]));
         $input['customer_id'] = $customer->id;
         $input['tour_id'] = $tour->id;
-        $input['price'] = $tour->price;
         $input['discount_code'] = @$coupon->code;
         $input['discount'] = @$coupon->discount ?? 0;
 
-        $total = $tour->price * $request->people + $totalPriceRoom;
+        $total = $tour->price_adult * $request->number_adults + $tour->price_child * $request->number_children + $totalPriceRoom;
         $total = $total - $total * $input['discount'] / 100;
         $input['total'] = $total;
         $input['status'] = 1;
@@ -132,7 +149,8 @@ class ClientService
         $filterType = $request->filter_type;
 
         if (is_numeric($minPrice) && is_numeric($maxPrice)) {
-            $query->whereBetween('price', [$minPrice, $maxPrice]);
+            $query->where('price_child', '>=', $minPrice)
+                ->where('price_adult', '<=', $maxPrice);
         }
 
         if (!empty($filterDuration)) {

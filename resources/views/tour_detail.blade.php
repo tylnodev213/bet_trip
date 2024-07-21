@@ -452,10 +452,14 @@
                 <!-------------------- Form Book Now -------------------->
                 <div class="col-12 col-lg-5 col-xl-4">
                     <div class="box-book-now">
-                        <input type="hidden" value="{{ $tour->price }}" id="price">
+                        <input type="hidden" value="{{ $tour->price_child }}" id="price_child">
+                        <input type="hidden" value="{{ $tour->price_adult }}" id="price_adult">
                         <input type="hidden" value="{{ $tour->duration }}" id="duration">
-                        <p class="card-text">{{ __('client.from') }} <span
-                                class="card-title">{{ number_format($tour->price) }} VNĐ</span>
+                        <p class="card-text">Trẻ em (dưới 16 tuổi): <span
+                                class="card-title">{{ number_format($tour->price_child) }} VNĐ</span>
+
+                        <p class="card-text">Người lớn: <span
+                                class="card-title">{{ number_format($tour->price_adult) }} VNĐ</span>
                         </p>
                         <hr>
                         <div class="info-tour d-flex justify-content-between">
@@ -471,7 +475,7 @@
                             <div class="input-inner-icon">
                                 <img src="{{ asset('images/icon/schedule.svg') }}" alt="departure">
                                 <div id="departureTimePicker">
-                                    <input type="hidden" value="{{ date('Y-m-d') }}" name="departure_time"
+                                    <input type="hidden" value="{{ date('Y-m-d', strtotime('+ 1day')) }}" name="departure_time"
                                            id="inputDepartureTime">
                                     <div id="departureTimePicker">
                                         <input class="form-control" type="text" id="departureTime">
@@ -483,13 +487,26 @@
                             </div>
                             <div class="input-inner-icon">
                                 <img src="{{ asset('images/icon/people.svg') }}" alt="people">
-                                <select class="form-control" id="selectNumberPeople" name="people">
+                                <select class="form-control" id="selectNumberAdults" name="number_adults">
                                     @for($i = 1; $i <= 20; $i++)
-                                        <option value="{{ $i }}">{{ $i }} Người</option>
+                                        <option value="{{ $i }}">{{ $i }} Người lớn</option>
                                     @endfor
                                 </select>
+                                @error('number_adults')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
-
+                            <div class="input-inner-icon">
+                                <img src="{{ asset('images/icon/people.svg') }}" alt="people">
+                                <select class="form-control" id="selectNumberChildren" name="number_children">
+                                    @for($i = 0; $i <= 20; $i++)
+                                        <option value="{{ $i }}">{{ $i }}  Trẻ em</option>
+                                    @endfor
+                                </select>
+                                @error('number_children')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
 
                             <!--- PHÒNG -->
                             @if (!empty($tour->rooms) && $tour->rooms->isNotEmpty())
@@ -576,7 +593,7 @@
                                                 <img src="{{ asset('images/icon/schedule.svg') }}" alt="location">
                                                 <span>{{ \App\Libraries\Utilities::durationToString($tourItem->duration) }}</span>
                                             </p>
-                                            <p class="card-text">{{ __('client.from') }} <span class="card-title">{{ number_format($tourItem->price) }}đ</span>
+                                            <p class="card-text">{{ __('client.from') }} <span class="card-title">{{ number_format($tourItem->price_child) }}đ</span>
                                             </p>
                                         </div>
                                     </div>

@@ -123,7 +123,8 @@ class Tour extends Model
             'destination_id' => 'required|exists:destinations,id',
             'type_id' => 'required|exists:tour_types,id',
             'duration' => 'required|integer|between:1,127',
-            'price' => 'required|numeric|min:0',
+            'price_adult' => 'required|numeric|min:0',
+            'price_child' => 'required|numeric|min:0',
             'status' => 'required|integer|between:1,2',
             'trending' => 'required|integer|between:1,2',
             'image_seo' => 'image|mimes:jpeg,jpg,png,gif|max:5000',
@@ -140,7 +141,8 @@ class Tour extends Model
             $rule['destination_id'] = 'exists:destinations,id';
             $rule['type_id'] = 'exists:tour_types,id';
             $rule['duration'] = 'integer|between:1,127';
-            $rule['price'] = 'numeric|min:0';
+            $rule['price_adult'] = 'numeric|min:0';
+            $rule['price_child'] = 'numeric|min:0';
             $rule['status'] = 'integer|between:1,2';
             $rule['trending'] = 'integer|between:1,2';
         }
@@ -297,11 +299,11 @@ class Tour extends Model
         }
 
         if (!empty($minPrice)) {
-            $query->where('price', '>=', $minPrice);
+            $query->where('price_child', '>=', $minPrice);
         }
 
         if (!empty($maxPrice)) {
-            $query->where('price', '<=', $maxPrice);
+            $query->where('price_adult', '<=', $maxPrice);
         }
 
         if (!empty($duration)) {
@@ -377,7 +379,7 @@ class Tour extends Model
                 return view('components.image', compact('pathImage'));
             })
             ->editColumn('price', function ($data) {
-                return number_format($data->price) . ' đ';;
+                return number_format($data->price_child) . ' đ ~ ' . number_format($data->price_adult) . ' đ';
             })
             ->editColumn('status', function ($data) {
                 $link = route('tours.update', $data->id);
@@ -429,7 +431,7 @@ class Tour extends Model
 
                 return view('components.action_link', compact(['id', 'linkEdit', 'linkDelete']));
             })
-            ->rawColumns(['name', 'image', 'status', 'detail', 'action'])
+            ->rawColumns(['name', 'image', 'status', 'price', 'detail', 'action'])
             ->make(true);
     }
 }

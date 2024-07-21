@@ -112,13 +112,14 @@ class ClientController extends Controller
     public function booking(Request $request, $slug, Tour $tourModel)
     {
         $tour = $tourModel->getTourBySlug($slug);
-        $people = $request->people;
+        $numberAdults = $request->number_adults;
+        $numberChildren = $request->number_children;
         $departureTime = $request->departure_time;
         $listRooms = $request->room;
         $booking = null;
         $roomAvailable = $this->checkRoom($request, $slug)->getContent();
 
-        return view('booking', compact(['tour', 'people', 'departureTime', 'listRooms', 'booking', 'roomAvailable']));
+        return view('booking', compact(['tour', 'numberChildren', 'numberAdults', 'departureTime', 'listRooms', 'booking', 'roomAvailable']));
     }
 
     /**
@@ -253,14 +254,15 @@ class ClientController extends Controller
             'first_name' => 'tên',
             'last_name' => 'họ',
             'phone' => 'điện thoại',
-            'people' => 'sô người',
+            'number_adults' => 'số người lớn',
+            'number_children' => 'số trẻ em',
             'departure_time' => 'ngày',
             'payment_method' => 'loại thanh toán',
             'address' => 'địa chỉ',
             'city' => 'thành phố',
             'province' => 'huyện',
             'country' => 'quốc gia',
-            'zipcode' => 'mã zipcode',
+            'identification' => 'Căn cước công dân',
         ]);
 
         $this->notification->setMessage('Đặt tour thành công', Notification::SUCCESS);
@@ -323,7 +325,8 @@ class ClientController extends Controller
                 dispatch(new SendMailBookingJob($booking));
             } else {
                 $tour = $booking->tour;
-                $people = $booking->people;
+                $numberAdults = $booking->number_adults;
+                $numberChildren = $booking->number_children;
                 $departureTime = $booking->departure_time;
                 $roomId = $booking->room_id;
                 $numberRoom = $booking->number_room;
@@ -331,7 +334,8 @@ class ClientController extends Controller
 
                 return view('booking', compact([
                     'tour',
-                    'people',
+                    'numberAdults',
+                    'numberChildren',
                     'departureTime',
                     'roomId',
                     'numberRoom',

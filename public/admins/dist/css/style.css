@@ -14434,4 +14434,11 @@ File: scss
  ============================================================== */
 @media (max-width: 991.98px) {
   .do-block {
-    display: block !important; } }
+    display: block !important; }
+}
+
+.custom-people-label {
+    position: absolute;
+    top: 7px;
+    right: 40px;
+}

@@ -17,7 +17,6 @@ class CreateBookingsTable extends Migration
             $table->integer('id', true);
             $table->integer('tour_id')->index('tour_id');
             $table->integer('customer_id')->index('customer_id');
-            $table->float('price', 10, 0);
             $table->mediumInteger('people');
             $table->tinyInteger('payment_method')->default(1)->comment('1: Cash, 2: VnPay');
             $table->boolean('is_payment')->default(false)->comment('0: Unpaid, 1: paid');;

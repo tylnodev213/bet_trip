@@ -77,16 +77,28 @@
                                 </tr>
                                 <tr>
                                     <td class="tb-title">Giá:</td>
-                                    <td>{{ number_format($booking->price) . ' đ'}}</td>
+                                    <td>
+                                        Trẻ em: {{ number_format($booking->tour->price_child) . ' đ'}}<br/>
+                                        Người lớn: {{ number_format($booking->tour->price_adult) . ' đ'}}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="tb-title">Số người:</td>
                                     <td>
                                         @if($booking->status != BOOKING_COMPLETE)
-                                            <input type="number" class="form-control" min="1"
-                                                   value="{{ $booking->people }}" name="people">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label class="custom-people-label">Trẻ em</label>
+                                                    <input type="number" class="form-control" min="1" value="{{ $booking->number_children }}" name="number_children">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="custom-people-label">Người lớn</label>
+                                                    <input type="number" class="form-control" min="1" value="{{ $booking->number_adults }}" name="number_adults">
+                                                </div>
+                                            </div>
                                         @else
-                                            {{ $booking->people }}
+                                            <label>Trẻ em: {{ $booking->number_children }}</label>
+                                            <label>Người lớn: {{ $booking->number_adults }}</label>
                                         @endif
                                     </td>
                                 </tr>
@@ -158,8 +170,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="tb-title">Zipcode:</td>
-                                    <td>{{  $booking->customer->zipcode  }}</td>
+                                    <td class="tb-title">CCCD:</td>
+                                    <td>{{  $booking->customer->identification  }}</td>
                                 </tr>
                             </table>
                         </div>

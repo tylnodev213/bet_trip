@@ -57,7 +57,7 @@ class Booking extends Model
      */
     public function rule(): array
     {
-        return ['status' => 'required|integer|between:1,5'];
+        return ['status' => 'required|integer|between:1,3'];
     }
 
     /**
@@ -73,7 +73,7 @@ class Booking extends Model
         $diffStatus = $request->status - $booking->status;
         $booking->status = $request->status;
 
-        if ($diffStatus != 1 && $request->status !== BOOKING_CANCEL) {
+        if ($diffStatus != 1 && $request->status != BOOKING_CANCEL) {
             return false;
         }
 
@@ -108,9 +108,9 @@ class Booking extends Model
     public function getList(Request $request)
     {
         $search = $request->search;
-        $status = $request->status;
+        $status = $request->status ?? BOOKING_NEW;
 
-        $query = $this->latest()->with('tour.type', 'tour.destination', 'customer');
+        $query = $this->with('tour.type', 'tour.destination', 'customer');
 
         if (!empty($search)) {
             $search = Utilities::clearXSS($search);
@@ -129,10 +129,16 @@ class Booking extends Model
         }
 
         if (!empty($status)) {
-            $query->where('status', $status);
+            if ($status == BOOKING_NEW) {
+                $query->whereDate('departure_time', '>', now())->where('status', BOOKING_NEW);
+            } else if ($status == BOOKING_OVER_DATE) {
+                $query->whereDate('departure_time', '<=', now())->where('status', BOOKING_NEW);
+            } else {
+                $query->where('status', $status);
+            }
         }
 
-        $data = $query->get();
+        $data = $query->orderBy('departure_time')->orderBy('created_at')->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -153,17 +159,22 @@ class Booking extends Model
             ->editColumn('payment_method', function ($data) {
                 switch ($data->payment_method) {
                     case 1:
-                        return 'Cash';
+                        return 'Tiền mặt';
                     case 2:
-                        return 'CreditCard';
-                    case 3:
-                        return 'Paypal';
+                        return 'VnPay';
                     default:
                         return null;
                 }
             })
             ->editColumn('status', function ($data) {
                 return view('components.status_booking', ['status' => $data->status]);
+            })
+            ->editColumn('departure_time', function ($data) {
+                return date('d/m/Y', strtotime($data->departure_time)) . ' ~ ' . Carbon::parse($data->departure_time)->addDays($data->tour->duration)->format('d/m/Y');
+            })
+            ->editColumn('countdown', function ($data) {
+                $day = $data->departure_time > now() ? Carbon::parse($data->departure_time)->diffInDays(now()) : 0;
+                return view('components.countdown_booking', ['day' => $day]);
             })
             ->addColumn('total', function ($data) {
                 return number_format($data->total) . ' đ';
@@ -208,7 +219,6 @@ class Booking extends Model
                         $reject[$i] += $booking->total;
                         break;
                     case BOOKING_NEW:
-                    case BOOKING_CONFIRM:
                         $other[$i] += $booking->total;
                         break;
                 }

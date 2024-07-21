@@ -239,7 +239,7 @@ $(document).ready(function () {
         locale: {
             format: 'MM/DD/YYYY',
         },
-        minDate: moment(),
+        minDate: moment().add(1, 'days'),
     }, function (start, end) {
         $('#inputDepartureTime').val(start.format("YYYY-MM-DD"));
 
@@ -269,8 +269,9 @@ $(document).ready(function () {
     }
 
     // Calculate Price
-    let PRICE_DEFAULT = $('#price').val();
-    $('#selectNumberPeople').on('change', function () {
+    let PRICE_CHILD_DEFAULT = $('#price_child').val();
+    let PRICE_ADULT_DEFAULT = $('#price_adult').val();
+    $('#selectNumberAdults, #selectNumberChildren').on('change', function () {
         caculatePrice();
     });
 
@@ -282,9 +283,10 @@ $(document).ready(function () {
     });
 
     function caculatePrice() {
-        let numberPeople = $('#selectNumberPeople').val();
+        let numberAdults = $('#selectNumberAdults').val();
+        let numberChildren = $('#selectNumberChildren').val();
         let discount = $('#discountCoupon').val();
-        let price = numberPeople * PRICE_DEFAULT;
+        let price = parseInt(numberAdults) * PRICE_ADULT_DEFAULT + parseInt(numberChildren) * PRICE_CHILD_DEFAULT;
         if (isNaN(price)) {
             $('#totalPrice').text('VNĐ');
 

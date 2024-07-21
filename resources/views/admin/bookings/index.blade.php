@@ -31,11 +31,10 @@
                             </div>
                             <div class="col-10 col-sm-6 col-lg-3 mb-2">
                                 <select class="form-control" name="status" id="filterStatus">
-                                    <option value="">Chọn trạng thái</option>
-                                    <option value="1">Mới</option>
-                                    <option value="2">Xác nhận</option>
-                                    <option value="3">Hoàn thành</option>
-                                    <option value="4">Hủy</option>
+                                    <option value="1" selected>Mới</option>
+                                    <option value="2">Hoàn thành</option>
+                                    <option value="3">Hủy</option>
+                                    <option value="4">Quá hạn</option>
                                 </select>
                             </div>
                         </div>
@@ -45,11 +44,9 @@
                         <th>#</th>
                         <th>Khách hàng</th>
                         <th>Tour</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th>Số người</th>
+                        <th width="200px">Thời gian</th>
                         <th>Trạng thái</th>
-                        <th>Tổng</th>
+                        <th>Tình trạng</th>
                         <th>Thao tác</th>
                     </tr>
                     </thead>
@@ -82,11 +79,9 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'customer_name', name: 'customer_name'},
                     {data: 'tour.name', name: 'tour'},
-                    {data: 'customer.email', name: 'customer.email'},
-                    {data: 'customer.phone', name: 'customer.phone'},
-                    {data: 'people', name: 'people', className: 'align-middle text-center'},
+                    {data: 'departure_time', name: 'departure_time', className: 'align-middle text-center'},
                     {data: 'status', name: 'status', className: 'align-middle text-center'},
-                    {data: 'total', name: 'total'},
+                    {data: 'countdown', name: 'countdown', className: 'align-middle text-center'},
                     {data: 'action', name: 'action', className: 'align-middle text-center', width: 65},
                 ],
                 columnDefs: [
