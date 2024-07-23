@@ -64,8 +64,8 @@
             <!-- ============================================================== -->
             <!-- End Messages -->
             <li class="nav-item dropdown notificationNewTour">
-                @if (!empty(Auth::user()->unreadNotifications->count()))
-                    <a class="notification">{{ Auth::user()->unreadNotifications->count() }}</a>
+                @if (!empty(Auth::user()->unreadNotifications()->count()))
+                    <a class="notification">{{ Auth::user()->unreadNotifications()->count() }}</a>
                 @endif
                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href=""
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img

@@ -173,7 +173,7 @@ class Booking extends Model
                 return date('d/m/Y', strtotime($data->departure_time)) . ' ~ ' . Carbon::parse($data->departure_time)->addDays($data->tour->duration)->format('d/m/Y');
             })
             ->editColumn('countdown', function ($data) {
-                $day = $data->departure_time > now() ? Carbon::parse($data->departure_time)->diffInDays(now()) : 0;
+                $day = $data->departure_time > now() ? Carbon::parse($data->departure_time)->diffInDays(now()) : -1;
                 return view('components.countdown_booking', ['day' => $day]);
             })
             ->addColumn('total', function ($data) {

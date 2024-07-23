@@ -60,7 +60,7 @@
                             <table style="table-layout: fixed;width:-webkit-fill-available;">
                                 <tr>
                                     <th style="text-align: left; color: #1A1C21;">Ngày đặt:</th>
-                                    <td style="text-align: right;">{{ date("Y-m-d",strtotime($booking->created_at)) }}</td>
+                                    <td style="text-align: right;">{{ date("d-m-Y",strtotime($booking->created_at)) }}</td>
                                 </tr>
                                 <tr>
                                     <th style="text-align: left; color: #1A1C21;">Loại thanh toán :</th>
@@ -76,8 +76,10 @@
                     </tr>
                     <tr>
                         <td style="padding-bottom: 13px;">
-                            <p style="color: #5E6470;">Dịch vụ </p>
-                            <p style="font-weight: 700; color: #1A1C21;">Booking tour</p>
+                            <p style="color: #5E6470;">Dịch vụ <p style="color: #5E6470;">({{ $booking->tour->type->name }})</p></p>
+                            <p style="font-weight: 700; color: #1A1C21;">
+                            <p style="font-weight: 700; color: #1A1C21;">{{ $booking->tour->name }}</p>
+                            </p>
                         </td>
                         <td style="text-align: center; padding-bottom: 13px;">
                             <p style="color: #5E6470;">Mã hóa đơn</p>
@@ -85,7 +87,7 @@
                         </td>
                         <td style="text-align: end; padding-bottom: 13px;">
                             <p style="color: #5E6470;">Ngày xuất</p>
-                            <p style="font-weight: 700; color: #1A1C21;">{{ date("Y-m-d H:i:s") }}</p>
+                            <p style="font-weight: 700; color: #1A1C21;">{{ date("H:i:s d-m-Y") }}</p>
                         </td>
                     </tr>
                     <tr>
@@ -104,20 +106,36 @@
                                 <tbody>
                                 <tr>
                                     <td style="padding-block: 12px;">
-                                        <p style="font-weight: 700; color: #1A1C21;">{{ $booking->tour->name }}</p>
-                                        <p style="color: #5E6470;">{{ $booking->tour->type->name }}</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">Vé người lớn</p>
                                     </td>
                                     <td style="padding-block: 12px; text-align: end;">
-                                        <p style="font-weight: 700; color: #1A1C21;">{{ $booking->people }}</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">{{ $booking->number_adults }}</p>
                                     </td>
                                     <td style="padding-block: 12px; text-align: end;">
-                                        <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->price) }}đ</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->tour->price_adult) }}đ</p>
                                     </td>
                                     <td style="padding-block: 12px; text-align: end;">
-                                        <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->people * $booking->price) }}đ</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->number_adults * $booking->tour->price_adult) }}đ</p>
                                     </td>
                                 </tr>
+                                @if (!empty($booking->number_children))
+                                    <tr>
+                                        <td style="padding-block: 12px;">
+                                            <p style="font-weight: 700; color: #1A1C21;">Vé trẻ em</p>
+                                        </td>
+                                        <td style="padding-block: 12px; text-align: end;">
+                                            <p style="font-weight: 700; color: #1A1C21;">{{ $booking->number_children }}</p>
+                                        </td>
+                                        <td style="padding-block: 12px; text-align: end;">
+                                            <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->tour->price_child) }}đ</p>
+                                        </td>
+                                        <td style="padding-block: 12px; text-align: end;">
+                                            <p style="font-weight: 700; color: #1A1C21;">{{ number_format($booking->number_children * $booking->tour->price_child) }}đ</p>
+                                        </td>
+                                    </tr>
+                                @endif
                                 @foreach($booking->rooms as $room)
+                                    @if (!empty($room->pivot->number))
                                     <tr>
                                         <td style="padding-block: 12px;">
                                             <p style="font-weight: 700; color: #1A1C21;">{{ $room->name }}</p>
@@ -132,6 +150,7 @@
                                             <p style="font-weight: 700; color: #1A1C21;">{{ number_format($room->pivot->number * $room->pivot->price) }}đ</p>
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                                 </tbody>
                                 <tfoot>

@@ -172,7 +172,7 @@
 
         <div class="container">
             <div>
-                @if ($booking->status != BOOKING_CANCEL)
+                @if ($booking->status == BOOKING_NEW)
                 <ul class="list-policy">
                     <li>Vui lòng liên hệ với chúng tôi trong giờ hành chính vào các ngày trong tuần (trừ Chủ nhật) nếu bạn muốn thay đổi thông tin, số vé, số phòng, hay hủy tour</li>
                     <li> Bạn có thể hủy miễn phí đơn hàng trước 3 ngày trước khi chuyến hành trình
@@ -186,14 +186,18 @@
                         của nhà điều hành tour & quy định <a href="#">(xem chính sách và điều khoản để biết thêm chi tiết)</a> .
                     </li>
                 </ul>
-                @else
+                @elseif($booking->status == BOOKING_CANCEL)
                     <ul class="list-policy">
                         <li>Tiền sẽ được hoàn trong 1 đến 5 ngày làm việc tới, nhân viên của chúng tôi sẽ liên hệ cho bạn. Nếu bạn thanh toán qua VnPay, có thể sẽ phải mất 1 đến 7 ngày làm việc của ngân hàng.</li>
                         <li>Thật tiếc khi không được phục vụ cho bạn lần này. Hy vọng trong tương lai bạn vẫn sẽ tin tưởng vào dịch vụ của chúng tôi. Nếu có vấn đề gì cho chúng tôi biết ý kiến của bạn <a href="{{ route('client.contact.index') }}">tại đây</a></li>
                     </ul>
+                @else
+                    <ul class="list-policy">
+                        <li>Cảm ơn bạn đã tin tưởng sử dụng dịch vụ của chúng tôi!</li>
+                    </ul>
                 @endif
             </div>
-            @if ($booking->status != BOOKING_CANCEL)
+            @if ($booking->status == BOOKING_NEW && $booking->departure_time > date('Y-m-d'))
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-danger" onclick="cancelBooking()">Hủy Booking</button>
                 </div>

@@ -91,8 +91,8 @@ class ClientController extends Controller
         try {
             $token = $request->token;
             $bookingId = decrypt($token);
-            $booking = Booking::where('id', $bookingId)->where('tour_id', $tour->id)->first();
-            if (empty($booking)) {
+            $booking = Booking::where('id', $bookingId)->where('tour_id', $tour->id)->where('status', BOOKING_COMPLETE)->first();
+            if (empty($booking) || $booking->tour->reviews->count() >= $tour->bookings->count()) {
                 $enableComment = false;
             }
             $customer = !empty($booking) ? $booking->customer : null;

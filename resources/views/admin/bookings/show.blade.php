@@ -36,7 +36,7 @@
                         <div class="card-body">
                             <h4 class="card-title d-flex justify-content-between align-items-center">
                                 <span>Thông tin đặt tour</span>
-                                @if ($booking->status != BOOKING_COMPLETE && $booking->total != $booking->deposit)
+                                @if ($booking->status == BOOKING_NEW && $booking->total != $booking->deposit)
                                     <button type="button" class="btn btn-info text-white edit " title="Thanh toán / cọc"
                                             data-toggle="modal" data-target="#editModal">
                                         Thánh toán / cọc

@@ -52,7 +52,10 @@ class SendMailBookingJob implements ShouldQueue
                     'content' => 'KH ' . $this->booking->customer->name . ' vừa booking tour ' . $this->booking->tour->name,
                     'url' => route('bookings.show', $this->booking->id),
                 ];
-                Admin::find(1)->notify($newTourNotification = new NewTourNotification($dataNotification));
+                $admin = Admin::find(1);
+                $admin->notify(new NewTourNotification($dataNotification));
+                $latestNotification = $admin->notifications()->latest()->first();
+                $dataNotification['url'] .= '?notification_id=' . $latestNotification->id;
                 $options = array(
                     'cluster' => 'ap1',
                     'encrypted' => true
@@ -65,10 +68,7 @@ class SendMailBookingJob implements ShouldQueue
                     $options
                 );
 
-                $pusher->trigger('NotificationEvent', 'send-message', [
-                    'content' => 'KH ' . $this->booking->customer->name . ' vừa booking tour ' . $this->booking->tour->name,
-                    'url' => route('bookings.show', ['id' => $this->booking->id, 'notification_id' => $newTourNotification->id]),
-                ]);
+                $pusher->trigger('NotificationEvent', 'send-message', $dataNotification);
                 $email = new SendMailBooking($this->booking);
                 Mail::to(config('config.email'))->send($email);
 
@@ -84,7 +84,10 @@ class SendMailBookingJob implements ShouldQueue
                     'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
                     'url' => route('bookings.show', $this->booking->id),
                 ];
-                Admin::find(1)->notify($newTourNotification = new NewTourNotification($dataNotification));
+                $admin = Admin::find(1);
+                $admin->notify(new NewTourNotification($dataNotification));
+                $latestNotification = $admin->notifications()->latest()->first();
+                $dataNotification['url'] .= '?notification_id=' . $latestNotification->id;
                 $options = array(
                     'cluster' => 'ap1',
                     'encrypted' => true
@@ -97,10 +100,7 @@ class SendMailBookingJob implements ShouldQueue
                     $options
                 );
 
-                $pusher->trigger('NotificationEvent', 'send-message', [
-                    'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
-                    'url' => route('bookings.show', ['id' => $this->booking->id, 'notification_id' => $newTourNotification->id]),
-                ]);
+                $pusher->trigger('NotificationEvent', 'send-message', $dataNotification);
                 $emailAdmin = new SendMailBookingCancelAdmin($this->booking);
                 Mail::to(config('config.email'))->send($emailAdmin);
 
