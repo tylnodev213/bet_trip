@@ -1658,17 +1658,17 @@ div[slider] > input[type=range]::-ms-tooltip {
     margin-bottom: 10px;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion {
+.accordion {
     border: none;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item {
+.accordion .accordion-item {
     border: none;
     background: #F4F4F4;
     margin-bottom: 20px;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-button {
+.accordion .accordion-item .accordion-button {
     border: none;
     border-radius: 8px;
     font-size: 18px;
@@ -1679,27 +1679,27 @@ div[slider] > input[type=range]::-ms-tooltip {
     box-shadow: none;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-button:not(.collapsed) {
+.accordion .accordion-item .accordion-button:not(.collapsed) {
     border: none;
     box-shadow: none;
     background: #F4F4F4;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .collapsed {
+.accordion .accordion-item .collapsed {
     border: 1px solid #C4C4C4;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-button:not(.collapsed)::after {
+.accordion .accordion-item .accordion-button:not(.collapsed)::after {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-body .list-accordion {
+.accordion .accordion-item .accordion-body .list-accordion {
     list-style: none;
     padding-left: 25px;
     line-height: 30px;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-body .list-accordion .list-accordion-item {
+.accordion .accordion-item .accordion-body .list-accordion .list-accordion-item {
     position: relative;
     font-size: 16px;
     font-weight: 400;
@@ -1707,22 +1707,22 @@ div[slider] > input[type=range]::-ms-tooltip {
     margin-bottom: 30px;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-body .list-accordion .list-accordion-item .title-item {
+.accordion .accordion-item .accordion-body .list-accordion .list-accordion-item .title-item {
     color: #04316A;
     font-weight: bold;
     margin-bottom: 0;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-body .list-accordion .list-accordion-item .duration-item {
+.accordion .accordion-item .accordion-body .list-accordion .list-accordion-item .duration-item {
     margin-top: 30px;
     font-weight: bold;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-body .list-accordion .list-accordion-item .duration-item span {
+ .accordion .accordion-item .accordion-body .list-accordion .list-accordion-item .duration-item span {
     font-weight: 400;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .tab-pane .box-text .accordion .accordion-item .accordion-body .list-accordion li:after {
+ .accordion .accordion-item .accordion-body .list-accordion li:after {
     display: block;
     content: "";
     background: url("../images/icon/map-pin.svg");
@@ -1788,20 +1788,20 @@ div[slider] > input[type=range]::-ms-tooltip {
     display: none;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .panel-info .box-text .accordion .accordion-item .accordion-button img {
+.accordion .accordion-item .accordion-button img {
     padding-top: 6px;
     margin-right: 20px;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .panel-info .box-text .accordion .accordion-item .collapsed {
+.accordion .accordion-item .collapsed {
     color: black;
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .panel-info .box-text .accordion .accordion-item .collapsed img {
+.accordion .accordion-item .collapsed img {
     filter: brightness(0);
 }
 
-.box-detail-tour .box-detail-content .box-body-detail .box-info .tab-content .panel-info .box-text .accordion .accordion-item .accordion-body p {
+.accordion .accordion-item .accordion-body p {
     padding-left: 42px;
 }
 

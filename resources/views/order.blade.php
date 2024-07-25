@@ -1,5 +1,8 @@
 @extends('layouts.client')
 @section('content')
+    <link href="{{ asset('css/bootstrap-v5.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ asset('css/toastr.css') }}">
     <div class="banner-title mb-5">
         <img src="{{ asset('images/page-title.jpg') }}" alt="banner title">
         <p class="title">Thông tin booking</p>
@@ -170,6 +173,71 @@
             </div>
         @endif
 
+        <div class="box-info">
+            <!-- tab -->
+            <!-- panel -->
+            <div class="tab-content" id="pills-tabContent">
+                <!-- panel descriptions -->
+                <div class="tab-pane panel-desc fade active show" id="pills-desc" role="tabpanel"
+                     aria-labelledby="pills-desc-tab">
+                    @if (!empty($booking->tour->itineraries) && $booking->tour->itineraries->isNotEmpty())
+                        <div class="box-text">
+                            <p class="panel-title">
+                                {{ __('client.itinerary') }}
+                            </p>
+                            <!-- Accordion Itinerary -->
+                            <div class="accordion" id="accordionItinerary">
+                                @foreach($booking->tour->itineraries as $itinerary)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header"
+                                            id="panelsItineraryHeading{{$loop->index}}">
+                                            <button
+                                                class="accordion-button {{ $loop->first ?: 'collapsed'  }}"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#panelsItineraryCollapse{{$loop->index}}"
+                                                aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                                                aria-controls="panelsItineraryCollapse{{$loop->index}}">
+                                                {{ __('client.detail.day') . ' ' . $loop->index + 1}}
+                                                : {{ $itinerary->name }}
+                                                ({{ $itinerary->places->count() . ' ' . __('client.detail.stops')}}
+                                                )
+                                            </button>
+                                        </h2>
+                                        <div id="panelsItineraryCollapse{{$loop->index}}"
+                                             class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
+                                             aria-labelledby="panelsItineraryHeading{{$loop->index}}">
+                                            <div class="accordion-body">
+                                                <ul class="list-accordion">
+                                                    @foreach($itinerary->places as $place)
+                                                        <li class="list-accordion-item">
+                                                            <p class="title-item"> {{ $place->name }}</p>
+                                                            {!! $place->description !!}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                    @if (!empty($booking->tour->map))
+                        <div class="box-text">
+                            <p class="panel-title">
+                                Maps
+                            </p>
+                            <div class="box-maps">
+                                {!! $booking->tour->map !!}
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+            </div>
+        </div>
+
         <div class="container">
             <div>
                 @if ($booking->status == BOOKING_NEW)
@@ -183,7 +251,7 @@
                         thanh toán của VNPay.
                     </li>
                     <li> Điều khoản Sử dụng, Chính sách Bảo mật của Khách hàng, cùng với các quy tắc
-                        của nhà điều hành tour & quy định <a href="#">(xem chính sách và điều khoản để biết thêm chi tiết)</a> .
+                        của nhà điều hành tour & quy định <a href="javascript:void(0);" data-toggle="modal" data-target="#ruleModal">(xem chính sách và điều khoản để biết thêm chi tiết)</a> .
                     </li>
                 </ul>
                 @elseif($booking->status == BOOKING_CANCEL)

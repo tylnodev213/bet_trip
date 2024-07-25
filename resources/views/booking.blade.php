@@ -247,7 +247,7 @@
                                             thanh toán của VNPay
                                         </li>
                                         <li> Điều khoản Sử dụng, Chính sách Bảo mật của Khách hàng, cùng với các quy tắc
-                                            của nhà điều hành tour & quy định<a href="#">(xem danh sách để biết thêm chi tiết)</a> .
+                                            của nhà điều hành tour & quy định<a href="javascript:void(0);" data-toggle="modal" data-target="#ruleModal">(xem danh sách để biết thêm chi tiết)</a> .
                                         </li>
                                     </ul>
                                 </div>
@@ -416,6 +416,8 @@
             </div>
         </div>
     </div>
+
+
     <!-------------------- End Thanks -------------------->
 
     <!-------------------- Other Data -------------------->

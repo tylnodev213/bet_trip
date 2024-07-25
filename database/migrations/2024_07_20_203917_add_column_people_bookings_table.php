@@ -17,6 +17,7 @@ class AddColumnPeopleBookingsTable extends Migration
             $table->mediumInteger('number_adults');
             $table->mediumInteger('number_children')->default(0);
             $table->dropColumn('people');
+            $table->dropColumn('price');
         });
     }
 
@@ -31,6 +32,7 @@ class AddColumnPeopleBookingsTable extends Migration
             $table->dropColumn('number_adults');
             $table->dropColumn('number_children');
             $table->mediumInteger('people');
+            $table->mediumInteger('price');
         });
     }
 }

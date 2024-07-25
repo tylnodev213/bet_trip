@@ -56,7 +56,31 @@
     <div id="contentComponent">
         @yield('content')
     </div>
-
+    <div class="modal fade" id="ruleModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id=""></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h2>ĐIỀU KHOẢN SỬ DỤNG</h2>
+                    <hr>
+                    <strong>BẠN PHẢI ĐỌC NHỮNG ĐIỀU KHOẢN SỬ DỤNG DƯỚI ĐÂY TRƯỚC KHI SỬ DỤNG TRANG WEB NÀY. VIỆC SỬ DỤNG TRANG WEB NÀY XÁC NHẬN VIỆC CHẤP THUẬN VÀ TUÂN THỦ CÁC ĐIỀU KHOẢN VÀ ĐIỀU KIỆN DƯỚI ĐÂY.</strong>
+                    <ol>
+                        <li>PHẠM VI CÁC DỊCH VỤ CỦA CHÚNG TÔI</li>
+                        <li>HỦY BỎ</li>
+                        <li>QUYỀN RIÊNG TƯ</li>
+                    </ol>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-------------------- Footer -------------------->
     @include('components.footer')
 </body>
