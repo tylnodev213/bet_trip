@@ -9,7 +9,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Itinerary</li>
+                            <li class="breadcrumb-item active" aria-current="page">Hành trình</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,14 +24,14 @@
                     <form href="{{ route('itineraries.store', $tourId) }}" id="formAddItinerary" method="post">
                         @csrf
                         <div class="form-group">
-                            Title<span class="text-danger">*</span>
+                            Tiêu đề<span class="text-danger">*</span>
                             <input type="text" class="form-control" name="name" id="name" placeholder="Title">
                             <p class="text-danger" id="errorName"></p>
                         </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-info mb-3">
-                                Add Itinerary
+                                Thêm mới
                             </button>
                         </div>
 
@@ -43,14 +43,14 @@
         <div class="col-12 col-lg-8">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">List of Itineraries</h4>
+                    <h4 class="card-title">Danh sách hành trình</h4>
                     <table class="table table-striped table-bordered" id="destinationTable">
                         <thead>
                         <tr>
-                            <th>Day</th>
-                            <th>Name</th>
-                            <th>Place</th>
-                            <th>Action</th>
+                            <th>Ngày</th>
+                            <th>Tiêu đề</th>
+                            <th>Nơi đến</th>
+                            <th>Thao tác</th>
                         </tr>
                         </thead>
                     </table>
@@ -65,7 +65,7 @@
                 <div class="modal-content">
                     <form id="formEditItinerary">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit itinerary</h5>
+                            <h5 class="modal-title" id="editModalLabel">Cập nhật hành trình</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -73,18 +73,18 @@
                         <div class="modal-body">
                             <div class="form-group row">
                                 <label for="name" class="col-12">
-                                    Name Itinerary<span class="text-danger">*</span>
+                                    Tiêu đề<span class="text-danger">*</span>
                                 </label>
                                 <div class="col-12">
                                     <input type="text" class="form-control" name="name" id="nameEdit"
-                                           placeholder="Name itinerary">
+                                           placeholder="">
                                     <p class="text-danger" id="errorNameEdit"></p>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-info" id="btnSubmitEdit">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-info" id="btnSubmitEdit">Lưu</button>
                         </div>
                     </form>
                 </div>
@@ -130,12 +130,12 @@
                     buttonsStyling: false
                 })
                 swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Bạn có chắc?',
+                    text: "Bạn không thể hoàn tác lại!",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel!',
+                    confirmButtonText: 'Ok, tôi muốn xóa!',
+                    cancelButtonText: 'Không!',
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {

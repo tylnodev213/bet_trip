@@ -51,12 +51,6 @@ class Contact extends Model
         return $contact;
     }
 
-    /**
-     * Store booking when user book tour
-     *
-     * @param Request $request
-     * @return void
-     */
     public function saveData(Request $request)
     {
         $input = Utilities::clearAllXSS($request->only(['name', 'email', 'phone', 'message']));
@@ -76,7 +70,7 @@ class Contact extends Model
     public function getList(Request $request)
     {
         $search = $request->search;
-        $status = $request->status;
+        $status = $request->status ?? 1;
 
         $query = $this->latest();
         if (!empty($search)) {

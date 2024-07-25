@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Pusher\Pusher;
 
@@ -48,30 +49,10 @@ class SendMailBookingJob implements ShouldQueue
 
         switch ($status) {
             case BOOKING_NEW:
-                $dataNotification = [
-                    'content' => 'KH ' . $this->booking->customer->name . ' vừa booking tour ' . $this->booking->tour->name,
-                    'url' => route('bookings.show', $this->booking->id),
-                ];
-                $admin = Admin::find(1);
-                $admin->notify(new NewTourNotification($dataNotification));
-                $latestNotification = $admin->notifications()->latest()->first();
-                $dataNotification['url'] .= '?notification_id=' . $latestNotification->id;
-                $options = array(
-                    'cluster' => 'ap1',
-                    'encrypted' => true
-                );
-
-                $pusher = new Pusher(
-                    env('PUSHER_APP_KEY'),
-                    env('PUSHER_APP_SECRET'),
-                    env('PUSHER_APP_ID'),
-                    $options
-                );
-
-                $pusher->trigger('NotificationEvent', 'send-message', $dataNotification);
                 $email = new SendMailBooking($this->booking);
                 Mail::to(config('config.email'))->send($email);
-
+                break;
+            case BOOKING_CONFIRM:
                 $email = new SendMailBookingConfirm($this->booking);
                 Mail::to($this->booking->customer->email)->send($email);
                 break;
@@ -80,30 +61,10 @@ class SendMailBookingJob implements ShouldQueue
                 Mail::to($this->booking->customer->email)->send($email);
                 break;
             case BOOKING_CANCEL:
-                $dataNotification = [
-                    'content' => 'KH ' . $this->booking->customer->name . ' vừa hủy booking tour ' . $this->booking->tour->name,
-                    'url' => route('bookings.show', $this->booking->id),
-                ];
-                $admin = Admin::find(1);
-                $admin->notify(new NewTourNotification($dataNotification));
-                $latestNotification = $admin->notifications()->latest()->first();
-                $dataNotification['url'] .= '?notification_id=' . $latestNotification->id;
-                $options = array(
-                    'cluster' => 'ap1',
-                    'encrypted' => true
-                );
-
-                $pusher = new Pusher(
-                    env('PUSHER_APP_KEY'),
-                    env('PUSHER_APP_SECRET'),
-                    env('PUSHER_APP_ID'),
-                    $options
-                );
-
-                $pusher->trigger('NotificationEvent', 'send-message', $dataNotification);
-                $emailAdmin = new SendMailBookingCancelAdmin($this->booking);
-                Mail::to(config('config.email'))->send($emailAdmin);
-
+                if (!Auth::check()) {
+                    $emailAdmin = new SendMailBookingCancelAdmin($this->booking);
+                    Mail::to(config('config.email'))->send($emailAdmin);
+                }
                 $email = new SendMailBookingCancel($this->booking);
                 Mail::to($this->booking->customer->email)->send($email);
                 break;

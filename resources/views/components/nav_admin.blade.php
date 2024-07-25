@@ -74,7 +74,7 @@
                 <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY notificationNewTourDropdown">
                     @foreach (Auth::user()->unreadNotifications()->limit(10)->get() as $notification)
                         <p class="dropdown-item" href="#">
-                            <span>Xác nhận booking mới!</span><br>
+                            <span>Thông báo mới!</span><br>
                             <small>{{ $notification->data['content'] }}</small>
                             <a href="{{ $notification->data['url'] . '?notification_id=' .  $notification->id }}">Chi tiết</a>
                         </p>

@@ -289,7 +289,7 @@
                                                         class="rate-item d-flex justify-content-center align-items-center">
                                                         <p class="number-star d-flex justify-content-end align-items-center">
                                                             <span class="pe-1">5</span>
-                                                            <i class="bi bi-star-fill fill-gray"></i>
+                                                            <i class="fa fa-star fill-yellow"></i>
                                                         </p>
                                                         <div class="progress">
                                                             <div class="progress-bar bg-warning"
@@ -305,7 +305,7 @@
                                                         class="rate-item d-flex justify-content-center align-items-center">
                                                         <p class="number-star d-flex justify-content-end align-items-center">
                                                             <span class="pe-1">4</span>
-                                                            <i class="bi bi-star-fill fill-gray"></i>
+                                                            <i class="fa fa-star fill-yellow"></i>
                                                         </p>
                                                         <div class="progress">
                                                             <div class="progress-bar bg-warning"
@@ -321,7 +321,7 @@
                                                         class="rate-item d-flex justify-content-center align-items-center">
                                                         <p class="number-star d-flex justify-content-end align-items-center">
                                                             <span class="pe-1">3</span>
-                                                            <i class="bi bi-star-fill fill-gray"></i>
+                                                            <i class="fa fa-star fill-yellow"></i>
                                                         </p>
                                                         <div class="progress">
                                                             <div class="progress-bar bg-warning"
@@ -337,7 +337,7 @@
                                                         class="rate-item d-flex justify-content-center align-items-center">
                                                         <p class="number-star d-flex justify-content-end align-items-center">
                                                             <span class="pe-1">2</span>
-                                                            <i class="bi bi-star-fill fill-gray"></i>
+                                                            <i class="fa fa-star fill-yellow"></i>
                                                         </p>
                                                         <div class="progress">
                                                             <div class="progress-bar bg-warning"
@@ -353,7 +353,7 @@
                                                         class="rate-item d-flex justify-content-center align-items-center">
                                                         <p class="number-star d-flex justify-content-end align-items-center">
                                                             <span class="pe-1">1</span>
-                                                            <i class="bi bi-star-fill fill-gray"></i>
+                                                            <i class="fa fa-star fill-yellow"></i>
                                                         </p>
                                                         <div class="progress">
                                                             <div class="progress-bar bg-warning"

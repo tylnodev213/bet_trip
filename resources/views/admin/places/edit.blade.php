@@ -9,12 +9,12 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('itineraries.index', $itinerary->tour_id) }}">Itinerary</a>
+                            <li class="breadcrumb-item"><a href="{{ route('itineraries.index', $itinerary->tour_id) }}">Hành trình</a>
                             </li>
                             <li class="breadcrumb-item"><a
-                                    href="{{ route('places.index', [$itinerary->tour_id, $itinerary->id]) }}">Place</a>
+                                    href="{{ route('places.index', [$itinerary->tour_id, $itinerary->id]) }}">Danh sách điểm đến</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                            <li class="breadcrumb-item active" aria-current="page">Cập nhật</li>
                         </ol>
                     </nav>
                 </div>
@@ -32,8 +32,8 @@
                     @csrf
 
                     <div class="form-group">
-                        <label for="name">Name place <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Name place"
+                        <label for="name">Tên điểm đến <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder=""
                                value="{{  empty(old('name')) ? $place->name : old('name')}}">
                         @error('name')
                         <p class="text-danger">{{ $message }}</p>
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Description</label>
+                        <label for="description">Mô tả</label>
                         <textarea name="description" id="description" cols="30"
                                   rows="10">{{ old('description', $place->description) }}</textarea>
                         @error('description')
@@ -49,7 +49,7 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-info waves-effect waves-light">Update</button>
+                    <button type="submit" class="btn btn-info waves-effect waves-light">Cập nhật</button>
 
                 </form>
             </div>

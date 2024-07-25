@@ -11,8 +11,8 @@
         <br /><br />
         <ul class="list-unstyled multi-steps">
             <li>Booking</li>
-            <li class="{{ $booking->status == BOOKING_NEW || $booking->status == BOOKING_CANCEL ? 'is-active' : '' }} {{ $booking->status == BOOKING_CANCEL ? 'is-cancel' : '' }}">{{ $booking->status == BOOKING_CANCEL ? 'Đã hủy' : 'Xác nhận' }}</li>
-            <li class="{{ $booking->status == BOOKING_COMPLETE ? 'is-active' : '' }}">Hoàn thành</li>
+            <li class="{{ $booking->status == BOOKING_CONFIRM ? 'is-active' : '' }}">Xác nhận</li>
+            <li class="{{ $booking->status == BOOKING_COMPLETE || $booking->status == BOOKING_CANCEL ? 'is-active' : '' }} {{ $booking->status == BOOKING_CANCEL ? 'is-cancel' : '' }}">{{ $booking->status == BOOKING_CANCEL ? 'Đã hủy' : 'Hoàn thành' }}</li>
         </ul>
     </div>
 
@@ -79,7 +79,7 @@
                             </tr>
                             <tr>
                                 <td class="tb-title">Thời gian:</td>
-                                <td>{{ date('d/m/Y',strtotime($booking->departure_time)) }}</td>
+                                <td>{{ date('d/m/Y',strtotime($booking->departure_time)) }} ~ {{ \Carbon\Carbon::parse($booking->departure_time)->addDays($booking->tour->duration)->format('d/m/Y') }}</td>
                             </tr>
                             <tr>
                                 <td class="tb-title">Thanh toán:</td>
@@ -153,9 +153,10 @@
                                 </thead>
                                 <tbody>
                                 @foreach($booking->rooms as $room)
+                                    @php $index = 1 @endphp
                                     @if ($room->pivot->number > 0)
                                         <tr>
-                                            <td>{{ $loop->index + 1  }}</td>
+                                            <td>{{ $index  }}</td>
                                             <td>{{ $room->name }}</td>
                                             <td>
                                                 {{ $room->pivot->number }}
@@ -163,6 +164,7 @@
                                             <td>{{ number_format($room->pivot->price) }}đ</td>
                                             <td>{{ number_format($room->pivot->number * $room->pivot->price) }}đ</td>
                                         </tr>
+                                        @php $index++ @endphp
                                     @endif
                                 @endforeach
                                 </tbody>
@@ -240,7 +242,7 @@
 
         <div class="container">
             <div>
-                @if ($booking->status == BOOKING_NEW)
+                @if (in_array($booking->status, [BOOKING_NEW, BOOKING_CONFIRM]))
                 <ul class="list-policy">
                     <li>Vui lòng liên hệ với chúng tôi trong giờ hành chính vào các ngày trong tuần (trừ Chủ nhật) nếu bạn muốn thay đổi thông tin, số vé, số phòng, hay hủy tour</li>
                     <li> Bạn có thể hủy miễn phí đơn hàng trước 3 ngày trước khi chuyến hành trình
@@ -265,7 +267,7 @@
                     </ul>
                 @endif
             </div>
-            @if ($booking->status == BOOKING_NEW && $booking->departure_time > date('Y-m-d'))
+            @if (in_array($booking->status, [BOOKING_NEW, BOOKING_CONFIRM])  && $booking->departure_time > date('Y-m-d'))
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-danger" onclick="cancelBooking()">Hủy Booking</button>
                 </div>

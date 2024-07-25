@@ -10,12 +10,12 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('itineraries.index', $itinerary->tour_id) }}">Itinerary</a>
+                            <li class="breadcrumb-item"><a href="{{ route('itineraries.index', $itinerary->tour_id) }}">Hành trình</a>
                             </li>
                             <li class="breadcrumb-item"><a
-                                    href="{{ route('places.index', [$itinerary->tour_id, $itinerary->id]) }}">Place</a>
+                                    href="{{ route('places.index', [$itinerary->tour_id, $itinerary->id]) }}">Danh sách điểm đến</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Create</li>
+                            <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
                         </ol>
                     </nav>
                 </div>
@@ -34,9 +34,9 @@
                     @csrf
                     <div class="form-group">
                         <label for="name">
-                            Name place <span class="text-danger">*</span>
+                            Tên địa điểm <span class="text-danger">*</span>
                         </label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Name place"
+                        <input type="text" class="form-control" name="name" id="name" placeholder=""
                                value="{{ old('name') }}">
                         @error('name')
                         <p class="text-danger">{{ $message }}</p>
@@ -45,7 +45,7 @@
 
                     <div class="form-group">
                         <label for="description">
-                            Description
+                            Mô tả
                         </label>
                         <textarea name="description" id="description" cols="30"
                                   rows="10">{{ old('description') }}</textarea>
@@ -54,7 +54,7 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-info waves-effect waves-light">Add new place</button>
+                    <button type="submit" class="btn btn-info waves-effect waves-light">Thêm</button>
                 </form>
             </div>
         </div>

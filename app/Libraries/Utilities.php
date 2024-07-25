@@ -123,7 +123,7 @@ class Utilities
             $rate['fiveStar'] = $rate['countReviews'][5] / $reviews->count() * 100;
         }
 
-        $rate['total'] = 5;
+        $rate['total'] = 0;
 
         if (count($reviews) > 0) {
             $rate['total'] = ceil($sumRate / count($reviews) * 10) / 10;

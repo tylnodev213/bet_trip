@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Jobs\SendMailBookingJob;
 use App\Libraries\Utilities;
 use App\Libraries\VNPayPayment;
+use App\Services\NotifyService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
@@ -57,7 +59,7 @@ class Booking extends Model
      */
     public function rule(): array
     {
-        return ['status' => 'required|integer|between:1,3'];
+        return ['status' => 'required|integer|between:1,4'];
     }
 
     /**
@@ -77,7 +79,7 @@ class Booking extends Model
             return false;
         }
 
-        if ($request->status == BOOKING_CANCEL) {
+        if ($request->status == BOOKING_CANCEL && $booking->payment_method == PAYMENT_VNPAY) {
             $diffDay = Carbon::parse($booking->departure_time)->diffInDays(now());
             $refund = $diffDay > 3 ? $booking->deposit : $booking->deposit * 0.8;
             $booking->refund = $refund;
@@ -93,7 +95,13 @@ class Booking extends Model
                 return false;
             }
         }
-
+        if (!Auth::check()) {
+            $dataNotification = [
+                'content' => 'KH ' . $booking->customer->name . ' vừa hủy booking tour ' . $booking->tour->name,
+                'url' => route('bookings.show', $booking->id),
+            ];
+            NotifyService::sendNotifyToAdmin($dataNotification);
+        }
         dispatch(new SendMailBookingJob($booking, $request->status));
         return $booking->save();
     }
@@ -167,14 +175,13 @@ class Booking extends Model
                 }
             })
             ->editColumn('status', function ($data) {
-                return view('components.status_booking', ['status' => $data->status]);
+                $day = $data->departure_time > now() ? Carbon::parse($data->departure_time)->diffInDays(now()) : -1;
+                return $data->status == BOOKING_NEW
+                    ? view('components.status_booking', ['status' => $data->status, 'day' => $day])
+                    : view('components.status_booking', ['status' => $data->status, 'day' => '']);
             })
             ->editColumn('departure_time', function ($data) {
                 return date('d/m/Y', strtotime($data->departure_time)) . ' ~ ' . Carbon::parse($data->departure_time)->addDays($data->tour->duration)->format('d/m/Y');
-            })
-            ->editColumn('countdown', function ($data) {
-                $day = $data->departure_time > now() ? Carbon::parse($data->departure_time)->diffInDays(now()) : -1;
-                return view('components.countdown_booking', ['day' => $day]);
             })
             ->addColumn('total', function ($data) {
                 return number_format($data->total) . ' đ';

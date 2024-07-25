@@ -31,7 +31,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="firstName"
                                                    placeholder="Tên" name="first_name"
-                                                   value="{{ old('first_name', $booking ? $booking->customer->first_name : '') }}">
+                                                   value="{{ old('first_name', $booking ? $booking->customer->first_name : data_get($customer, 'first_name')) }}">
                                             <p class="text-danger" id="errorFirstName"></p>
                                             @error('first_name')
                                             <p class="text-danger">{{ $message }}</p>
@@ -42,7 +42,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="lastName"
                                                    placeholder="Họ" name="last_name"
-                                                   value="{{ old('last_name', $booking ? $booking->customer->last_name : '') }}">
+                                                   value="{{ old('last_name', $booking ? $booking->customer->last_name : data_get($customer, 'last_name')) }}">
                                             <p class="text-danger" id="errorLastName"></p>
                                             @error('last_name')
                                             <p class="text-danger">{{ $message }}</p>
@@ -52,7 +52,7 @@
                                             <label for="email" class="form-label title">Email</label>
                                             <input type="text" class="form-control" id="email"
                                                    placeholder="email@domain.com" name="email"
-                                                   value="{{ old('email', $booking ? $booking->customer->email : '') }}">
+                                                   value="{{ old('email', $booking ? $booking->customer->email : data_get($customer, 'email')) }}">
                                             <p class="text-danger" id="errorEmail"></p>
                                             @error('email')
                                             <p class="text-danger">{{ $message }}</p>
@@ -64,7 +64,7 @@
                                             <input type="text" class="form-control" id="phone"
                                                    placeholder="Số điện thoại"
                                                    name="phone"
-                                                   value="{{ old('phone', $booking ? $booking->customer->phone : '') }}">
+                                                   value="{{ old('phone', $booking ? $booking->customer->phone : data_get($customer, 'phone')) }}">
                                             <p class="text-danger" id="errorPhone"></p>
                                             @error('phone')
                                             <p class="text-danger">{{ $message }}</p>
@@ -74,11 +74,10 @@
                                 </div>
 
                                 <div class="sub-checkout-item">
-                                    <p class="sub-header">Người đi </p>
+                                    <p class="sub-header">Người đi cùng (không bắt buộc)</p>
                                     <div class="row touristBlock" data-index="0">
                                         <div class="col-6">
-                                            <label for="name" class="form-label title">Họ Tên <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="name" class="form-label title">Họ Tên </label>
                                             <input type="text" class="form-control" id="name"
                                                    placeholder="Họ tên" name="followers[0][name]"
                                                    value="{{ old('name', '') }}">
@@ -89,8 +88,8 @@
                                         </div>
                                         <div class="col-6">
                                             <label for="age" class="form-label title">Tuổi </label>
-                                            <input type="text" class="form-control" id="followers[0][age]" min="1"
-                                                   placeholder="" name="age"
+                                            <input type="number" class="form-control" id="age" min="1"
+                                                   placeholder="" name="followers[0][age]"
                                                    value="{{ old('age', '') }}">
                                             <p class="text-danger" id="errorEmail"></p>
                                             @error('age')
@@ -109,9 +108,9 @@
                                             @enderror
                                         </div>
                                         <div class="col-6">
-                                            <label for="relationship" class="form-label title">Quan hệ với người đặt</label>
+                                            <label for="relationship" class="form-label title">Liên hệ</label>
                                             <input type="text" class="form-control" id="relationship"
-                                                   placeholder="Người thân, vợ chồng, bạn bè, ..."
+                                                   placeholder="email hoặc số điện thoại"
                                                    name="followers[0][relationship]"
                                                    value="{{ old('relationship', '') }}">
                                             <p class="text-danger" id="errorPhone"></p>
@@ -130,7 +129,7 @@
                                             <label for="address" class="form-label title">Địa chỉ của bạn</label>
                                             <input type="text" class="form-control" id="address"
                                                    placeholder="Địa chỉ của bạn" name="address"
-                                                   value="{{ old('address', $booking ? $booking->customer->address : '') }}">
+                                                   value="{{ old('address', $booking ? $booking->customer->address : data_get($customer, 'address')) }}">
                                             <p class="text-danger" id="errorAddress"></p>
                                             @error('address')
                                             <p class="text-danger">{{ $message }}</p>
@@ -141,7 +140,7 @@
                                             <input type="text" class="form-control" id="city"
                                                    placeholder="Thành phố của bạn"
                                                    name="city"
-                                                   value="{{ old('city', $booking ? $booking->customer->city : '') }}">
+                                                   value="{{ old('city', $booking ? $booking->customer->city : data_get($customer, 'city')) }}">
                                             <p class="text-danger" id="errorCity"></p>
                                             @error('city')
                                             <p class="text-danger">{{ $message }}</p>
@@ -152,17 +151,17 @@
                                                    class="form-label title">Huyện / Quận </label>
                                             <input type="text" class="form-control" id="province"
                                                    placeholder="Huyện" name="province"
-                                                   value="{{ old('province', $booking ? $booking->customer->province : '') }}">
+                                                   value="{{ old('province', $booking ? $booking->customer->province : data_get($customer, 'province')) }}">
                                             <p class="text-danger" id="errorProvince"></p>
                                             @error('province')
                                             <p class="text-danger">{{ $message }}</p>
                                             @enderror
                                         </div>
                                         <div class="col-6">
-                                            <label for="identification" class="form-label title">Mã CCCD</label>
+                                            <label for="identification" class="form-label title">Số CCCD</label>
                                             <input type="text" class="form-control" id="identification"
                                                    placeholder="Mã CCCD" name="identification"
-                                                   value="{{ old('identification', $booking ? $booking->customer->identification : '') }}">
+                                                   value="{{ old('identification', $booking ? $booking->customer->identification : data_get($customer, 'identification')) }}">
                                             <p class="text-danger" id="errorIdentification"></p>
                                             @error('identification')
                                             <p class="text-danger">{{ $message }}</p>

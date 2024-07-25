@@ -23,20 +23,20 @@
             <div class="card-body">
                 <table class="table table-striped table-bordered" id="reviewTable">
                     <div class="card-body pl-0 pt-0">
-                        <h4 class="m-b-20">List of Reviews</h4>
+                        <h4 class="m-b-20">Danh sách Reviews</h4>
                         <div class="row">
                             <div class="col-sm-12 col-lg-4">
                                 <div class="form-group row">
                                     <label for="filterDestination"
-                                           class="col-sm-3 control-label col-form-label">Rate</label>
+                                           class="col-sm-3 control-label col-form-label">Đánh giá</label>
                                     <div class="col-9 col-lg-6">
                                         <select class="form-control" name="rate" id="filterRate">
-                                            <option value="">All</option>
-                                            <option value="5">5 Star</option>
-                                            <option value="4">4 Star</option>
-                                            <option value="3">3 Star</option>
-                                            <option value="2">2 Star</option>
-                                            <option value="1">1 Star</option>
+                                            <option value="">Tất cả</option>
+                                            <option value="5">5 Sao</option>
+                                            <option value="4">4 Sao</option>
+                                            <option value="3">3 Sao</option>
+                                            <option value="2">2 Sao</option>
+                                            <option value="1">1 Sao</option>
                                         </select>
                                     </div>
                                 </div>
@@ -45,12 +45,12 @@
                             <div class="col-sm-12 col-lg-4">
                                 <div class="form-group row">
                                     <label for="filterStatus"
-                                           class="col-sm-3 control-label col-form-label">Status:</label>
+                                           class="col-sm-3 control-label col-form-label">Trạng thái:</label>
                                     <div class="col-9 col-lg-6">
                                         <select class="form-control" name="status" id="filterStatus">
-                                            <option value="">All</option>
-                                            <option value="1">Public</option>
-                                            <option value="2">Block</option>
+                                            <option value="">Tất cả</option>
+                                            <option value="1">Công khai</option>
+                                            <option value="2">Chặn</option>
                                         </select>
                                     </div>
                                 </div>
@@ -60,10 +60,10 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Comment</th>
-                        <th>Rate</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th>Bình luận</th>
+                        <th>Đánh giá </th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
                     </tr>
                     </thead>
                 </table>
@@ -123,7 +123,7 @@
                     }
                 },
                 error: function () {
-                    toastrMessage('error', 'Change status failed');
+                    toastrMessage('error', 'Thay đổi trạng thái lỗi');
                 },
             });
         }

@@ -9,9 +9,9 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('itineraries.index', $itinerary->tour_id) }}">Itinerary</a>
+                            <li class="breadcrumb-item"><a href="{{ route('itineraries.index', $itinerary->tour_id) }}">Hành trình</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Place</li>
+                            <li class="breadcrumb-item active" aria-current="page">Danh sách điểm đến</li>
                         </ol>
                     </nav>
                 </div>
@@ -25,15 +25,15 @@
                 <div class="card-body">
                     <a class="btn btn-info mb-3"
                        href="{{ route('places.create',[$itinerary->tour_id, $itinerary->id]) }}" class="text-white">
-                        New Place
+                        Thêm mới
                     </a>
                     <table class="table table-striped table-bordered m-t-10" id="placeTable">
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Action</th>
+                            <th>Tên</th>
+                            <th>Mô tả</th>
+                            <th>Thao tác</th>
                         </tr>
                         </thead>
                     </table>
@@ -81,12 +81,12 @@
                     buttonsStyling: false
                 })
                 swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Bạn có chắc?',
+                    text: "Bạn không thể hoàn tác lại!",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel!',
+                    confirmButtonText: 'Ok, tôi muốn xóa!',
+                    cancelButtonText: 'Không!',
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {

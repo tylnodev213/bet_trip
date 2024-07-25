@@ -16,8 +16,8 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('faqs.index', $faq->tour_id) }}">FAQ</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                            <li class="breadcrumb-item"><a href="{{ route('faqs.index', $faq->tour_id) }}">Q&A</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa</li>
                         </ol>
                     </nav>
                 </div>
@@ -36,15 +36,16 @@
                     @method('PUT')
                     @csrf
                     <div class="form-group">
-                        <label for="question">Question <span class="text-danger">*</span></label>
-                        <textarea type="text" class="form-control" name="question" id="question" placeholder="Question"
+                        <label for="question">Câu hỏi <span class="text-danger">*</span></label>
+                        <textarea type="text" class="form-control" name="question" id="question" placeholder=""
                                   rows="3">{{ empty(old('question')) ? $faq->question : old('question')  }}</textarea>
                         @error('question')
                         <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="form-group">
-                       <textarea type="text" class="form-control" name="answer" id="answer" placeholder="Answer"
+                        <label for="answer">Đáp án <span class="text-danger">*</span></label>
+                       <textarea type="text" class="form-control" name="answer" id="answer" placeholder=""
                                  rows="5">{{  empty(old('answer')) ? $faq->answer : old('answer') }}</textarea>
                         @error('answer')
                         <p class="text-danger">{{ $message }}</p>
@@ -54,7 +55,7 @@
                     <div class="form-group">
                         <div class="d-flex align-items-center">
                             <input type="hidden" name="status" id="status">
-                            <label for="name" class="m-t-10">Status</label>
+                            <label for="name" class="m-t-10">Trạng thái</label>
                             <div class="m-l-10">
                                 @include('components.button_switch',
                                      [
@@ -71,7 +72,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-info waves-effect waves-light">Update</button>
+                    <button type="submit" class="btn btn-info waves-effect waves-light">Cập nhật</button>
                 </form>
             </div>
 

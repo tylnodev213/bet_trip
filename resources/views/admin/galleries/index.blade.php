@@ -105,7 +105,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Gallery</li>
+                            <li class="breadcrumb-item active" aria-current="page">Ảnh giới thiệu tour</li>
                         </ol>
                     </nav>
                 </div>
@@ -117,7 +117,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Add New Image</h4>
+                    <h4 class="card-title">Thêm ảnh</h4>
                     <form href="{{ route('galleries.store',$tourId) }}" class="m-t-20" id="formAddNewImage"
                           method="post" enctype="multipart/form-data">
                         @csrf
@@ -143,7 +143,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Image Gallery</h4>
+                    <h4 class="card-title">Ảnh giới thiệu tour</h4>
                     <div class="row" id="listImages">
                         @foreach($galleries as $gallery)
                             <div class="img col-6 col-md-4 col-lg-3" id="image{{ $gallery->id }}">
@@ -287,12 +287,12 @@
                     buttonsStyling: false
                 })
                 swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Bạn có chắc?',
+                    text: "Bạn không thể hoàn tác lại!",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel!',
+                    confirmButtonText: 'Ok, tôi muốn xóa!',
+                    cancelButtonText: 'Không!',
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -304,13 +304,13 @@
                                 success: function (response) {
                                     if (response) {
                                         $("#image" + id).remove();
-                                        toastr.success('The image has been deleted');
+                                        toastr.success('Ảnh đã bị xóa');
                                     } else {
-                                        toastr.error('Delete failed');
+                                        toastr.error('Xóa ảnh lỗi');
                                     }
                                 },
                                 error: function (response) {
-                                    toastr.error('Delete failed');
+                                    toastr.error('Xóa ảnh lỗi');
                                 }
                             });
                     } else if (

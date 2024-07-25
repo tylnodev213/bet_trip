@@ -16,8 +16,8 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('faqs.index', $tourId) }}">FAQ</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Create</li>
+                            <li class="breadcrumb-item"><a href="{{ route('faqs.index', $tourId) }}">Q&A</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thêm</li>
                         </ol>
                     </nav>
                 </div>
@@ -33,7 +33,7 @@
                       id="formCreateFAQ">
                     @csrf
                     <div class="form-group">
-                        <label for="question">Question <span class="text-danger">*</span></label>
+                        <label for="question">Câu hỏi<span class="text-danger">*</span></label>
                         <textarea type="text" class="form-control" name="question" id="question"
                                   placeholder="Question"
                                   rows="3">{{old('question')}}</textarea>
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="answer">Answer <span class="text-danger">*</span></label>
+                        <label for="answer">Đáp án <span class="text-danger">*</span></label>
                         <textarea type="text" class="form-control" name="answer" id="answer"
                                   placeholder="Answer"
                                   rows="5">{{old('answer')}}</textarea>
@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <div class="d-flex align-items-center">
                             <input type="hidden" name="status" id="status">
-                            <label for="name" class="m-t-10">Status</label>
+                            <label for="name" class="m-t-10">Trạng thái</label>
                             <div class="m-l-10">
                                 @include('components.button_switch',
                                      [
@@ -72,7 +72,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-info waves-effect waves-light">Add new FAQ</button>
+                    <button type="submit" class="btn btn-info waves-effect waves-light">Thêm mới</button>
 
                 </form>
 

@@ -17,10 +17,12 @@ use App\Models\Tour;
 use App\Models\Type;
 use App\Notifications\NewTourNotification;
 use App\Services\ClientService;
+use App\Services\NotifyService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -111,6 +113,11 @@ class ClientController extends Controller
      */
     public function booking(Request $request, $slug, Tour $tourModel)
     {
+        $customerId = Cookie::get('customer_id');
+        $customer = null;
+        if (!empty($customerId)) {
+            $customer = Customer::find($customerId);
+        }
         $tour = $tourModel->getTourBySlug($slug);
         $numberAdults = $request->number_adults;
         $numberChildren = $request->number_children;
@@ -119,7 +126,7 @@ class ClientController extends Controller
         $booking = null;
         $roomAvailable = $this->checkRoom($request, $slug)->getContent();
 
-        return view('booking', compact(['tour', 'numberChildren', 'numberAdults', 'departureTime', 'listRooms', 'booking', 'roomAvailable']));
+        return view('booking', compact(['tour', 'numberChildren', 'numberAdults', 'departureTime', 'listRooms', 'booking', 'roomAvailable', 'customer']));
     }
 
     /**
@@ -270,6 +277,12 @@ class ClientController extends Controller
         DB::beginTransaction();
         try {
             $booking = $this->clientService->storeBooking($request, $tour);
+            $dataNotification = [
+                'content' => 'KH ' . $booking->customer->name . ' vừa booking tour ' . $booking->tour->name,
+                'url' => route('bookings.show', $booking->id),
+            ];
+            NotifyService::sendNotifyToAdmin($dataNotification);
+
             if ($request->payment_method == PAYMENT_CASH) {
                 DB::commit();
                 dispatch(new SendMailBookingJob($booking));

@@ -32,9 +32,10 @@
                             <div class="col-10 col-sm-6 col-lg-3 mb-2">
                                 <select class="form-control" name="status" id="filterStatus">
                                     <option value="1" selected>Mới</option>
-                                    <option value="2">Hoàn thành</option>
-                                    <option value="3">Hủy</option>
-                                    <option value="4">Quá hạn</option>
+                                    <option value="2" >Đã xác nhận</option>
+                                    <option value="3">Hoàn thành</option>
+                                    <option value="4">Hủy</option>
+                                    <option value="5">Quá hạn</option>
                                 </select>
                             </div>
                         </div>
@@ -46,7 +47,6 @@
                         <th>Tour</th>
                         <th width="200px">Thời gian</th>
                         <th>Trạng thái</th>
-                        <th>Tình trạng</th>
                         <th>Thao tác</th>
                     </tr>
                     </thead>
@@ -81,7 +81,6 @@
                     {data: 'tour.name', name: 'tour'},
                     {data: 'departure_time', name: 'departure_time', className: 'align-middle text-center'},
                     {data: 'status', name: 'status', className: 'align-middle text-center'},
-                    {data: 'countdown', name: 'countdown', className: 'align-middle text-center'},
                     {data: 'action', name: 'action', className: 'align-middle text-center', width: 65},
                 ],
                 columnDefs: [

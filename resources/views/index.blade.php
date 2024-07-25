@@ -131,11 +131,10 @@
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <p>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
+                                            @php
+                                                $rateReview = \App\Libraries\Utilities::calculatorRateReView($tour->reviews);
+                                            @endphp
+                                            @include('components.rate_review', ['rate' => $rateReview['total']])
                                         </p>
                                         {{ __('client.from') }}<p class="price">{{ number_format($tour->price_child) }}đ</p>
                                     </div>
@@ -215,11 +214,10 @@
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <p>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
-                                            <i class="fa-solid fa-star star"></i>
+                                            @php
+                                                $rateReview = \App\Libraries\Utilities::calculatorRateReView($tour->reviews);
+                                            @endphp
+                                            @include('components.rate_review', ['rate' => $rateReview['total']])
                                         </p>
                                         {{ __('client.from') }}<p class="price">{{ number_format($tour->price_child) }}đ</p>
                                     </div>

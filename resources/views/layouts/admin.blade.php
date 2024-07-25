@@ -150,7 +150,7 @@
     channel.bind('send-message', function(data) {
         var newNotificationHtml = `
         <p class="dropdown-item new" href="#">
-            <span>Xác nhận booking mới!</span><br>
+            <span>Thông báo mới!</span><br>
             <small>${data.content} </small>
             <a href="${data.url}">Chi tiết</a>
         </p>

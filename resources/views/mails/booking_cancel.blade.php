@@ -159,43 +159,6 @@
                 </tr>
                 </tbody>
             </table>
-            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation"
-                   style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-                <tbody>
-                <tr>
-                    <td>
-                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack"
-                               role="presentation"
-                               style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 680px;"
-                               width="680">
-                            <tbody>
-                            <tr>
-                                <td class="column"
-                                    style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 0px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;"
-                                    width="100%">
-                                    <table border="0" cellpadding="0" cellspacing="0" class="text_block"
-                                           role="presentation"
-                                           style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;"
-                                           width="100%">
-                                        <tr>
-                                            <td style="padding-bottom:40px;padding-left:30px;padding-right:30px;padding-top:40px;">
-                                                <div style="font-family: sans-serif">
-                                                    <div
-                                                        style="font-size: 14px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 21px; color: #2f2f2f; line-height: 1.5;">
-                                                        <!-- More content -->
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
 
             <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-7" role="presentation"
                    style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">

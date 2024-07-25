@@ -13,6 +13,7 @@ use App\Models\Followers;
 use App\Models\Room;
 use App\Models\Tour;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 
 
@@ -34,11 +35,11 @@ class ClientService
             'number_children' => 'nullable|integer|min:0|max:20',
             'departure_time' => 'required|date',
             'payment_method' => 'required|integer|min:0|max:3',
-            'address' => 'string|max:100|nullable',
-            'city' => 'string|max:50|nullable',
-            'province' => 'string|max:50|nullable',
-            'country' => 'string|max:25|nullable',
-            'identification' => 'required|string',
+            'address' => 'string|max:100|required',
+            'city' => 'string|max:50|required',
+            'province' => 'string|max:50|required',
+            'country' => 'string|max:25|required',
+            'identification' => 'nullable|string',
         ];
     }
 
@@ -63,15 +64,18 @@ class ClientService
             'identification',
         ]));
         $input['status'] = 1;
-        $customer = Customer::create($input);
+        $customerId = Cookie::get('customer_id');
+        if (empty($customerId)) {
+            $customer = Customer::create($input);
+            $customerId = $customer->id;
+            Cookie::queue('customer_id', $customerId, 10080);
+        }
         $input = $request->only([
             'followers',
         ]);
-
-
-        $input = array_map(function ($item) use ($customer) {
+        $input = array_map(function ($item) use ($customerId) {
             return [
-                'customer_id' => $customer->id,
+                'customer_id' => $customerId,
                 'name' => $item['name'] ?? '',
                 'age' => $item['age'] ?? 0,
                 'identification' => $item['identification'] ?? '',
@@ -108,7 +112,7 @@ class ClientService
             'departure_time',
             'requirement',
         ]));
-        $input['customer_id'] = $customer->id;
+        $input['customer_id'] = $customerId;
         $input['tour_id'] = $tour->id;
         $input['discount_code'] = @$coupon->code;
         $input['discount'] = @$coupon->discount ?? 0;

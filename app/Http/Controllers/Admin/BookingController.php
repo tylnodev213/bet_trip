@@ -90,13 +90,15 @@ class BookingController extends Controller
         $totalPrice += $booking->tour->price_adult * $request->number_adults;
         $totalPrice += $booking->tour->price_child * $request->number_children;
 
-        foreach ($request->room as $key => $value) {
-            $bookingRoom = BookingRoom::find($key);
-            $bookingRoom->update([
-                'number' => $value,
-            ]);
-            $bookingRoom->save();
-            $totalPrice += $bookingRoom->price * $bookingRoom->number;
+        if (!empty($request->room)) {
+            foreach ($request->room as $key => $value) {
+                $bookingRoom = BookingRoom::find($key);
+                $bookingRoom->update([
+                    'number' => $value,
+                ]);
+                $bookingRoom->save();
+                $totalPrice += $bookingRoom->price * $bookingRoom->number;
+            }
         }
 
         $totalPrice = $totalPrice - ($totalPrice * $booking->discount / 100);

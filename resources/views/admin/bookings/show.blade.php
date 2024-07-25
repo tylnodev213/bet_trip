@@ -36,7 +36,7 @@
                         <div class="card-body">
                             <h4 class="card-title d-flex justify-content-between align-items-center">
                                 <span>Thông tin đặt tour</span>
-                                @if ($booking->status == BOOKING_NEW && $booking->total != $booking->deposit)
+                                @if (in_array($booking->status, [BOOKING_NEW, BOOKING_CONFIRM]) && $booking->total != $booking->deposit)
                                     <button type="button" class="btn btn-info text-white edit " title="Thanh toán / cọc"
                                             data-toggle="modal" data-target="#editModal">
                                         Thánh toán / cọc
@@ -69,7 +69,10 @@
                                 <tr>
                                     <td class="tb-title">Trạng thái:</td>
                                     <td>
-                                        @include('components.status_booking', ['status' => $booking->status])
+                                        @php
+                                            $day = $booking->departure_time > now() ? \Carbon\Carbon::parse($booking->departure_time)->diffInDays(now()) : -1;
+                                        @endphp
+                                        @include('components.status_booking', ['status' => $booking->status, 'day' => $day])
                                         @if (!empty($booking->refund))
                                             <span class="badge badge-pill badge-warning">Đã hoàn tiền: {{ number_format($booking->refund) }} đ</span>
                                         @endif
@@ -89,7 +92,7 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label class="custom-people-label">Trẻ em</label>
-                                                    <input type="number" class="form-control" min="1" value="{{ $booking->number_children }}" name="number_children">
+                                                    <input type="number" class="form-control" min="0" value="{{ $booking->number_children }}" name="number_children">
                                                 </div>
                                                 <div class="col-6">
                                                     <label class="custom-people-label">Người lớn</label>
@@ -117,6 +120,13 @@
                                 <tr>
                                     <td colspan="2">
                                         @if($booking->status == BOOKING_NEW)
+                                            <button onclick="changeStatusBooking({{ BOOKING_CONFIRM }})" type="button"
+                                                    class="btn btn-info btn-status m-r-5 m-t-30">
+                                                Xác nhận
+                                            </button>
+                                        @endif
+
+                                        @if($booking->status == BOOKING_CONFIRM && $booking->total == $booking->deposit)
                                             <button onclick="changeStatusBooking({{ BOOKING_COMPLETE }})" type="button"
                                                     class="btn btn-primary btn-status m-r-5 m-t-30">
                                                 Hoàn thành
@@ -240,6 +250,40 @@
                     </div>
                 </div>
             </div>
+
+            @if (!empty($booking->customer->followers) && $booking->customer->followers->isNotEmpty())
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Thông tin người đi cùng</h4>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Tên</th>
+                                        <th scope="col">Tuổi</th>
+                                        <th scope="col">Số CCCD</th>
+                                        <th scope="col">Liên hệ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($booking->customer->followers as $follower)
+                                        <tr>
+                                            <td>{{ $loop->index + 1  }}</td>
+                                            <td>{{ $follower->name }}</td>
+                                            <td>{{ $follower->age }}</td>
+                                            <td>{{ $follower->identification }}</td>
+                                            <td>{{ $follower->relationship }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </form>
 

@@ -118,8 +118,7 @@
                                            width="100%">
                                         <tr>
                                             <td style="width:100%;padding-right:0px;padding-left:0px;">
-                                                <p style="text-align: center; color: white; font-size: 22px">Tuyền
-                                                    Phạm</p>
+                                                <p style="text-align: center; color: white; font-size: 22px">Công ty GoodTrip</p>
                                             </td>
                                         </tr>
                                     </table>
@@ -264,8 +263,7 @@
                                            width="100%">
                                         <tr>
                                             <td style="width:100%;padding-right:0px;padding-left:0px;padding-top:20px;">
-                                                <p style="text-align: center; color: white; font-size: 22px">Tuyền
-                                                    Phạm</p>
+                                                <p style="text-align: center; color: white; font-size: 22px">Công ty GoodTrip</p>
                                             </td>
                                         </tr>
                                     </table>
