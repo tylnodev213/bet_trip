@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="col-6">
                                             <label for="age" class="form-label title">Tuổi </label>
-                                            <input type="number" class="form-control" id="age" min="1"
+                                            <input type="text" class="form-control" id="age"
                                                    placeholder="" name="followers[0][age]"
                                                    value="{{ old('age', '') }}">
                                             <p class="text-danger" id="errorEmail"></p>
