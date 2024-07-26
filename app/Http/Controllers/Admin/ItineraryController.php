@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class ItineraryController extends Controller
 {
@@ -47,22 +48,23 @@ class ItineraryController extends Controller
         $request->validate($this->itinerary->rules());
 
         try {
-            $this->notification->setMessage('New itinerary added successfully', Notification::SUCCESS);
+            $this->notification->setMessage('Thêm hành trình mới thành công !', Notification::SUCCESS);
             $codeMessage = $this->itinerary->saveData($request, $tourId);
 
             if ($codeMessage == 2) {
-                $this->notification->setMessage('Tour duration is ' . Tour::findOrFail($tourId)->duration,
+                $this->notification->setMessage('Hành trình đã có đủ' . Tour::findOrFail($tourId)->duration . ' ngày',
                     Notification::ERROR);
             }
 
         } catch (QueryException $e) {
-            $this->notification->setMessage('Itinerary addition failed', Notification::ERROR);
+            $this->notification->setMessage('Thêm hành trình mới thất bại !', Notification::ERROR);
 
             if ($e->errorInfo[1] == '1062') {
-                $this->notification->setMessage('The itinerary already exists', Notification::ERROR);
+                $this->notification->setMessage('Hành trình này đã tồn tại !', Notification::ERROR);
             }
         } catch (Exception $e) {
-            $this->notification->setMessage('Itinerary addition failed', Notification::ERROR);
+            Log::error($e->getMessage());
+            $this->notification->setMessage('Thêm hành trình mới thất bại !', Notification::ERROR);
         }
 
         return response()->json($this->notification->getMessage());
@@ -81,17 +83,17 @@ class ItineraryController extends Controller
         $request->validate($this->itinerary->rules($id));
 
         try {
-            $this->notification->setMessage('Itinerary updated successfully', Notification::SUCCESS);
+            $this->notification->setMessage('Cập nhật thành công !', Notification::SUCCESS);
             $this->itinerary->saveData($request, $tourId, $id);
 
         } catch (QueryException $e) {
-            $this->notification->setMessage('Itinerary update failed', Notification::ERROR);
+            $this->notification->setMessage('Cập nhật thất bại !', Notification::ERROR);
 
             if ($e->errorInfo[1] == '1062') {
-                $this->notification->setMessage('The itinerary already exists', Notification::ERROR);
+                $this->notification->setMessage('Hành trình này đã tồn tại !', Notification::ERROR);
             }
         } catch (Exception $e) {
-            $this->notification->setMessage('Itinerary update failed', Notification::ERROR);
+            $this->notification->setMessage('Cập nhật thất bại !', Notification::ERROR);
         }
 
         return response()->json($this->notification->getMessage());

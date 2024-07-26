@@ -300,6 +300,7 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <p class="text-danger" id="errorDepartureTime"></p>
                                 <div class="input-inner-icon">
                                     <img src="{{ asset('images/icon/people.svg') }}" alt="people">
                                     <select class="form-control" id="selectNumberAdults" name="number_adults">
@@ -466,6 +467,7 @@
             $('#errorIdentification').text('');
             $('#errorContry').text('');
             $('#errorRequirement').text('');
+            $('#errorDepartureTime').text('');
 
             $.ajax({
                 url: link,
@@ -533,6 +535,10 @@
 
                     if (response?.errors?.requirement !== undefined) {
                         $('#errorRequirement').text(response.errors.requirement[0]);
+                    }
+
+                    if (response?.errors?.departure_time !== undefined) {
+                        $('#errorDepartureTime').text(response.errors.departure_time[0]);
                     }
 
                     $('.numberRoom').each(function (index, item) {

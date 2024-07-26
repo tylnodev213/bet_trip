@@ -59,7 +59,7 @@ class Room extends Model
         }
 
         $input['name'] = $name;
-        $input['price'] = $request->price;
+        $input['price'] = $request->price * 1000;
         $input['number'] = $request->number;
         $room->fill($input);
         $room->save();

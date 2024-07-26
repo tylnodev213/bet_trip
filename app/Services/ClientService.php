@@ -33,7 +33,7 @@ class ClientService
             'phone' => 'required|regex:/^(0)[0-9]{9,10}$/',
             'number_adults' => 'required|integer|min:0|max:20',
             'number_children' => 'nullable|integer|min:0|max:20',
-            'departure_time' => 'required|date',
+            'departure_time' => 'required|date|after:' . date('Y-m-d', strtotime("+ 1day")),
             'payment_method' => 'required|integer|min:0|max:3',
             'address' => 'string|max:100|required',
             'city' => 'string|max:50|required',

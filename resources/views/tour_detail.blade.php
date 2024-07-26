@@ -475,7 +475,7 @@
                             <div class="input-inner-icon">
                                 <img src="{{ asset('images/icon/schedule.svg') }}" alt="departure">
                                 <div id="departureTimePicker">
-                                    <input type="hidden" value="{{ date('Y-m-d', strtotime('+ 1day')) }}" name="departure_time"
+                                    <input type="hidden" value="{{ date('Y-m-d', strtotime('+ 2day')) }}" name="departure_time"
                                            id="inputDepartureTime">
                                     <div id="departureTimePicker">
                                         <input class="form-control" type="text" id="departureTime">

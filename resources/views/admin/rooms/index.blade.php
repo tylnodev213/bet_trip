@@ -3,7 +3,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-5 align-self-center">
-                <h4 class="page-title">Room</h4>
+                <h4 class="page-title">Phòng</h4>
                 <div class="d-flex align-items-center">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="form-group">
-                            Giá phòng
+                            Giá phòng (nghìn đồng)
                             <span class="text-danger">*</span>
                             <input type="number" min="0" class="form-control" name="price" id="price"
                                    placeholder="Giá phòng">
@@ -105,7 +105,7 @@
 
                             <div class="form-group row">
                                 <label for="price" class="col-12">
-                                    Giá phòng<span class="text-danger">*</span>
+                                    Giá phòng (nghìn đồng)<span class="text-danger">*</span>
                                 </label>
                                 <div class="col-12">
                                     <input type="number" min="0" class="form-control" name="price" id="priceEdit"
@@ -216,7 +216,7 @@
                 priceRoom = priceRoom.replace(/\D+/g, '');
 
                 $('#nameEdit').val(nameRoom);
-                $('#priceEdit').val(priceRoom);
+                $('#priceEdit').val(priceRoom/1000);
                 $('#numberEdit').val(numberRoom);
             });
 

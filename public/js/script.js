@@ -239,7 +239,7 @@ $(document).ready(function () {
         locale: {
             format: 'MM/DD/YYYY',
         },
-        minDate: moment().add(1, 'days'),
+        minDate: moment().add(2, 'days'),
     }, function (start, end) {
         $('#inputDepartureTime').val(start.format("YYYY-MM-DD"));
 
