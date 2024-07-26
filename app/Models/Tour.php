@@ -171,11 +171,23 @@ class Tour extends Model
      */
     public function getByTrending(int $trending = 1, int $limit = 0)
     {
-        $query = $this->with('type', 'destination')
+        $query = $this->select(['tours.*', DB::raw("(SELECT COUNT(*) FROM bookings WHERE tour_id = tours.id AND status <> 4 AND deleted_at IS NULL) as booking_count")])
+            ->with('type', 'destination')
             ->where('status', 1)
             ->where('trending', $trending)
-            ->latest();
+            ->orderBy('booking_count', 'desc');
 
+        if ($limit != 0) {
+            $query->limit($limit);
+        }
+
+        return $query->get();
+    }
+
+    public function getByGuide(int $status = 1, int $limit = 0)
+    {
+        $query = $this->select(['tours.*', DB::raw("(SELECT AVG(rate) FROM reviews WHERE tour_id = tours.id AND deleted_at IS NULL) as rate_avg")])
+            ->where('status', $status)->orderBy('rate_avg', 'desc');
         if ($limit != 0) {
             $query->limit($limit);
         }
@@ -328,7 +340,7 @@ class Tour extends Model
         $typeId = $request->type_id;
         $status = $request->status;
 
-        $query = DB::table('tours')
+        $query = $this->select(['tours.*', 'destinations.name AS destination_name', 'tour_types.name AS type_name', DB::raw("(SELECT COUNT(*) FROM bookings WHERE tour_id = tours.id AND status <> 4 AND deleted_at IS NULL) as booking_count")])
             ->join('destinations', 'tours.destination_id', '=', 'destinations.id')
             ->join('tour_types', 'tours.type_id', '=', 'tour_types.id');
 
@@ -351,9 +363,8 @@ class Tour extends Model
         if (!empty($status)) {
             $query->where('tours.status', $status);
         }
-        $query->select('tours.*', 'destinations.name AS destination_name', 'tour_types.name AS type_name');
 
-        return $query->latest()->get();
+        return $query->orderBy('booking_count', 'desc')->latest()->get();
     }
 
     /**

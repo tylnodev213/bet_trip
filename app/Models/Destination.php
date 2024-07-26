@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -27,6 +28,16 @@ class Destination extends Model
     {
         parent::__construct($attributes);
         $this->notification = new Notification();
+    }
+
+    public function getByStatus(int $status = 1, int $limit = 0)
+    {
+        $query = $this->select(['destinations.*', DB::raw("(SELECT COUNT(*) FROM tours WHERE destination_id = destinations.id AND deleted_at IS NULL) as tour_count")])->where('status', $status)->orderBy('tour_count', 'desc');
+        if ($limit != 0) {
+            $query->limit($limit);
+        }
+
+        return $query->get();
     }
 
     /**

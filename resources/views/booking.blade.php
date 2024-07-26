@@ -81,20 +81,14 @@
                                             <input type="text" class="form-control" id="name"
                                                    placeholder="Họ tên" name="followers[0][name]"
                                                    value="{{ old('name', '') }}">
-                                            <p class="text-danger" id="errorFirstName"></p>
-                                            @error('name')
-                                            <p class="text-danger">{{ $message }}</p>
-                                            @enderror
+                                            <p class="text-danger followers-name"></p>
                                         </div>
                                         <div class="col-6">
                                             <label for="age" class="form-label title">Tuổi </label>
                                             <input type="text" class="form-control" id="age"
                                                    placeholder="" name="followers[0][age]"
                                                    value="{{ old('age', '') }}">
-                                            <p class="text-danger" id="errorEmail"></p>
-                                            @error('age')
-                                            <p class="text-danger">{{ $message }}</p>
-                                            @enderror
+                                            <p class="text-danger followers-age"></p>
                                         </div>
                                         <div class="col-6">
                                             <label for="identification-follower" class="form-label title">Số CCCD (không bắt buộc)</label>
@@ -102,10 +96,7 @@
                                                    placeholder="Số Căn cước công dân"
                                                    name="followers[0][identification]"
                                                    value="{{ old('identification', '') }}">
-                                            <p class="text-danger" id="errorPhone"></p>
-                                            @error('identification')
-                                            <p class="text-danger">{{ $message }}</p>
-                                            @enderror
+                                            <p class="text-danger followers-identification"></p>
                                         </div>
                                         <div class="col-6">
                                             <label for="relationship" class="form-label title">Liên hệ</label>
@@ -113,10 +104,7 @@
                                                    placeholder="email hoặc số điện thoại"
                                                    name="followers[0][relationship]"
                                                    value="{{ old('relationship', '') }}">
-                                            <p class="text-danger" id="errorPhone"></p>
-                                            @error('relationship')
-                                            <p class="text-danger">{{ $message }}</p>
-                                            @enderror
+                                            <p class="text-danger followers-relationship"></p>
                                         </div>
                                     </div>
                                     <button class="btn btn-primary addTourist">Thêm người đi</button>
@@ -206,7 +194,7 @@
                                 <div class="sub-checkout-item paymentMethod">
                                     <div class="form-check d-flex align-items-center">
                                         <input class="form-check-input" type="radio" name="payment_method" id="paypal-vnpay"
-                                               value="2">
+                                               value="2" checked>
                                         <label class="form-check-label" for="paypal-vnpay">
                                             <span class="payment-title">Ví VN PAY</span>
                                             <img class="payment-image"
@@ -468,6 +456,7 @@
             $('#errorContry').text('');
             $('#errorRequirement').text('');
             $('#errorDepartureTime').text('');
+            $('.followers-age, .followers-name, .followers-identification, .followers-relationship').text('');
 
             $.ajax({
                 url: link,
@@ -540,6 +529,21 @@
                     if (response?.errors?.departure_time !== undefined) {
                         $('#errorDepartureTime').text(response.errors.departure_time[0]);
                     }
+
+                    $('.touristBlock').each(function (index, item) {
+                        if (response?.errors['followers.' + index + '.name'] !== undefined) {
+                            $(item).find(`.followers-name`).text(response.errors['followers.' + index + '.name'][0]);
+                        }
+                        if (response?.errors['followers.' + index + '.age'] !== undefined) {
+                            $(item).find(`.followers-age`).text(response.errors['followers.' + index + '.age'][0]);
+                        }
+                        if (response?.errors['followers.' + index + '.identification'] !== undefined) {
+                            $(item).find(`.followers-identification`).text(response.errors['followers.' + index + '.identification'][0]);
+                        }
+                        if (response?.errors['followers.' + index + '.relationship'] !== undefined) {
+                            $(item).find(`.followers-relationship`).text(response.errors['followers.' + index + '.relationship'][0]);
+                        }
+                    });
 
                     $('.numberRoom').each(function (index, item) {
                         if (response?.errors['room.' + index + '.number'] !== undefined) {

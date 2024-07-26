@@ -40,6 +40,10 @@ class ClientService
             'province' => 'string|max:50|required',
             'country' => 'string|max:25|required',
             'identification' => 'nullable|string',
+            'followers.*.name' => 'nullable|required_with:followers.*.age,followers.*.identification,followers.*.relationship',
+            'followers.*.age' => 'nullable|required_with:followers.*.name,followers.*.identification,followers.*.relationship',
+            'followers.*.identification' => 'nullable',
+            'followers.*.relationship' => 'nullable|required_with:followers.*.age,followers.*.name,followers.*.identification',
         ];
     }
 
@@ -64,12 +68,9 @@ class ClientService
             'identification',
         ]));
         $input['status'] = 1;
-        $customerId = Cookie::get('customer_id');
-        if (empty($customerId)) {
-            $customer = Customer::create($input);
-            $customerId = $customer->id;
-            Cookie::queue('customer_id', $customerId, 10080);
-        }
+        $customer = Customer::create($input);
+        $customerId = $customer->id;
+        Cookie::queue('customer_id', $customerId, 10080);
         $input = $request->only([
             'followers',
         ]);
@@ -224,7 +225,8 @@ class ClientService
      */
     public function searchTour($request)
     {
-        $query = Tour::with('destination', 'type')
+        $query = Tour::select(['tours.*', DB::raw("(SELECT COUNT(*) FROM bookings WHERE tour_id = tours.id AND status <> 4 AND deleted_at IS NULL) as booking_count")])
+            ->with('destination', 'type')
             ->where('status', 1);
 
         $tourName = $request->tour_name;
@@ -247,7 +249,7 @@ class ClientService
 
         $query = $this->filterTour($request, $query);
 
-        return $query->paginate(21);
+        return $query->orderBy('booking_count', 'desc')->paginate(21);
     }
 
     /**

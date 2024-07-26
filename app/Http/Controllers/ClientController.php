@@ -47,8 +47,8 @@ class ClientController extends Controller
     {
         $destinations = $destination->getByStatus(1, 5);
         $types = $type->getByStatus(1, 3);
-        $trendingTours = $tour->getByTrending(true, 3);
-        $tours = $tour->getByStatus(1, 3);
+        $trendingTours = $tour->getByTrending(true, 6);
+        $tours = $tour->getByGuide(1, 6);
         $coupons = $coupon->getByStatus(1, 5);
 
         return view('index', compact(['destinations', 'trendingTours', 'types', 'tours', 'coupons']));
@@ -257,6 +257,9 @@ class ClientController extends Controller
         $request->validate($validateRule, [
             'room.*.number.max' => 'Số phòng đã vượt quá giới hạn cho phép',
             'room.*.number.min' => 'Vui lòng chọn số phòng phù hợp',
+            'followers.*.name.required_with' => 'Vui lòng nhập tên người đi theo',
+            'followers.*.age.required_with' => 'Vui lòng nhập tuổi người đi theo',
+            'followers.*.relationship.required_with' => 'Vui lòng nhập liên hệ người đi theo',
         ], [
             'first_name' => 'tên',
             'last_name' => 'họ',
