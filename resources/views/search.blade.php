@@ -172,7 +172,7 @@
                                             $rateReview = \App\Libraries\Utilities::calculatorRateReView($tour->reviews);
                                         @endphp
                                         @include('components.rate_review', ['rate' => $rateReview['total']])
-                                        <br/><small>Có {{ $tour->booking_count }} lượt đặt</small>
+                                        <br/><small>Có {{ $tour->booking_count ?? 0 }} lượt đặt</small>
                                     </p>
                                     <p class="price">{{ number_format($tour->price_child) }}đ</p>
                                 </div>
