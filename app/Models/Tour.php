@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 
 class Tour extends Model
@@ -117,8 +118,8 @@ class Tour extends Model
     public function rules($id = null)
     {
         $rule = [
-            'name' => 'required|max:255|string|unique:tours',
-            'slug' => 'required|max:255|string|unique:tours',
+            'name' => ['max:255', 'string', Rule::unique('tours')->whereNull('deleted_at')],
+            'slug' => ['max:255', 'string', Rule::unique('tours')->whereNull('deleted_at')],
             'image' => 'required|image|mimes:jpeg,jpg,png,gif|max:5000',
             'destination_id' => 'required|exists:destinations,id',
             'type_id' => 'required|exists:tour_types,id',
@@ -135,8 +136,8 @@ class Tour extends Model
         ];
 
         if ($id != null) {
-            $rule['name'] = 'max:255|string|unique:tours,name,' . $id;
-            $rule['slug'] = 'max:255|string|unique:tours,slug,' . $id;
+            $rule['name'] = ['max:255', 'string', Rule::unique('tours')->ignore($id)->whereNull('deleted_at')];
+            $rule['slug'] = ['max:255', 'string', Rule::unique('tours')->ignore($id)->whereNull('deleted_at')];
             $rule['image'] = 'image|mimes:jpeg,jpg,png,gif|max:5000';
             $rule['destination_id'] = 'exists:destinations,id';
             $rule['type_id'] = 'exists:tour_types,id';

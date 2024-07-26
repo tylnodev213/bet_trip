@@ -15,7 +15,7 @@ class CreateTourTypesTable extends Migration
     {
         Schema::create('tour_types', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('name', 50)->unique();;
+            $table->string('name', 50);
             $table->tinyInteger('status')->default(1)->comment('1: active, 2: inactive');
             $table->timestamps();
         });

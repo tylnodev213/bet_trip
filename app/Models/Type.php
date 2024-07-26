@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 
 class Type extends Model
@@ -45,12 +46,12 @@ class Type extends Model
     public function rules($id = null): array
     {
         $rule = [
-            'name' => 'required|max:50|string|unique:tour_types',
+            'name' => ['max:50', 'string', Rule::unique(Type::class)->whereNull('deleted_at')],
             'status' => 'required|integer|between:1,2'
         ];
 
         if ($id != null) {
-            $rule['name'] = "max:50|string|unique:tour_types,name,$id";
+            $rule['name'] = ['max:50', 'string', Rule::unique(Type::class)->ignore($id)->whereNull('deleted_at')];
             $rule['status'] = 'integer|between:1,2';
         }
 

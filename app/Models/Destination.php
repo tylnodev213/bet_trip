@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 
 class Destination extends Model
@@ -57,14 +58,14 @@ class Destination extends Model
     {
         $rule = [
             'name' => 'required|max:100|string',
-            'slug' => 'required|max:100|string|unique:destinations',
+            'slug' => ['max:100', 'string', Rule::unique('destinations')->whereNull('deleted_at')],
             'image' => 'required|image|mimes:jpeg,jpg,png,gif|max:5000',
             'status' => 'required|integer|between:1,2'
         ];
 
         if ($id != null) {
             $rule['name'] = "max:100|string";
-            $rule['slug'] = "max:100|string|unique:destinations,slug,$id";
+            $rule['slug'] = ['max:100', 'string', Rule::unique('destinations')->ignore($id)->whereNull('deleted_at')];
             $rule['image'] = 'image|mimes:jpeg,jpg,png,gif|max:5000';
             $rule['status'] = 'integer|between:1,2';
         }

@@ -18,7 +18,6 @@ class CreateCouponsTable extends Migration
             $table->string('code', 20);
             $table->float('discount', 10, 0);
             $table->integer('number')->default(0);
-            $table->unique('code');
             $table->tinyInteger('status')->default(1)->comment('1: active, 2: inactive');
             $table->timestamps();
         });

@@ -31,7 +31,7 @@ class Coupon extends Model
     public function rules(int $id = null): array
     {
         $rule = [
-            'code' => ['required','string','between:5,20', !empty($id) ? Rule::unique(Coupon::class)->ignore($id) : Rule::unique(Coupon::class)],
+            'code' => ['required','string','between:5,20', !empty($id) ? Rule::unique(Coupon::class)->ignore($id)->whereNull('deleted_at') : Rule::unique(Coupon::class)->whereNull('deleted_at')],
             'discount' => 'required|integer|between:1,100',
             'number' => 'required|integer|between:0,1000000',
             'status' => 'required|integer|between:1,2',
