@@ -90,6 +90,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [CouponController::class, 'index'])->name('coupons.index');
             Route::post('/', [CouponController::class, 'store'])->name('coupons.store');
             Route::post('/{id}', [CouponController::class, 'update'])->name('coupons.update');
+            Route::put('/{id}', [CouponController::class, 'updateStatus'])->name('coupons.update-status');
             Route::delete('/{id}', [CouponController::class, 'destroy'])->name('coupons.destroy');
             Route::get('/data', [CouponController::class, 'getData'])->name('coupons.data');
         });

@@ -70,7 +70,7 @@ class Contact extends Model
     public function getList(Request $request)
     {
         $search = $request->search;
-        $status = $request->status ?? 1;
+        $status = $request->status;
 
         $query = $this->latest();
         if (!empty($search)) {

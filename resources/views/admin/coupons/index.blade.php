@@ -443,7 +443,7 @@
                     dataType: 'json',
                     data: {status: status},
                     success: function (response) {
-                        //toastr.success('Change status successfully')
+                        toastr.success('Đổi trạng thái thành công')
                     },
                     error: function (response) {
                         hideLoading();

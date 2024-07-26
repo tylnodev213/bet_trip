@@ -122,7 +122,7 @@ class Coupon extends Model
                 return Carbon::parse($data->end_date)->format('Y-m-d H:i');
             })
             ->editColumn('status', function ($data) {
-                $link = route('coupons.update', $data->id);
+                $link = route('coupons.update-status', $data->id);
                 return view('components.button_switch', ['status' => $data->status, 'link' => $link]);
             })
             ->editColumn('banner', function ($data) {

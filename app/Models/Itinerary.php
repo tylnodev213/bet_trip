@@ -107,7 +107,7 @@ class Itinerary extends Model
                 return 'itinerary-' . $data->id;
             })
             ->addColumn('place', function ($data) use ($tourId) {
-                $title = 'List Places';
+                $title = 'Điểm dừng';
                 $link = route('places.index', [$tourId, $data->id]);
 
                 return view('components.button_link_info', compact(['link', 'title']));

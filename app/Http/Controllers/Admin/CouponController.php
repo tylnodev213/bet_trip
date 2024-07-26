@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class CouponController extends Controller
 {
@@ -99,6 +100,33 @@ class CouponController extends Controller
                 $this->notification->setMessage('Mã giảm giá đã tồn tại', Notification::ERROR);
             }
         } catch (Exception $e) {
+            Log::error($e->getMessage());
+            $this->notification->setMessage('Cập nhật thông tin mã giảm giá thất bại', Notification::ERROR);
+        }
+
+        return response()->json($this->notification->getMessage());
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+                'status' => 'required|integer|between:1,2',
+            ], [], [
+                'status' => __('client.status'),
+            ]);
+
+        try {
+            $this->notification->setMessage('Cập nhật thông tin mã giảm giá thành công', Notification::SUCCESS);
+            $this->coupon->saveData($request, $id);
+
+        } catch (QueryException $e) {
+            $this->notification->setMessage('Cập nhật thông tin mã giảm giá thất bại', Notification::ERROR);
+
+            if ($e->errorInfo[1] == '1062') {
+                $this->notification->setMessage('Mã giảm giá đã tồn tại', Notification::ERROR);
+            }
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
             $this->notification->setMessage('Cập nhật thông tin mã giảm giá thất bại', Notification::ERROR);
         }
 

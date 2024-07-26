@@ -14,13 +14,13 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-5 align-self-center">
-                <h4 class="page-title">Info Tour</h4>
+                <h4 class="page-title">Thông tin tour</h4>
                 <div class="d-flex align-items-center">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Info</li>
+                            <li class="breadcrumb-item active" aria-current="page">Thông tin</li>
                         </ol>
                     </nav>
                 </div>
@@ -41,12 +41,13 @@
                     <input type="hidden" name="destination_id" value="{{ $tour->destination_id }}">
                     <input type="hidden" name="type_id" value="{{ $tour->type_id }}">
                     <input type="hidden" name="duration" value="{{ $tour->duration }}">
-                    <input type="hidden" name="price" value="{{ $tour->price }}">
+                    <input type="hidden" name="price_child" value="{{ $tour->price_child }}">
+                    <input type="hidden" name="price_adult" value="{{ $tour->price_adult }}">
                     <input type="hidden" name="status" value="{{ $tour->status }}">
                     <input type="hidden" name="trending" value="{{ $tour->trending }}">
                     <div class="form-group row">
                         <div class="col-6">
-                            <label for="metaTitle" class="text-lg-right control-label col-form-label">Meta title</label>
+                            <label for="metaTitle" class="text-lg-right control-label col-form-label">Tiêu đề</label>
                             <input type="text" class="form-control" name="meta_title" id="metaTitle"
                                    placeholder="Meta title"
                                    value="{{ old('meta_title', $tour->meta_title) }}">
@@ -55,8 +56,7 @@
                             @enderror
 
                         <!-- Meta description -->
-                            <label for="metaDescription" class="text-lg-right control-label col-form-label">Meta
-                                Description</label>
+                            <label for="metaDescription" class="text-lg-right control-label col-form-label">Mô tả</label>
                             <textarea type="text" class="form-control" name="meta_description" id="metaDescription"
                                       placeholder="Meta description"
                                       rows="6">{{ old('meta_description', $tour->meta_description) }}</textarea>
@@ -65,7 +65,7 @@
                             @enderror
                         </div>
                         <div class="col-6">
-                            <label for="imageSeo" class="text-lg-right control-label col-form-label">SEO Image</label>
+                            <label for="imageSeo" class="text-lg-right control-label col-form-label">Ảnh</label>
                             <div class="input-group mb-3">
                                 <input type="file" id="imageSeo" name="image_seo" value="{{old('image_seo')}}">
                             </div>
@@ -82,7 +82,7 @@
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="panoramicImage" class="text-lg-right control-label col-form-label">
-                                Image 360
+                                Ảnh 360
                             </label>
                             <input type="text" class="form-control" name="panoramic_image" id="panoramicImage"
                                    placeholder="Link image"
@@ -117,8 +117,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="map" class="text-lg-right control-label col-form-label">Map</label>
-                        <input type="text" class="form-control" name="map" id="map" placeholder="Map"
+                        <label for="map" class="text-lg-right control-label col-form-label">Url Bản đồ</label>
+                        <input type="text" class="form-control" name="map" id="map" placeholder="Link"
                                value="{{ old('map', $tour->map) }}">
                         @error('map')
                         <p class="text-danger">{{ $message }}</p>
@@ -132,7 +132,7 @@
                     <div class="form-group">
                         <label for="included"
                                class="text-lg-right control-label col-form-label">
-                            Included
+                            Bao gồm
                         </label>
                         <textarea name="included" id="included" cols="30"
                                   rows="10">{{ old('included', $tour->included) }}</textarea>
@@ -144,7 +144,7 @@
                     <div class="form-group">
                         <label for="additional"
                                class="text-lg-right control-label col-form-label">
-                            Additional
+                            Thông tin thêm
                         </label>
                         <textarea name="additional" id="additional" cols="30"
                                   rows="10">{{ old('additional', $tour->additional) }}</textarea>
@@ -156,7 +156,7 @@
                     <div class="form-group">
                         <label for="departure"
                                class="text-lg-right control-label col-form-label">
-                            Departure
+                            Lịch đón trả
                         </label>
                         <textarea name="departure" id="departure" cols="30"
                                   rows="10">{{ old('departure', $tour->departure) }}
@@ -166,8 +166,8 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-info mr-2">Update</button>
-                    <a href="{{ route('tours.index') }}" class="btn btn-dark">Cancel</a>
+                    <button type="submit" class="btn btn-info mr-2">Cập nhật</button>
+                    <a href="{{ route('tours.index') }}" class="btn btn-dark">Hủy</a>
                 </form>
             </div>
         </div>

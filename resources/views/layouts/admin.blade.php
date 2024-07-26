@@ -168,6 +168,18 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    $(document).ajaxSuccess(function () {
+        hideLoading();
+    });
+
+    $(document).ajaxError(function () {
+        hideLoading();
+    });
+
+    $(document).ajaxComplete(function () {
+        hideLoading();
+    });
     // toastr.options.progressBar = true;
     // toastr.options.preventDuplicates = true;
     function toastrMessage(type, message) {

@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TourController extends Controller
 {
@@ -146,6 +147,7 @@ class TourController extends Controller
         } catch (Exception $e) {
             $this->notification->setMessage('Cập nhật thông tin tour không thành công', Notification::ERROR);
 
+            Log::error($e->getMessage());
             return back()
                 ->with('exception', $e->getMessage())
                 ->with($this->notification->getMessage())

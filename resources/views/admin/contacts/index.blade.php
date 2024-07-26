@@ -48,7 +48,7 @@
                             <div class="col-10 col-sm-6 col-md-5 mb-2">
                                 <select class="form-control" name="status" id="filterStatus">
                                     <option value="">Chọn trạng thái</option>
-                                    <option value="1" selected>Chưa đọc</option>
+                                    <option value="1" >Chưa đọc</option>
                                     <option value="2">Đã đọc</option>
                                 </select>
                             </div>
