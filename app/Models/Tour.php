@@ -209,6 +209,8 @@ class Tour extends Model
     public function saveTour(Request $request, int $id = 0)
     {
         $input = $request->all();
+        $input['price_child'] = $input['price_child'] * 1000;
+        $input['price_adult'] = $input['price_adult'] * 1000;
         $input = Utilities::clearAllXSS($input, ['map', 'overview', 'included', 'additional', 'departure']);
 
         $tour = $this->findOrNew($id);

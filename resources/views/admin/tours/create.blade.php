@@ -104,19 +104,19 @@
                                 @enderror
                             </div>
                             <div class="col-3">
-                                <label for="price_adult" class="text-lg-right control-label col-form-label">Giá người lớn<span
+                                <label for="price_adult" class="text-lg-right control-label col-form-label">Giá người lớn (nghìn đồng)<span
                                         class="text-danger">*</span> </label>
                                 <input type="number" class="form-control" name="price_adult" id="price_adult" placeholder="Giá"
-                                       value="{{old('price_adult')}}" step="1000">
+                                       value="{{old('price_adult')}}" step="10">
                                 @error('price_adult')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="col-3">
-                                <label for="price_child" class="text-lg-right control-label col-form-label">Giá trẻ em<span
+                                <label for="price_child" class="text-lg-right control-label col-form-label">Giá trẻ em (nghìn đồng)<span
                                         class="text-danger">*</span> </label>
                                 <input type="number" class="form-control" name="price_child" id="price_child" placeholder="Giá"
-                                       value="{{old('price_child')}}" step="1000">
+                                       value="{{old('price_child')}}" step="10">
                                 @error('price_child')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror

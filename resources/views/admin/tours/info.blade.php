@@ -45,39 +45,41 @@
                     <input type="hidden" name="price_adult" value="{{ $tour->price_adult }}">
                     <input type="hidden" name="status" value="{{ $tour->status }}">
                     <input type="hidden" name="trending" value="{{ $tour->trending }}">
-                    <div class="form-group row">
-                        <div class="col-6">
-                            <label for="metaTitle" class="text-lg-right control-label col-form-label">Tiêu đề</label>
-                            <input type="text" class="form-control" name="meta_title" id="metaTitle"
-                                   placeholder="Meta title"
-                                   value="{{ old('meta_title', $tour->meta_title) }}">
-                            @error('meta_title')
-                            <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                    @if(env('ENABLED_SEO', false))
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <label for="metaTitle" class="text-lg-right control-label col-form-label">Tiêu đề</label>
+                                <input type="text" class="form-control" name="meta_title" id="metaTitle"
+                                       placeholder="Meta title"
+                                       value="{{ old('meta_title', $tour->meta_title) }}">
+                                @error('meta_title')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
 
-                        <!-- Meta description -->
-                            <label for="metaDescription" class="text-lg-right control-label col-form-label">Mô tả</label>
-                            <textarea type="text" class="form-control" name="meta_description" id="metaDescription"
-                                      placeholder="Meta description"
-                                      rows="6">{{ old('meta_description', $tour->meta_description) }}</textarea>
-                            @error('meta_description')
-                            <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="col-6">
-                            <label for="imageSeo" class="text-lg-right control-label col-form-label">Ảnh</label>
-                            <div class="input-group mb-3">
-                                <input type="file" id="imageSeo" name="image_seo" value="{{old('image_seo')}}">
+                                <!-- Meta description -->
+                                <label for="metaDescription" class="text-lg-right control-label col-form-label">Mô tả</label>
+                                <textarea type="text" class="form-control" name="meta_description" id="metaDescription"
+                                          placeholder="Meta description"
+                                          rows="6">{{ old('meta_description', $tour->meta_description) }}</textarea>
+                                @error('meta_description')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
-                            <div>
-                                <img id="showImgSeo" style="max-height: 156px; margin: 10px 2px"
-                                     src="{{ asset('storage/images/tours/'. (empty($tour->image_seo) ? $tour->image : $tour->image_seo) ) }}">
+                            <div class="col-6">
+                                <label for="imageSeo" class="text-lg-right control-label col-form-label">Ảnh</label>
+                                <div class="input-group mb-3">
+                                    <input type="file" id="imageSeo" name="image_seo" value="{{old('image_seo')}}">
+                                </div>
+                                <div>
+                                    <img id="showImgSeo" style="max-height: 156px; margin: 10px 2px"
+                                         src="{{ asset('storage/images/tours/'. (empty($tour->image_seo) ? $tour->image : $tour->image_seo) ) }}">
+                                </div>
+                                @error('image_seo')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('image_seo')
-                            <p class="text-danger">{{ $message }}</p>
-                            @enderror
                         </div>
-                    </div>
+                    @endif
 
                     <div class="form-group row">
                         <div class="col-6">

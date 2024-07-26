@@ -52,18 +52,18 @@ class FAQController extends Controller
     public function store(Request $request, $tourId)
     {
         $request->validate($this->faq->rules());
-        $this->notification->setMessage('FAQ creation failed', Notification::ERROR);
+        $this->notification->setMessage('Tạo Q&A thất bại', Notification::ERROR);
 
         try {
             $this->faq->saveData($request, $tourId);
-            $this->notification->setMessage('New faq added successfully', Notification::SUCCESS);
+            $this->notification->setMessage('Tạo Q&A mới thành công !', Notification::SUCCESS);
 
             return redirect()->route('faqs.index', $tourId)->with($this->notification->getMessage());
         } catch (QueryException $e) {
             $exMessage = $e->getMessage();
 
             if ($e->errorInfo[1] == '1062') {
-                return back()->withErrors(['question' => 'The question already exists'])->withInput();
+                return back()->withErrors(['question' => 'Câu hỏi này đã tồn tại! Vui lòng nhập câu hỏi khác'])->withInput();
             }
         } catch (Exception $e) {
             $exMessage = $e->getMessage();
@@ -99,11 +99,11 @@ class FAQController extends Controller
     public function update(Request $request, $tourId, $id)
     {
         $request->validate($this->faq->rules($id));
-        $this->notification->setMessage('FAQ update failed', Notification::ERROR);
+        $this->notification->setMessage('Cập nhật Q&A thất bại !', Notification::ERROR);
 
         try {
             $this->faq->saveData($request, $tourId, $id);
-            $this->notification->setMessage('FAQ updated successfully', Notification::SUCCESS);
+            $this->notification->setMessage('Cập nhật Q&A thành công !', Notification::SUCCESS);
 
             if ($request->ajax()) {
                 return response()->json($this->notification->getMessage());
@@ -113,7 +113,7 @@ class FAQController extends Controller
             $exMessage = $e->getMessage();
 
             if ($e->errorInfo[1] == '1062') {
-                return back()->withErrors(['question' => 'The question already exists'])->withInput();
+                return back()->withErrors(['question' => 'Câu hỏi này đã tồn tại! Vui lòng nhập câu hỏi khác'])->withInput();
             }
         } catch (Exception $e) {
             $exMessage = $e->getMessage();
@@ -122,7 +122,7 @@ class FAQController extends Controller
         if ($request->ajax()) {
             return response()->json($this->notification->getMessage());
         }
-        
+
         return back()
             ->with('exception', $exMessage)
             ->with($this->notification->getMessage())

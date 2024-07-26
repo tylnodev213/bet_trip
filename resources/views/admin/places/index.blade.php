@@ -95,11 +95,11 @@
                                 url: link,
                                 type: 'delete',
                                 success: function (response) {
-                                    toastr.success('Place deleted successfully');
+                                    toastr.success('Xóa thành công !');
                                     datatable.ajax.reload(null, false);
                                 },
                                 error: function (response) {
-                                    toastr.error('Delete failed')
+                                    toastr.error('Xóa thất bại !')
                                 }
                             });
                     } else if (

@@ -10,14 +10,14 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-5 align-self-center">
-                <h4 class="page-title">Create FAQ</h4>
+                <h4 class="page-title">Tạo Q&A</h4>
                 <div class="d-flex align-items-center">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('faqs.index', $tourId) }}">Q&A</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Thêm</li>
+                            <li class="breadcrumb-item active" aria-current="page">Tạo Q&A</li>
                         </ol>
                     </nav>
                 </div>
@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label for="question">Câu hỏi<span class="text-danger">*</span></label>
                         <textarea type="text" class="form-control" name="question" id="question"
-                                  placeholder="Question"
+                                  placeholder=""
                                   rows="3">{{old('question')}}</textarea>
                         @error('question')
                         <p class="text-danger">{{ $message }}</p>
@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="answer">Đáp án <span class="text-danger">*</span></label>
                         <textarea type="text" class="form-control" name="answer" id="answer"
-                                  placeholder="Answer"
+                                  placeholder=""
                                   rows="5">{{old('answer')}}</textarea>
                         @error('answer')
                         <p class="text-danger">{{ $message }}</p>

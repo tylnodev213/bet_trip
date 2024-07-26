@@ -43,11 +43,11 @@ class GalleryController extends Controller
         $request->validate($this->gallery->rules());
         try {
             $this->gallery->storeGallery($request, $tourId);
-            $this->notification->setMessage('New destination added successfully', Notification::SUCCESS);
+            $this->notification->setMessage('Thêm ảnh mới thành công !', Notification::SUCCESS);
 
             return redirect()->route('galleries.index', $tourId)->with($this->notification->getMessage());
         } catch (Exception $e) {
-            $this->notification->setMessage('Image addition failed', Notification::ERROR);
+            $this->notification->setMessage('Thêm ảnh mới thất bại !', Notification::ERROR);
 
             return back()
                 ->with('exception', $e->getMessage())

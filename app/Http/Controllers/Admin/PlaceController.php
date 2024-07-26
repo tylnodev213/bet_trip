@@ -61,7 +61,7 @@ class PlaceController extends Controller
         $request->validate($this->place->rules());
 
         try {
-            $this->notification->setMessage('New place added successfully', Notification::SUCCESS);
+            $this->notification->setMessage('Thêm điểm dừng mới thành công !', Notification::SUCCESS);
             $this->place->saveData($request, $itineraryId);
 
             return redirect()->route('places.index', [$tourId, $itineraryId])->with($this->notification->getMessage());
@@ -69,13 +69,13 @@ class PlaceController extends Controller
             $exMessage = $e->getMessage();
 
             if ($e->errorInfo[1] == '1062') {
-                return back()->withErrors(['name' => 'The place already exists'])->withInput();
+                return back()->withErrors(['name' => 'Điểm dừng này đã tồn tại ! Vui lòng nhập điểm dừng khác'])->withInput();
             }
         } catch (Exception $e) {
             $exMessage = $e->getMessage();
         }
 
-        $this->notification->setMessage('Place addition failed', Notification::ERROR);
+        $this->notification->setMessage('Thêm điểm dừng mới thất bại !', Notification::ERROR);
 
         return back()
             ->with('exception', $exMessage)
@@ -110,7 +110,7 @@ class PlaceController extends Controller
     {
         $request->validate($this->place->rules($id));
         try {
-            $this->notification->setMessage('Place updated successfully', Notification::SUCCESS);
+            $this->notification->setMessage('Cập nhật điểm dừng thành công !', Notification::SUCCESS);
             $this->place->saveData($request, $itineraryId, $id);
 
             return redirect()->route('places.index', [$tourId, $itineraryId])->with($this->notification->getMessage());
@@ -118,13 +118,13 @@ class PlaceController extends Controller
             $exMessage = $e->getMessage();
 
             if ($e->errorInfo[1] == '1062') {
-                return back()->withErrors(['name' => 'The place already exists'])->withInput();
+                return back()->withErrors(['name' => 'Điểm dừng này đã tồn tại ! Vui lòng nhập điểm dừng khác'])->withInput();
             }
         } catch (Exception $e) {
             $exMessage = $e->getMessage();
         }
 
-        $this->notification->setMessage('Place update failed', Notification::ERROR);
+        $this->notification->setMessage('Cập nhật điểm dừng thất bại !', Notification::ERROR);
 
         return back()
             ->with('exception', $exMessage)

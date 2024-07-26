@@ -60,7 +60,7 @@
                         <th>Tên</th>
                         <th>Email</th>
                         <th>Số điện thoại</th>
-                        <th>Ngày</th>
+                        <th>Thời gian</th>
                         <th>Thao tác</th>
                     </tr>
                     </thead>

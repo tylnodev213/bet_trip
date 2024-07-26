@@ -3,13 +3,13 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-5 align-self-center">
-                <h4 class="page-title">FAQ</h4>
+                <h4 class="page-title">Q&A</h4>
                 <div class="d-flex align-items-center">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('tours.index') }}">Tour</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">FAQ</li>
+                            <li class="breadcrumb-item active" aria-current="page">Q&A</li>
                         </ol>
                     </nav>
                 </div>
@@ -22,16 +22,16 @@
             <div class="card">
                 <div class="card-body">
                     <a class="btn btn-info mb-3" href="{{ route('faqs.create',$tourId) }}" class="text-white">
-                        New FAQ
+                        Thêm Q&A
                     </a>
                     <table class="table table-bordered m-t-10" id="faqTable">
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Question</th>
-                            <th>Answer</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Câu hỏi</th>
+                            <th>Đáp án</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
                         </tr>
                         </thead>
                     </table>
@@ -129,7 +129,7 @@
                     dataType: 'json',
                     data: {status: status},
                     success: function (response) {
-                        // toastr.success('Change status successfully')
+                        toastr.success('Thay đổi trạng thái thành công !')
                     },
                     error: function (response) {
                         setTimeout(function () {

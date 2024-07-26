@@ -164,17 +164,16 @@
                                 <div class="d-flex justify-content-between pt-3">
                                     <span><i
                                             class="fa-regular fa-clock tour-duration"></i> <span>{{ \App\Libraries\Utilities::durationToString($tour->duration) }}</span></span>
-                                    <span class="price-discount">{{ number_format($tour->price * 1.2) }}đ</span>
+                                    <span class="price-discount">{{ number_format($tour->price_child * 1.2) }}đ</span>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <p>
-                                        <i class="fa-solid fa-star star"></i>
-                                        <i class="fa-solid fa-star star"></i>
-                                        <i class="fa-solid fa-star star"></i>
-                                        <i class="fa-solid fa-star star"></i>
-                                        <i class="fa-solid fa-star star"></i>
+                                        @php
+                                            $rateReview = \App\Libraries\Utilities::calculatorRateReView($tour->reviews);
+                                        @endphp
+                                        @include('components.rate_review', ['rate' => $rateReview['total']])
                                     </p>
-                                    <p class="price">{{ number_format($tour->price) }}đ</p>
+                                    <p class="price">{{ number_format($tour->price_child) }}đ</p>
                                 </div>
                             </div>
                         </div>
