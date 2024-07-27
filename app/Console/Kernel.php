@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('command:confirm_tour')->daily();
         $schedule->command('command:complete_tour')->daily();
     }
 

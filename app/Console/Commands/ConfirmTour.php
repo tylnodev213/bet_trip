@@ -2,27 +2,27 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\SendMailBookingComplete;
+use App\Mail\SendMailBookingConfirm;
 use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
-class CompleteTour extends Command
+class ConfirmTour extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:complete_tour';
+    protected $signature = 'command:confirm_tour';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command update status booking to complete';
+    protected $description = 'Command update status booking to confirm';
 
     /**
      * Create a new command instance.
@@ -41,22 +41,18 @@ class CompleteTour extends Command
      */
     public function handle()
     {
-        $this->info('==========Start update status booking to complete===============');
-        $bookings = Booking::where('status', BOOKING_CONFIRM)->where('departure_time', '<=', now()->ceilDay(7))->get();
+        $this->info('==========Start update status booking to confirm===============');
+        $bookings = Booking::where('status', BOOKING_NEW)->where('departure_time', date('Y-m-d', strtotime('-1 day')))->get();
         foreach ($bookings as $booking) {
-            $duration = $booking->tour->duration;
-            if (Carbon::parse($booking->departure_time)->addDays($duration)->format('Y-m-d') != date('Y-m-d')) {
-                continue;
-            }
-            if (!Booking::where('id', $booking->id)->update('status', BOOKING_COMPLETE)) {
+            if (!Booking::where('id', $booking->id)->update('status', BOOKING_CONFIRM)) {
                 $this->error("==========Update status booking {$booking->id} fail!===============");
                 continue;
             }
-            $email = new SendMailBookingComplete($booking);
+            $email = new SendMailBookingConfirm($booking);
             Mail::to($booking->customer->email)->send($email);
             $this->info("==========Update status booking {$booking->id} successful!===============");
         }
-        $this->info('==========End update status booking to complete===============');
+        $this->info('==========End update status booking to confirm===============');
 
         return 0;
     }
