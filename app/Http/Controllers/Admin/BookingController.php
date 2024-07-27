@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\BookingRoom;
 use App\Models\Refund;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -56,6 +57,14 @@ class BookingController extends Controller
     public function changeStatus(Request $request, $id)
     {
         $request->validate($this->booking->rule());
+        if ($request->status == BOOKING_COMPLETE) {
+            $booking = Booking::find($id);
+            $duration = $booking->tour->duration;
+            $endDate = Carbon::parse($booking->departure_time)->addDays($duration)->format('Y-m-d');
+            if ($endDate > date('Y-m-d')) {
+                return json_encode(['status' => false]);
+            }
+        }
         return json_encode($this->booking->updateStatus($request, $id));
     }
 

@@ -367,7 +367,11 @@
                         success: function (response) {
                             hideLoading();
                             if (response) {
-                                location.reload(true);
+                                if (response.status) {
+                                    location.reload(true);
+                                    return;
+                                }
+                                toastrMessage('error', 'Chưa đến ngày hoàn thành tour');
                             } else {
                                 toastrMessage('error', 'Thay đổi trạng thái thất bại');
                             }

@@ -47,7 +47,7 @@ class ClientController extends Controller
     {
         $destinations = $destination->getByStatus(1, 5);
         $types = $type->getByStatus(1, 3);
-        $trendingTours = $tour->getByTrending(true, 6);
+        $trendingTours = $tour->getByTrending(true, 3);
         $tours = $tour->getByGuide(1, 6);
         $coupons = $coupon->getByStatus(1, 5);
 
