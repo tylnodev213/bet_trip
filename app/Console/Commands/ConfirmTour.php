@@ -44,10 +44,8 @@ class ConfirmTour extends Command
         $this->info('==========Start update status booking to confirm===============');
         $bookings = Booking::where('status', BOOKING_NEW)->where('departure_time', date('Y-m-d', strtotime('-1 day')))->get();
         foreach ($bookings as $booking) {
-            if (!Booking::where('id', $booking->id)->update('status', BOOKING_CONFIRM)) {
-                $this->error("==========Update status booking {$booking->id} fail!===============");
-                continue;
-            }
+            $booking->status = BOOKING_CONFIRM;
+            $booking->save();
             $email = new SendMailBookingConfirm($booking);
             Mail::to($booking->customer->email)->send($email);
             $this->info("==========Update status booking {$booking->id} successful!===============");

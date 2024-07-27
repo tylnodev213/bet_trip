@@ -1322,6 +1322,9 @@ div[slider] > input[type=range]::-ms-tooltip {
 }
 
 .btn-filter-wrap .collapse-fillter {
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 500px;
     position: absolute;
     right: 0;
     top: 60px;
@@ -2442,7 +2445,7 @@ div[slider] > input[type=range]::-ms-tooltip {
 }
 
 .footer {
-    margin-top: 0;
+    margin-top: 50x;
 }
 
 /*@import 'tailwindcss/base';*/

@@ -75,15 +75,19 @@ class ClientService
             'followers',
         ]);
         $input = array_map(function ($item) use ($customerId) {
-            return [
-                'customer_id' => $customerId,
-                'name' => $item['name'] ?? '',
-                'age' => $item['age'] ?? 0,
-                'identification' => $item['identification'] ?? '',
-                'relationship' => $item['relationship'] ?? '',
-            ];
+            if (!empty($item['name']) && !empty($item['age']) && !empty($item['relationship'])) {
+                return [
+                    'customer_id' => $customerId,
+                    'name' => $item['name'] ?? '',
+                    'age' => $item['age'] ?? '',
+                    'identification' => $item['identification'] ?? '',
+                    'relationship' => $item['relationship'] ?? '',
+                ];
+            } else {
+                return [];
+            }
         }, $input['followers']);
-        $followers = Followers::insert($input);
+        $followers = Followers::insert(array_filter($input));
         $rooms = Room::where('tour_id', $tour->id)->get();
         $coupon = Coupon::where('code', $request->codeCoupon)->first();
 

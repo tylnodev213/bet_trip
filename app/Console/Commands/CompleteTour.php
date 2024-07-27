@@ -45,13 +45,11 @@ class CompleteTour extends Command
         $bookings = Booking::where('status', BOOKING_CONFIRM)->where('departure_time', '<=', now()->ceilDay(7))->get();
         foreach ($bookings as $booking) {
             $duration = $booking->tour->duration;
-            if (Carbon::parse($booking->departure_time)->addDays($duration)->format('Y-m-d') != date('Y-m-d')) {
-                continue;
-            }
-            if (!Booking::where('id', $booking->id)->update('status', BOOKING_COMPLETE)) {
-                $this->error("==========Update status booking {$booking->id} fail!===============");
-                continue;
-            }
+//            if (Carbon::parse($booking->departure_time)->addDays($duration)->format('Y-m-d') != date('Y-m-d')) {
+//                continue;
+//            }
+            $booking->status = BOOKING_COMPLETE;
+            $booking->save();
             $email = new SendMailBookingComplete($booking);
             Mail::to($booking->customer->email)->send($email);
             $this->info("==========Update status booking {$booking->id} successful!===============");

@@ -231,20 +231,20 @@ $(document).ready(function () {
 
     let startDepartureDate = new Date(timeDeparutre);
     let endDepartureDate = new Date(timeDeparutre + durationDay * 24 * 60 * 60 * 1000);
-    $('#departureTime').val(startDepartureDate.toLocaleDateString("en-US") + ' - ' + endDepartureDate.toLocaleDateString("en-US"));
+    $('#departureTime').val(startDepartureDate.toLocaleDateString("vi-VN") + ' - ' + endDepartureDate.toLocaleDateString("vi-VN"));
 
     $('#departureTimePicker').daterangepicker({
         singleDatePicker: true,
         startDate: startDepartureDate,
         locale: {
-            format: 'MM/DD/YYYY',
+            format: 'DD/MM/YYYY',
         },
         minDate: moment().add(2, 'days'),
     }, function (start, end) {
         $('#inputDepartureTime').val(start.format("YYYY-MM-DD"));
 
         end.add(durationDay - 1, 'days');
-        $('#departureTime').val(start.format("M/D/YYYY") + ' - ' + end.format("M/D/YYYY"));
+        $('#departureTime').val(start.format("D/M/YYYY") + ' - ' + end.format("D/M/YYYY"));
         checkRoom(start.format("YYYY-MM-DD"));
     });
 
