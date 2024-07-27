@@ -136,7 +136,7 @@ class BookingController extends Controller
 
     public function getChartData(Request $request)
     {
-        $data = $this->booking->getRevenue($request->startDate, $request->endDate);
+        $data = $this->booking->getRevenue($request->startDate, $request->endDate, $request->tourId);
         return response()->json([
             'booking' => $data
         ]);

@@ -111,7 +111,7 @@
                     <div class="card-body analytics-info">
                         <h4 class="card-title"> Doanh thu </h4>
                         <div class="row">
-                            <div class="col-md-10">
+                            <div class="col-md-7">
                                 <div class='input-group mb-3'>
                                     <input type='text' id="bookingChartDate" class="form-control daterange"/>
                                     <div class="input-group-append">
@@ -119,6 +119,16 @@
                                         <span class="ti-calendar"></span>
                                     </span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class='input-group mb-3'>
+                                    <select class="form-control select2" name="tour_id" id="filterTourBooking">
+                                        <option value="">- Tất cả -</option>
+                                        @foreach($tours as $tour)
+                                            <option value="{{ $tour->id }}"> {{ $tour->name }} </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -234,6 +244,7 @@
     <script src="{{ asset('admins/assets/libs/echarts/dist/echarts-en.min.js') }}"></script>
     <script>
         $('#filterTour').select2({width: '100%'});
+        $('#filterTourBooking').select2({width: '100%'});
 
         function initChart(idRangeDate, ajaxGetData) {
             let start = moment().subtract(29, 'days');
@@ -350,12 +361,14 @@
         let dataBooking = null;
 
         function getDataBooking(startDate, endDate) {
+            let tourId = $('#filterTourBooking').val();
             $.ajax({
                 type: "GET",
                 url: `{{ route('bookings.chart') }}`,
                 data: {
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    tourId: tourId
                 },
                 success: function (response) {
                     dataBooking = response;
@@ -472,7 +485,6 @@
             initChart('#tourChartDate', getDataTour)
             initChart('#roomChartDate', getDataRoom)
         });
-
         $('#optionBookingChart').on('change', function () {
             bookingChart(dataBooking);
         })
@@ -502,6 +514,12 @@
                     getDataRoom(start, end);
                 }
             });
+        });
+
+        $('#filterTourBooking').on('change', function () {
+            let start = $('#bookingChartDate').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            let end = $('#bookingChartDate').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            getDataBooking(start, end);
         });
 
         $('#filterRoom').on('change', function () {

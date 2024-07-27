@@ -199,7 +199,7 @@ class Booking extends Model
             ->make(true);
     }
 
-    public function getRevenue($start, $end)
+    public function getRevenue($start, $end, $tourId)
     {
         $startDate = new Carbon($start);
         $endDate = (new Carbon($end))->addDay();
@@ -212,6 +212,9 @@ class Booking extends Model
 
         $bookings = $this->whereDate('created_at', '>=', $startDate)
             ->whereDate('created_at', '<', $endDate)
+            ->when(!empty($tourId), function ($q) use ($tourId) {
+                return $q->where('tour_id', $tourId);
+            })
             ->select('total', 'status', 'created_at')
             ->get();
 
@@ -226,6 +229,7 @@ class Booking extends Model
                         $reject[$i] += $booking->total;
                         break;
                     case BOOKING_NEW:
+                    case BOOKING_CONFIRM:
                         $other[$i] += $booking->total;
                         break;
                 }
